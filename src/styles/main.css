@@ -446,6 +446,162 @@ body{
 .sec-extra{font-size:12px;color:var(--stone);font-weight:300;cursor:pointer;transition:var(--transition)}
 .sec-extra:hover{color:var(--mint-deep)}
 
+/* 我的教材书架：主 Tab + 组群 Tab（组群多时可自动换行） */
+.my-shelf-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+  padding:8px;
+  margin:0 0 12px;
+  border:1px solid var(--cloud);
+  border-radius:14px;
+  background:var(--white);
+  max-width:100%;
+  width:100%;
+  box-sizing:border-box;
+}
+.my-shelf-tab{
+  border:1px solid var(--mist);
+  background:var(--snow);
+  color:var(--slate);
+  font-size:12.5px;
+  font-weight:500;
+  font-family:inherit;
+  padding:7px 14px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:var(--transition);
+  flex-shrink:0;
+  box-shadow:0 1px 0 rgba(15,23,42,0.04);
+}
+.my-shelf-tab:hover{
+  color:var(--ink);
+  background:var(--white);
+  border-color:var(--silver);
+}
+.my-shelf-tab.is-active{
+  color:var(--mint-deep);
+  background:var(--mint);
+  border-color:var(--mint-mid);
+  box-shadow:none;
+}
+/* 书架 Tab 行末尾：快捷创建组群 */
+.my-shelf-create-quick{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  border:1px dashed var(--mint-mid);
+  background:rgba(58,158,120,0.08);
+  color:var(--mint-deep);
+  font-size:12.5px;
+  font-weight:600;
+  font-family:inherit;
+  padding:7px 14px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:var(--transition);
+  flex-shrink:0;
+  box-shadow:0 1px 0 rgba(15,23,42,0.04);
+}
+.my-shelf-create-quick:hover{
+  background:var(--mint);
+  border-style:solid;
+  border-color:var(--mint-mid);
+  color:var(--mint-deep);
+}
+.my-shelf-create-quick:focus-visible{
+  outline:2px solid var(--mint-mid);
+  outline-offset:2px;
+}
+.my-shelf-create-ic{
+  flex-shrink:0;
+  opacity:0.92;
+}
+.my-shelf-class-tabs{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0 0 14px;
+  flex-wrap:wrap;
+}
+.my-shelf-class-tab{
+  border:1px solid var(--mist);
+  background:var(--white);
+  color:var(--slate);
+  font-size:12px;
+  font-family:inherit;
+  padding:6px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:var(--transition);
+}
+.my-shelf-class-tab:hover{color:var(--ink);border-color:var(--silver)}
+.my-shelf-class-tab.is-active{
+  color:var(--mint-deep);
+  border-color:var(--mint-mid);
+  background:var(--mint);
+  font-weight:500;
+}
+.my-shelf-empty{
+  margin:4px 0 24px;
+  padding:28px 16px;
+  border:1px dashed var(--mist);
+  border-radius:14px;
+  background:var(--white);
+  color:var(--stone);
+  font-size:13px;
+  text-align:center;
+}
+.my-shelf-empty--with-icon{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  padding:36px 20px 32px;
+}
+.my-shelf-empty-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:72px;height:72px;
+  border-radius:50%;
+  background:var(--snow);
+  color:var(--silver);
+  margin-bottom:4px;
+}
+.my-shelf-empty-title{
+  font-size:15px;font-weight:600;color:var(--ink);
+  margin:0;
+}
+.my-shelf-empty-desc{
+  margin:0;
+  font-size:13px;color:var(--stone);
+  font-weight:300;
+  line-height:1.55;
+  max-width:360px;
+}
+.my-shelf-empty-class{
+  font-weight:500;color:var(--deep);
+}
+.my-shelf-empty-btn{
+  margin-top:8px;
+  padding:10px 22px;
+  border:none;border-radius:10px;
+  font-family:inherit;font-size:13px;font-weight:500;
+  cursor:pointer;
+  transition:var(--transition);
+  background:var(--mint);
+  color:var(--mint-deep);
+}
+.my-shelf-empty-btn:hover{background:rgba(58,158,120,0.28)}
+.my-shelf-empty-hint{
+  margin:8px 0 0;
+  font-size:12px;color:var(--silver);
+  font-weight:300;
+}
+
 /* ===== BOOK CARDS ===== */
 .grid{
   display:grid;
@@ -551,6 +707,26 @@ body{
 }
 .mine-shelf-meta .detail-pub{
   font-size:11px;color:var(--stone);
+}
+.mine-shelf-groups{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+  margin:-2px 0 8px;
+}
+.mine-shelf-group-tag{
+  padding:3px 9px;
+  border-radius:999px;
+  font-size:10.5px;
+  color:var(--mint-deep);
+  background:rgba(58,158,120,0.12);
+  border:1px solid rgba(58,158,120,0.2);
+  line-height:1.2;
+}
+.mine-shelf-group-more{
+  font-size:10.5px;
+  color:var(--silver);
 }
 .mine-shelf-prog{margin-top:4px;gap:8px}
 .mine-shelf-badge.card-st{

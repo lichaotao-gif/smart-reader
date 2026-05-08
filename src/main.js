@@ -1334,6 +1334,35 @@ const classGroups=[
       {name:'李明远',id:'2024030303',bp:[68,65],qp:[65,60],last:'昨天'},
     ]
   },
+  /* 演示：多组群时书架 Tab 换行（均为当前演示账号「李明远」管理，便于本地预览） */
+  {
+    id:4,name:'演示·04 计算机网络拓展',subject:'计算机',desc:'',
+    code:'DEMO-G04',created:'2026-04-05',admin:'李明远',books:[],students:[],
+  },
+  {
+    id:5,name:'演示·05 数据库与运维',subject:'计算机',desc:'',
+    code:'DEMO-G05',created:'2026-04-06',admin:'李明远',books:[],students:[],
+  },
+  {
+    id:6,name:'演示·06 物联网基础班',subject:'计算机',desc:'',
+    code:'DEMO-G06',created:'2026-04-07',admin:'李明远',books:[],students:[],
+  },
+  {
+    id:7,name:'演示·07 数字媒体设计',subject:'艺术',desc:'',
+    code:'DEMO-G07',created:'2026-04-08',admin:'李明远',books:[],students:[],
+  },
+  {
+    id:8,name:'演示·08 电子商务实务',subject:'商贸',desc:'',
+    code:'DEMO-G08',created:'2026-04-09',admin:'李明远',books:[],students:[],
+  },
+  {
+    id:9,name:'演示·09 会计信息化',subject:'财经',desc:'',
+    code:'DEMO-G09',created:'2026-04-10',admin:'李明远',books:[],students:[],
+  },
+  {
+    id:10,name:'演示·10 智能制造导论',subject:'制造',desc:'',
+    code:'DEMO-G10',created:'2026-04-11',admin:'李明远',books:[],students:[],
+  },
 ];
 
 /** 当前用户是否担任至少一个组群的「管理员 / 创建者」 */
@@ -2231,7 +2260,16 @@ function bindMineShelfUiEvents() {
 }
 
 /** 我的书架：左封面 + 右信息与操作（每行两本栅格由 CSS grid--my-books 控制） */
-function mkMyShelfCard(b, i) {
+function mkMyShelfCard(b, i, opts = {}) {
+  const groupNames = Array.isArray(opts.groupNames) ? opts.groupNames.filter(Boolean) : [];
+  const shownGroupNames = groupNames.slice(0, 2);
+  const extraGroupCount = Math.max(groupNames.length - shownGroupNames.length, 0);
+  const groupTags = groupNames.length
+    ? `<div class="mine-shelf-groups" title="${groupNames.map(escAttr).join('、')}">
+        ${shownGroupNames.map((n) => `<span class="mine-shelf-group-tag">${escAttr(n)}</span>`).join('')}
+        ${extraGroupCount ? `<span class="mine-shelf-group-more">+${extraGroupCount}</span>` : ''}
+      </div>`
+    : '';
   const [c1, c2] = c(b.sub);
   const pc =
     (b.pr || 0) >= 80 ? 'var(--mint-deep)' : (b.pr || 0) >= 40 ? 'var(--peach-deep)' : 'var(--rose-deep)';
@@ -2251,6 +2289,7 @@ function mkMyShelfCard(b, i) {
         <div class="mine-shelf-main" ${open}>
           <div class="mine-shelf-title">${b.t} · ${b.s}</div>
           <div class="mine-shelf-meta"><span class="detail-pub">${b.p}</span>${pdTag}</div>
+          ${groupTags}
           ${pg}
         </div>
         ${actions}
@@ -2279,8 +2318,37 @@ function mkCard(b,i,wp){
 }
 
 let fG='全部',fS='全部科目';
+let myShelfView = 'mine';
+let myShelfClassFilter = 'all';
 function setGradeFilter(g){fG=g;renderLib();}
 function setSubjectFilter(s){fS=s;renderLib();}
+function setMyShelfTab(tabId){
+  if (tabId === 'mine') {
+    myShelfView = 'mine';
+    myShelfClassFilter = 'all';
+    refreshMyPageIfActive();
+    return;
+  }
+  myShelfView = 'group';
+  myShelfClassFilter = tabId;
+  refreshMyPageIfActive();
+}
+
+/** 组群书架无书时的空态（图标 + 文案 + 管理员可添加图书） */
+function mkMyGroupShelfEmptyState(className, classIdx, isClassAdmin) {
+  const name = className || '该组群';
+  const addBlock = isClassAdmin && typeof classIdx === 'number'
+    ? `<button type="button" class="my-shelf-empty-btn" onclick="openBookPicker(${classIdx})">添加图书</button>`
+    : `<p class="my-shelf-empty-hint">请联系组群管理员添加教材</p>`;
+  return `<div class="my-shelf-empty my-shelf-empty--with-icon">
+    <div class="my-shelf-empty-icon" aria-hidden="true">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8"/><path d="M8 11h6"/></svg>
+    </div>
+    <div class="my-shelf-empty-title">暂无教材</div>
+    <p class="my-shelf-empty-desc"><span class="my-shelf-empty-class">${escAttr(name)}</span> 下暂无可显示的教材</p>
+    ${addBlock}
+  </div>`;
+}
 
 const GS=['全部','中职 一年级','中职 二年级','中职 三年级'];
 /** 数字教材页「科目」筛选项（大类）；与书目字段 cat 对应，细分类仍用 sub 展示简介/目录 */
@@ -2368,6 +2436,62 @@ function renderMy(){
       </div>
     </div>`;
   }).join('');
+  const groupShelfEntries = myB
+    .map((b, i) => ({ b, i, classNames: getClassNamesForMyBook(b) }))
+    .filter((item) => item.classNames.length > 0);
+  const groupTabOptions = myClassEntries.map(({ cls }) => ({ id: cls.name, label: cls.name }));
+  const groupTabIds = new Set(groupTabOptions.map((o) => o.id));
+  if (myShelfView === 'group') {
+    if (!groupTabOptions.length) {
+      myShelfView = 'mine';
+      myShelfClassFilter = 'all';
+    } else if (myShelfClassFilter === 'all' || !groupTabIds.has(myShelfClassFilter)) {
+      myShelfClassFilter = groupTabOptions[0].id;
+    }
+  }
+  const shelfTabOptions = [{ id: 'mine', label: '我的书架' }, ...groupTabOptions];
+  const shownGroupShelfEntries =
+    myShelfView === 'group' && groupTabIds.has(myShelfClassFilter)
+      ? groupShelfEntries.filter((item) => item.classNames.includes(myShelfClassFilter))
+      : [];
+  const mineShelfHtml = myB.length
+    ? `<div class="grid grid--my-books">${myB.map((b, i) => mkMyShelfCard(b, i)).join('')}</div>`
+    : `<div class="my-shelf-empty">暂无教材，可通过兑换码添加到书架</div>`;
+  const selectedClassEntry =
+    myShelfView === 'group' && groupTabIds.has(myShelfClassFilter)
+      ? myClassEntries.find(({ cls }) => cls.name === myShelfClassFilter)
+      : null;
+  const groupShelfHtml =
+    myShelfView !== 'group'
+      ? ''
+      : shownGroupShelfEntries.length
+        ? `<div class="grid grid--my-books">${shownGroupShelfEntries.map((item) => mkMyShelfCard(item.b, item.i, { groupNames: item.classNames })).join('')}</div>`
+        : !groupTabOptions.length
+          ? `<div class="my-shelf-empty my-shelf-empty--with-icon">
+              <div class="my-shelf-empty-icon" aria-hidden="true">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="my-shelf-empty-title">暂无组群</div>
+              <p class="my-shelf-empty-desc">加入或创建组群后，可按组群查看教材</p>
+            </div>`
+          : mkMyGroupShelfEmptyState(
+              myShelfClassFilter,
+              selectedClassEntry?.i,
+              !!(selectedClassEntry && selectedClassEntry.cls.admin === getCurrentUserDisplayName()),
+            );
+  const shelfTabsHtml = `<div class="my-shelf-tabs" role="navigation" aria-label="书架与组群">
+      ${shelfTabOptions.map((opt) => {
+        const active = opt.id === 'mine'
+          ? myShelfView === 'mine'
+          : (myShelfView === 'group' && myShelfClassFilter === opt.id);
+        return `<button type="button" class="my-shelf-tab ${active ? 'is-active' : ''}" onclick='setMyShelfTab(${JSON.stringify(opt.id)})'>${escAttr(opt.label)}</button>`;
+      }).join('')}
+      <button type="button" class="my-shelf-create-quick" onclick="openCreateClass()">
+        <svg class="my-shelf-create-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>创建</span>
+      </button>
+    </div>`;
+  const activeClassName = myShelfClassFilter;
 
   document.getElementById('page-my').innerHTML=`
     <div class="my-action-row">
@@ -2392,8 +2516,12 @@ function renderMy(){
         <svg class="join-class-entry-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
     </div>
-    <div class="sec-head"><div class="sec-title"><span class="dot"></span>我的书架</div><div class="sec-extra">管理教材 →</div></div>
-    <div class="grid grid--my-books">${myB.map((b, i) => mkMyShelfCard(b, i)).join('')}</div>
+    <div class="sec-head">
+      <div class="sec-title"><span class="dot"></span>书架</div>
+      <div class="sec-extra">${myShelfView === 'mine' ? `共 ${myB.length} 本` : `${activeClassName} · ${shownGroupShelfEntries.length} 本`}</div>
+    </div>
+    ${shelfTabsHtml}
+    ${myShelfView === 'mine' ? mineShelfHtml : groupShelfHtml}
     <div class="class-section">
       <div class="sec-head">
         <div class="sec-title"><span class="dot"></span>我的组群</div>
@@ -5718,7 +5846,7 @@ Object.assign(window, {
   openRedeem, closeRedeem, doRedeem, openCreateClass, closeCreateClass, doCreateClass,
   openJoinClass, closeJoinClass, doJoinClass,
   openClassDetail, closeClassDetail, copyCode, openBookPicker, closeBookPicker, dissolveClass, leaveClass,
-  addBookToClass, removeClassBook, setGradeFilter, setSubjectFilter,
+  addBookToClass, removeClassBook, setGradeFilter, setSubjectFilter, setMyShelfTab,
   openSchoolModal, closeSchoolModal, confirmSchoolBind, clearSchoolBind,
   bookShortcut,
   toggleMineShelfMore, closeAllMineShelfMore,
