@@ -57,7 +57,7 @@
         </g>
       </svg>
     </div>
-    <div class="cr-login-end-title">四川数字教程创作者</div>
+    <div class="cr-login-end-title">四川数字教材创作者</div>
     <div class="cr-login-panel">
       <div class="cr-login-brand">
         <div class="logo-icon" aria-hidden="true">创</div>
@@ -66,20 +66,37 @@
           <div class="logo-en">创作者端登录</div>
         </div>
       </div>
-      <label class="login-label" for="creatorLoginPhone">手机号</label>
-      <input type="tel" class="login-input" id="creatorLoginPhone" maxlength="11" inputmode="numeric" placeholder="11 位手机号" value="13800000000">
-      <label class="login-label" for="creatorLoginPassword">密码</label>
-      <div class="cr-login-pwd-row">
-        <input type="password" class="login-input" id="creatorLoginPassword" minlength="6" placeholder="不少于 6 位" value="123456">
-        <button type="button" class="cr-login-eye-btn" id="creatorLoginTogglePwd" aria-label="显示密码" title="显示密码">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-        </button>
+      <div class="cr-login-tabs" role="tablist" aria-label="登录方式切换">
+        <button type="button" class="cr-login-tab is-active" id="creatorLoginTabPwd" role="tab" aria-selected="true">账户密码登录</button>
+        <button type="button" class="cr-login-tab" id="creatorLoginTabOtp" role="tab" aria-selected="false">手机验证码登录</button>
       </div>
-      <p class="cr-login-err" id="creatorLoginErr"></p>
-      <button type="button" class="login-submit cr-login-submit" id="creatorLoginSubmit">登录创作者端</button>
+      <div class="cr-login-pane" id="creatorLoginPanePwd" role="tabpanel" aria-labelledby="creatorLoginTabPwd">
+        <label class="login-label" for="creatorLoginPhone">手机号</label>
+        <input type="tel" class="login-input" id="creatorLoginPhone" maxlength="11" inputmode="numeric" placeholder="11 位手机号" value="13800000000">
+        <label class="login-label" for="creatorLoginPassword">密码</label>
+        <div class="cr-login-pwd-row">
+          <input type="password" class="login-input" id="creatorLoginPassword" minlength="6" placeholder="不少于 6 位" value="123456">
+          <button type="button" class="cr-login-eye-btn" id="creatorLoginTogglePwd" aria-label="显示密码" title="显示密码">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+        <p class="cr-login-err" id="creatorLoginErrPwd"></p>
+        <button type="button" class="login-submit cr-login-submit" id="creatorLoginSubmitPwd">登录</button>
+      </div>
+      <div class="cr-login-pane cr-login-pane--hidden" id="creatorLoginPaneOtp" role="tabpanel" aria-labelledby="creatorLoginTabOtp" aria-hidden="true">
+        <label class="login-label" for="creatorLoginPhoneOtp">手机号</label>
+        <input type="tel" class="login-input" id="creatorLoginPhoneOtp" maxlength="11" inputmode="numeric" placeholder="11 位手机号" value="13800000000">
+        <label class="login-label" for="creatorLoginOtpCode">短信验证码</label>
+        <div class="cr-login-otp-row">
+          <input type="text" class="login-input" id="creatorLoginOtpCode" maxlength="6" inputmode="numeric" placeholder="6 位验证码" autocomplete="one-time-code">
+          <button type="button" class="cr-login-send-code" id="creatorLoginSendCodeBtn">获取验证码</button>
+        </div>
+        <p class="cr-login-err" id="creatorLoginErrOtp"></p>
+        <button type="button" class="login-submit cr-login-submit" id="creatorLoginSubmitOtp">登录</button>
+      </div>
     </div>
   </div>
 

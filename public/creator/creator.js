@@ -557,35 +557,154 @@
 
   function initCreatorLogin() {
     var overlay = document.getElementById('creatorLoginOverlay');
-    var phoneEl = document.getElementById('creatorLoginPhone');
+    var tabPwdEl = document.getElementById('creatorLoginTabPwd');
+    var tabOtpEl = document.getElementById('creatorLoginTabOtp');
+    var panePwdEl = document.getElementById('creatorLoginPanePwd');
+    var paneOtpEl = document.getElementById('creatorLoginPaneOtp');
+    var phonePwdEl = document.getElementById('creatorLoginPhone');
+    var phoneOtpEl = document.getElementById('creatorLoginPhoneOtp');
+    var otpCodeEl = document.getElementById('creatorLoginOtpCode');
+    var sendOtpEl = document.getElementById('creatorLoginSendCodeBtn');
+    var submitPwdEl = document.getElementById('creatorLoginSubmitPwd');
+    var submitOtpEl = document.getElementById('creatorLoginSubmitOtp');
     var pwdEl = document.getElementById('creatorLoginPassword');
     var togglePwdEl = document.getElementById('creatorLoginTogglePwd');
-    var errEl = document.getElementById('creatorLoginErr');
-    var submitEl = document.getElementById('creatorLoginSubmit');
-    if (!overlay || !phoneEl || !pwdEl || !submitEl) return;
-    function setErr(msg) {
+    var errPwdEl = document.getElementById('creatorLoginErrPwd');
+    var errOtpEl = document.getElementById('creatorLoginErrOtp');
+    if (
+      !overlay ||
+      !tabPwdEl ||
+      !tabOtpEl ||
+      !panePwdEl ||
+      !paneOtpEl ||
+      !phonePwdEl ||
+      !phoneOtpEl ||
+      !otpCodeEl ||
+      !sendOtpEl ||
+      !submitPwdEl ||
+      !submitOtpEl ||
+      !pwdEl
+    ) {
+      return;
+    }
+    var loginMode = 'pwd';
+    var creatorOtp = { code: '', target: '', cool: 0, timer: null };
+    function setErr(mode, msg) {
+      var errEl = mode === 'otp' ? errOtpEl : errPwdEl;
       if (errEl) errEl.textContent = msg || '';
     }
-    function submit() {
-      var phone = String(phoneEl.value || '').trim();
-      var pwd = String(pwdEl.value || '').trim();
-      if (!isValidPhone(phone)) {
-        setErr('请输入正确的 11 位手机号');
-        return;
+    function clearErr() {
+      setErr('pwd', '');
+      setErr('otp', '');
+    }
+    function clearOtpTimer() {
+      if (creatorOtp.timer) {
+        clearInterval(creatorOtp.timer);
+        creatorOtp.timer = null;
       }
-      if (pwd.length < 6) {
-        setErr('密码不少于 6 位');
-        return;
-      }
+    }
+    function resetOtpState() {
+      clearOtpTimer();
+      creatorOtp = { code: '', target: '', cool: 0, timer: null };
+      sendOtpEl.disabled = false;
+      sendOtpEl.textContent = '获取验证码';
+      if (otpCodeEl) otpCodeEl.value = '';
+    }
+    function setLoginMode(mode) {
+      loginMode = mode === 'otp' ? 'otp' : 'pwd';
+      var pwdActive = loginMode === 'pwd';
+      tabPwdEl.classList.toggle('is-active', pwdActive);
+      tabOtpEl.classList.toggle('is-active', !pwdActive);
+      tabPwdEl.setAttribute('aria-selected', pwdActive ? 'true' : 'false');
+      tabOtpEl.setAttribute('aria-selected', pwdActive ? 'false' : 'true');
+      panePwdEl.classList.toggle('cr-login-pane--hidden', !pwdActive);
+      paneOtpEl.classList.toggle('cr-login-pane--hidden', pwdActive);
+      panePwdEl.setAttribute('aria-hidden', pwdActive ? 'false' : 'true');
+      paneOtpEl.setAttribute('aria-hidden', pwdActive ? 'true' : 'false');
+      clearErr();
+    }
+    function completeLogin(phone) {
       localStorage.setItem(
         CREATOR_LOGIN_KEY,
         JSON.stringify({ phone: phone, ts: Date.now() })
       );
-      setErr('');
+      clearErr();
+      resetOtpState();
       closeCreatorLogin();
       showToast('已登录创作者端');
     }
-    submitEl.addEventListener('click', submit);
+    function submitPwd() {
+      var phone = String(phonePwdEl.value || '').trim();
+      var pwd = String(pwdEl.value || '').trim();
+      if (!isValidPhone(phone)) {
+        setErr('pwd', '请输入正确的 11 位手机号');
+        return;
+      }
+      if (pwd.length < 6) {
+        setErr('pwd', '密码不少于 6 位');
+        return;
+      }
+      completeLogin(phone);
+    }
+    function sendOtpCode() {
+      var phone = String(phoneOtpEl.value || '').trim();
+      if (!isValidPhone(phone)) {
+        setErr('otp', '请输入正确的 11 位手机号');
+        return;
+      }
+      clearErr();
+      creatorOtp.target = phone;
+      creatorOtp.code = String(Math.floor(100000 + Math.random() * 900000));
+      creatorOtp.cool = 60;
+      sendOtpEl.disabled = true;
+      sendOtpEl.textContent = creatorOtp.cool + 's';
+      showToast('验证码（演示）: ' + creatorOtp.code);
+      clearOtpTimer();
+      creatorOtp.timer = setInterval(function () {
+        creatorOtp.cool -= 1;
+        if (creatorOtp.cool <= 0) {
+          clearOtpTimer();
+          sendOtpEl.disabled = false;
+          sendOtpEl.textContent = '获取验证码';
+          return;
+        }
+        sendOtpEl.textContent = creatorOtp.cool + 's';
+      }, 1000);
+    }
+    function submitOtp() {
+      var phone = String(phoneOtpEl.value || '').trim();
+      var code = String(otpCodeEl.value || '').trim();
+      if (!isValidPhone(phone)) {
+        setErr('otp', '请输入正确的 11 位手机号');
+        return;
+      }
+      if (!/^\d{6}$/.test(code)) {
+        setErr('otp', '请输入 6 位短信验证码');
+        return;
+      }
+      if (!creatorOtp.code) {
+        setErr('otp', '请先获取验证码');
+        return;
+      }
+      if (phone !== creatorOtp.target) {
+        setErr('otp', '手机号与接收验证码号码不一致');
+        return;
+      }
+      if (code !== creatorOtp.code) {
+        setErr('otp', '验证码错误');
+        return;
+      }
+      completeLogin(phone);
+    }
+    submitPwdEl.addEventListener('click', submitPwd);
+    submitOtpEl.addEventListener('click', submitOtp);
+    sendOtpEl.addEventListener('click', sendOtpCode);
+    tabPwdEl.addEventListener('click', function () {
+      setLoginMode('pwd');
+    });
+    tabOtpEl.addEventListener('click', function () {
+      setLoginMode('otp');
+    });
     if (togglePwdEl) {
       togglePwdEl.addEventListener('click', function () {
         var isPwd = pwdEl.type === 'password';
@@ -594,19 +713,24 @@
         togglePwdEl.setAttribute('title', isPwd ? '隐藏密码' : '显示密码');
       });
     }
-    phoneEl.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') submit();
+    phonePwdEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') submitPwd();
     });
     pwdEl.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') submit();
+      if (e.key === 'Enter') submitPwd();
     });
-    if (!localStorage.getItem(CREATOR_LOGIN_KEY)) {
-      localStorage.setItem(
-        CREATOR_LOGIN_KEY,
-        JSON.stringify({ phone: '13800000000', ts: Date.now() })
-      );
+    phoneOtpEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') submitOtp();
+    });
+    otpCodeEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') submitOtp();
+    });
+    setLoginMode('pwd');
+    if (localStorage.getItem(CREATOR_LOGIN_KEY)) {
+      closeCreatorLogin();
+    } else {
+      openCreatorLogin();
     }
-    closeCreatorLogin();
   }
 
   function getBookById(id) {
