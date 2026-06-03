@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教材审核 · 出版社端</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="review.css">
+</head>
+<body>
+  <div class="pub-review-app">
+    <header class="pub-review-head">
+      <div class="pub-review-head-lead">
+        <a class="pub-review-back" href="../index.html">← 返回</a>
+        <h1 class="pub-review-title" id="pubReviewBookTitle">数控机床编程与操作</h1>
+      </div>
+      <div class="pub-review-head-actions">
+        <button type="button" class="pub-review-link-btn" id="pubReviewDetailBtn">审核详情</button>
+        <button type="button" class="pub-review-btn pub-review-btn--danger" id="pubReviewReworkBtn">返修</button>
+        <button type="button" class="pub-review-btn pub-review-btn--pass" id="pubReviewPassBtn">通过</button>
+      </div>
+    </header>
+
+    <div class="pub-review-body">
+      <aside class="pub-review-toc" aria-label="章节目录">
+        <div class="pub-review-toc-head">章节目录</div>
+        <nav class="pub-review-toc-scroll">
+          <div class="pub-review-tree-row is-active">
+            <span class="pub-review-tree-label">第一章 数控加工基础</span>
+            <span class="pub-review-toc-badge" title="本章待处理意见">1</span>
+          </div>
+          <div class="pub-review-tree-row pub-review-tree-row--l2">
+            <span class="pub-review-tree-label">1.1 机床坐标系与对刀</span>
+            <span class="pub-review-toc-badge" title="本节待处理意见">4</span>
+          </div>
+          <div class="pub-review-tree-row pub-review-tree-row--l2">
+            <span class="pub-review-tree-label">1.2 程序结构与常用指令</span>
+          </div>
+          <div class="pub-review-tree-row pub-review-tree-row--l3">
+            <span class="pub-review-tree-label">1.2.1 直线插补示例</span>
+          </div>
+          <div class="pub-review-tree-row">
+            <span class="pub-review-tree-label">第二章 综合零件加工</span>
+          </div>
+        </nav>
+      </aside>
+
+      <main class="pub-review-main">
+        <article class="pub-review-doc" id="pubReviewDoc" aria-label="教材正文预览">
+          <h2>1.1 机床坐标系与对刀</h2>
+          <p id="review-anchor-1" class="pub-review-para">
+            <span class="pub-review-highlight">视技术工人的素质。在市场经济条件下，技术工人的技能水平与职业素养直接影响产品质量与生产效率。</span>
+            <button type="button" class="pub-review-pin pub-review-pin--blue" data-review-id="1" aria-label="定位审核意见 1">1</button>
+          </p>
+          <p>本节介绍机床坐标系设定、刀具长度补偿与工件坐标系建立的基本流程，便于后续编程实例对照理解。</p>
+
+          <figure class="pub-review-figure" id="review-anchor-2">
+            <div class="pub-review-imgph" role="img" aria-label="正文配图占位">加工示意图</div>
+            <button type="button" class="pub-review-pin pub-review-pin--red" data-review-id="2" aria-label="定位审核意见 2">2</button>
+          </figure>
+
+          <p id="review-anchor-3" class="pub-review-para">
+            工艺卡片中的切削参数应与机床额定功率匹配；若需调整，请在备注栏注明变更原因。
+            <button type="button" class="pub-review-pin pub-review-pin--blue" data-review-id="3" aria-label="定位审核意见 3">3</button>
+          </p>
+        </article>
+      </main>
+
+      <aside class="pub-review-rail" aria-label="审核意见">
+        <div class="pub-review-rail-head">
+          <span class="pub-review-rail-title">审核意见</span>
+          <label class="pub-review-filter-wrap">
+            <span class="visually-hidden">按状态筛选</span>
+            <select id="pubReviewFilter" class="pub-review-filter" aria-label="筛选审核意见">
+              <option value="all">全部</option>
+              <option value="open" selected>未解决</option>
+              <option value="resolved">已解决</option>
+            </select>
+          </label>
+        </div>
+        <div class="pub-review-cards" id="pubReviewCards">
+          <article class="pub-review-card" data-review-id="1" data-status="open">
+            <div class="pub-review-card-head">
+              <span class="pub-review-num pub-review-num--blue" aria-hidden="true">1</span>
+              <div class="pub-review-card-meta">
+                <div class="pub-review-card-who">
+                  <span class="pub-review-avatar" aria-hidden="true">李</span>
+                  <span class="pub-review-name">李梓发</span>
+                </div>
+                <time datetime="2026-02-23T18:00">2026-02-23 18:00</time>
+                <div class="pub-review-card-actions">
+                  <button type="button" data-card-action="resolve">已解决</button>
+                  <button type="button" data-card-action="edit">编辑</button>
+                  <button type="button" data-card-action="delete">删除</button>
+                </div>
+              </div>
+            </div>
+            <div class="pub-review-quote">
+              <span class="pub-review-quote-label">引用：</span>
+              视技术工人的素质。在市场经济条件下，技术工人的技能水平与职业素养直接影响产品质量与生产效率。
+            </div>
+            <p class="pub-review-feedback">本页面，有错别字</p>
+          </article>
+
+          <article class="pub-review-card" data-review-id="2" data-status="open">
+            <div class="pub-review-card-head">
+              <span class="pub-review-num pub-review-num--red" aria-hidden="true">2</span>
+              <div class="pub-review-card-meta">
+                <div class="pub-review-card-who">
+                  <span class="pub-review-avatar" aria-hidden="true">吴</span>
+                  <span class="pub-review-name">吴彦琛</span>
+                </div>
+                <time datetime="2026-02-24T15:30">2026-02-24 15:30</time>
+                <div class="pub-review-card-actions">
+                  <button type="button" data-card-action="resolve">已解决</button>
+                  <button type="button" data-card-action="edit">编辑</button>
+                  <button type="button" data-card-action="delete">删除</button>
+                </div>
+              </div>
+            </div>
+            <div class="pub-review-quote">
+              <span class="pub-review-quote-label">引用：</span>配图缩略预览
+              <div class="pub-review-quote-thumb" role="img" aria-label="引用配图占位">缩略图</div>
+            </div>
+            <p class="pub-review-feedback">不能使用侵权水印的图片作为出版内容</p>
+          </article>
+
+          <article class="pub-review-card" data-review-id="3" data-status="resolved">
+            <div class="pub-review-card-head">
+              <span class="pub-review-num pub-review-num--slate" aria-hidden="true">3</span>
+              <div class="pub-review-card-meta">
+                <div class="pub-review-card-who">
+                  <span class="pub-review-avatar" aria-hidden="true">李</span>
+                  <span class="pub-review-name">李梓发</span>
+                </div>
+                <time datetime="2026-02-25T09:12">2026-02-25 09:12</time>
+                <div class="pub-review-card-actions">
+                  <button type="button" data-card-action="resolve">已解决</button>
+                  <button type="button" data-card-action="edit">编辑</button>
+                  <button type="button" data-card-action="delete">删除</button>
+                </div>
+              </div>
+            </div>
+            <div class="pub-review-quote">
+              <span class="pub-review-quote-label">引用：</span>
+              工艺卡片中的切削参数应与机床额定功率匹配……
+            </div>
+            <p class="pub-review-feedback">表述已核对，参数表与正文一致（已处理）</p>
+          </article>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="pub-review-toast" id="pubReviewToast" role="status" aria-live="polite" hidden></div>
+  <script src="review.js"></script>
+</body>
+</html>

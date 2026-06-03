@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>撰写图书 - 创作者平台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../creator.css">
+  <link rel="stylesheet" href="./write.css">
+</head>
+<body>
+  <!-- 统一图标 sprite：笔画 2、圆角端点，与 .cr-w-svg 配色 -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:block;width:0;height:0;position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="cr-ic-chevron-left" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/></symbol>
+      <symbol id="cr-ic-chevron-right" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></symbol>
+      <symbol id="cr-ic-chevron-down" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></symbol>
+      <symbol id="cr-ic-list" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 6h13M8 12h13M8 18h13M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+      <symbol id="cr-ic-plus" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="cr-ic-pencil" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+      <symbol id="cr-ic-trash" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14zM10 11v6M14 11v6"/></symbol>
+      <symbol id="cr-ic-sparkles" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/><circle fill="none" stroke="currentColor" stroke-width="2" cx="12" cy="12" r="3.5"/></symbol>
+      <symbol id="cr-ic-eye" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle fill="none" stroke="currentColor" stroke-width="2" cx="12" cy="12" r="3"/></symbol>
+      <symbol id="cr-ic-save" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path fill="none" stroke="currentColor" stroke-width="2" d="M17 21v-8H7v8"/><path fill="none" stroke="currentColor" stroke-width="2" d="M7 3v5h8"/></symbol>
+      <symbol id="cr-ic-send" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></symbol>
+      <symbol id="cr-ic-undo" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 7v6h6"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></symbol>
+      <symbol id="cr-ic-redo" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 7v6h-6"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></symbol>
+      <symbol id="cr-ic-align-left" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 6h16M4 12h10M4 18h14"/></symbol>
+      <symbol id="cr-ic-table" viewBox="0 0 24 24"><rect fill="none" stroke="currentColor" stroke-width="2" x="3" y="3" width="18" height="18" rx="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M3 9h18M3 15h18M9 3v18M15 3v18"/></symbol>
+      <symbol id="cr-ic-type" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 20h16"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 4v12"/></symbol>
+      <symbol id="cr-ic-search" viewBox="0 0 24 24"><circle fill="none" stroke="currentColor" stroke-width="2" cx="11" cy="11" r="8"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m21 21-4.35-4.35"/></symbol>
+      <symbol id="cr-ic-sigma" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 9h16M4 15h16M10 3L8 21M16 3l-2 18"/></symbol>
+      <symbol id="cr-ic-code" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></symbol>
+      <symbol id="cr-ic-message" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+      <symbol id="cr-ic-image" viewBox="0 0 24 24"><rect fill="none" stroke="currentColor" stroke-width="2" x="3" y="3" width="18" height="18" rx="2"/><circle fill="none" stroke="currentColor" stroke-width="2" cx="8.5" cy="8.5" r="1.5"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M21 15l-5-5L5 21"/></symbol>
+      <symbol id="cr-ic-video" viewBox="0 0 24 24"><rect fill="none" stroke="currentColor" stroke-width="2" x="2" y="5" width="15" height="14" rx="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M23 9l-5 3v6l5 3V9z"/></symbol>
+      <symbol id="cr-ic-audio" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M9 18V5l12-2v13"/><circle fill="none" stroke="currentColor" stroke-width="2" cx="6" cy="18" r="3"/><circle fill="none" stroke="currentColor" stroke-width="2" cx="18" cy="16" r="3"/></symbol>
+      <symbol id="cr-ic-layers" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2L2 7l10 5 10-5-10-5z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M2 17l10 5 10-5M2 12l10 5 10-5"/></symbol>
+      <symbol id="cr-ic-clapper" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 11V4a2 2 0 0 1 2-2h3l3 4h4a2 2 0 0 1 2 2v1"/><rect fill="none" stroke="currentColor" stroke-width="2" x="4" y="11" width="16" height="11" rx="2"/></symbol>
+      <symbol id="cr-ic-paperclip" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
+      <symbol id="cr-ic-help" viewBox="0 0 24 24"><circle fill="none" stroke="currentColor" stroke-width="2" cx="12" cy="12" r="10"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 17h.01"/></symbol>
+      <symbol id="cr-ic-globe" viewBox="0 0 24 24"><circle fill="none" stroke="currentColor" stroke-width="2" cx="12" cy="12" r="10"/><path fill="none" stroke="currentColor" stroke-width="2" d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+      <symbol id="cr-ic-wrench" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+      <symbol id="cr-ic-square" viewBox="0 0 24 24"><rect fill="none" stroke="currentColor" stroke-width="2" x="3" y="3" width="18" height="18" rx="2"/></symbol>
+      <symbol id="cr-ic-image-up" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+      <symbol id="cr-ic-book" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+      <symbol id="cr-ic-doc" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M14 2v6h6"/></symbol>
+      <symbol id="cr-ic-dots-v" viewBox="0 0 24 24"><circle cx="12" cy="6" r="1.75" fill="currentColor"/><circle cx="12" cy="12" r="1.75" fill="currentColor"/><circle cx="12" cy="18" r="1.75" fill="currentColor"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="app cr-write-app">
+    <div class="cr-write-shell">
+      <header class="cr-write-head">
+        <div class="cr-write-head-lead">
+          <a class="cr-write-head-back" href="../index.html">
+            <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-chevron-left"/></svg>
+            返回
+          </a>
+          <h1 class="cr-write-head-title" id="writePageTitle">撰写图书</h1>
+        </div>
+        <div class="cr-write-head-actions">
+          <button type="button" class="cr-write-ai" id="writeAiBtn" title="AI 助手（演示）">
+            <span class="cr-write-ai-inner">
+              <svg class="cr-w-svg cr-write-ai-ic" aria-hidden="true"><use href="#cr-ic-sparkles"/></svg>
+              <span class="cr-write-ai-txt">AI 助手</span>
+            </span>
+          </button>
+          <button type="button" class="cr-write-btn cr-write-btn--ghost" title="预览">
+            <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-eye"/></svg>
+            预览
+          </button>
+          <button type="button" class="cr-write-btn cr-write-btn--ghost" title="保存">
+            <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-save"/></svg>
+            保存
+          </button>
+          <button type="button" class="cr-write-btn cr-write-btn--primary" title="提交审核">
+            <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-send"/></svg>
+            提交审核
+          </button>
+        </div>
+      </header>
+
+      <div class="cr-write-body">
+        <aside class="cr-write-toc" aria-label="目录">
+          <div class="cr-write-toc-head">
+            <span style="display:inline-flex;align-items:center;gap:6px">
+              <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-list"/></svg>
+              目录
+            </span>
+            <a href="#" class="cr-write-toc-head-link" id="writeNewChapter" onclick="return false;">+ 新建章节/任务</a>
+          </div>
+          <p class="cr-write-toc-hint">目录最多 <strong>三级</strong>（章 → 节 → 要点）；三级节点不可再添加子项。</p>
+          <div class="cr-write-toc-scroll">
+            <div class="cr-write-tree-group">
+              <div class="cr-write-tree-row cr-write-tree-row--l1 is-active">
+                <button type="button" class="cr-write-tree-chev" aria-label="折叠章节"><svg class="cr-w-svg"><use href="#cr-ic-chevron-down"/></svg></button>
+                <div class="cr-write-tree-main">
+                  <span class="cr-write-tree-label">第一章 内容</span>
+                  <div class="cr-write-tree-badges">
+                    <span class="cr-write-tag cr-write-tag--train">实训</span>
+                  </div>
+                </div>
+                <details class="cr-write-row-menu">
+                  <summary class="cr-write-row-more" aria-label="章节操作" onclick="event.stopPropagation()">
+                    <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-dots-v"/></svg>
+                  </summary>
+                  <div class="cr-write-row-pop" role="menu">
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-plus"/></svg>添加子项</button>
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-pencil"/></svg>编辑</button>
+                    <button type="button" class="cr-write-menu-item cr-write-menu-item--danger" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-trash"/></svg>删除</button>
+                  </div>
+                </details>
+              </div>
+              <div class="cr-write-tree-row cr-write-tree-row--l2">
+                <span class="cr-write-tree-gutter" aria-hidden="true"></span>
+                <div class="cr-write-tree-main">
+                  <span class="cr-write-tree-label">1.1 节概述</span>
+                </div>
+                <details class="cr-write-row-menu">
+                  <summary class="cr-write-row-more" aria-label="章节操作" onclick="event.stopPropagation()">
+                    <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-dots-v"/></svg>
+                  </summary>
+                  <div class="cr-write-row-pop" role="menu">
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-plus"/></svg>添加子项</button>
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-pencil"/></svg>编辑</button>
+                    <button type="button" class="cr-write-menu-item cr-write-menu-item--danger" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-trash"/></svg>删除</button>
+                  </div>
+                </details>
+              </div>
+              <div class="cr-write-tree-row cr-write-tree-row--l2">
+                <span class="cr-write-tree-gutter" aria-hidden="true"></span>
+                <div class="cr-write-tree-main">
+                  <span class="cr-write-tree-label">1.2 核心概念</span>
+                  <div class="cr-write-tree-badges">
+                    <span class="cr-write-tag cr-write-tag--case">案例</span>
+                  </div>
+                </div>
+                <details class="cr-write-row-menu">
+                  <summary class="cr-write-row-more" aria-label="章节操作" onclick="event.stopPropagation()">
+                    <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-dots-v"/></svg>
+                  </summary>
+                  <div class="cr-write-row-pop" role="menu">
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-plus"/></svg>添加子项</button>
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-pencil"/></svg>编辑</button>
+                    <button type="button" class="cr-write-menu-item cr-write-menu-item--danger" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-trash"/></svg>删除</button>
+                  </div>
+                </details>
+              </div>
+              <div class="cr-write-tree-row cr-write-tree-row--l3">
+                <span class="cr-write-tree-gutter" aria-hidden="true"></span>
+                <div class="cr-write-tree-main">
+                  <span class="cr-write-tree-label cr-write-tree-label--l3">· 知识点 A（三级）</span>
+                </div>
+                <details class="cr-write-row-menu">
+                  <summary class="cr-write-row-more" aria-label="章节操作" onclick="event.stopPropagation()">
+                    <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-dots-v"/></svg>
+                  </summary>
+                  <div class="cr-write-row-pop" role="menu">
+                    <button type="button" class="cr-write-menu-item" disabled title="目录最多三级，无法继续添加子项">添加子项</button>
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-pencil"/></svg>编辑</button>
+                    <button type="button" class="cr-write-menu-item cr-write-menu-item--danger" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-trash"/></svg>删除</button>
+                  </div>
+                </details>
+              </div>
+              <div class="cr-write-tree-row cr-write-tree-row--l3">
+                <span class="cr-write-tree-gutter" aria-hidden="true"></span>
+                <div class="cr-write-tree-main">
+                  <span class="cr-write-tree-label cr-write-tree-label--l3">· 知识点 B（三级）</span>
+                </div>
+                <details class="cr-write-row-menu">
+                  <summary class="cr-write-row-more" aria-label="章节操作" onclick="event.stopPropagation()">
+                    <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-dots-v"/></svg>
+                  </summary>
+                  <div class="cr-write-row-pop" role="menu">
+                    <button type="button" class="cr-write-menu-item" disabled title="目录最多三级，无法继续添加子项">添加子项</button>
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-pencil"/></svg>编辑</button>
+                    <button type="button" class="cr-write-menu-item cr-write-menu-item--danger" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-trash"/></svg>删除</button>
+                  </div>
+                </details>
+              </div>
+              <div class="cr-write-tree-row cr-write-tree-row--l2">
+                <span class="cr-write-tree-gutter" aria-hidden="true"></span>
+                <div class="cr-write-tree-main">
+                  <span class="cr-write-tree-label">小结作业</span>
+                </div>
+                <details class="cr-write-row-menu">
+                  <summary class="cr-write-row-more" aria-label="章节操作" onclick="event.stopPropagation()">
+                    <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-dots-v"/></svg>
+                  </summary>
+                  <div class="cr-write-row-pop" role="menu">
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-plus"/></svg>添加子项</button>
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-pencil"/></svg>编辑</button>
+                    <button type="button" class="cr-write-menu-item cr-write-menu-item--danger" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-trash"/></svg>删除</button>
+                  </div>
+                </details>
+              </div>
+            </div>
+            <div class="cr-write-tree-group">
+              <div class="cr-write-tree-row cr-write-tree-row--l1">
+                <button type="button" class="cr-write-tree-chev" aria-label="展开章节"><svg class="cr-w-svg"><use href="#cr-ic-chevron-right"/></svg></button>
+                <div class="cr-write-tree-main">
+                  <span class="cr-write-tree-label">第二章 实操练习</span>
+                </div>
+                <details class="cr-write-row-menu">
+                  <summary class="cr-write-row-more" aria-label="章节操作" onclick="event.stopPropagation()">
+                    <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-dots-v"/></svg>
+                  </summary>
+                  <div class="cr-write-row-pop" role="menu">
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-plus"/></svg>添加子项</button>
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-pencil"/></svg>编辑</button>
+                    <button type="button" class="cr-write-menu-item cr-write-menu-item--danger" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-trash"/></svg>删除</button>
+                  </div>
+                </details>
+              </div>
+            </div>
+            <div class="cr-write-tree-group">
+              <div class="cr-write-tree-row cr-write-tree-row--l1">
+                <button type="button" class="cr-write-tree-chev" aria-label="展开章节"><svg class="cr-w-svg"><use href="#cr-ic-chevron-right"/></svg></button>
+                <div class="cr-write-tree-main">
+                  <span class="cr-write-tree-label">防风服</span>
+                  <div class="cr-write-tree-badges">
+                    <span class="cr-write-tag cr-write-tag--case">案例</span>
+                  </div>
+                </div>
+                <details class="cr-write-row-menu">
+                  <summary class="cr-write-row-more" aria-label="章节操作" onclick="event.stopPropagation()">
+                    <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-dots-v"/></svg>
+                  </summary>
+                  <div class="cr-write-row-pop" role="menu">
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-plus"/></svg>添加子项</button>
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-pencil"/></svg>编辑</button>
+                    <button type="button" class="cr-write-menu-item cr-write-menu-item--danger" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-trash"/></svg>删除</button>
+                  </div>
+                </details>
+              </div>
+            </div>
+            <div class="cr-write-tree-group">
+              <div class="cr-write-tree-row cr-write-tree-row--l1">
+                <button type="button" class="cr-write-tree-chev" aria-label="展开章节"><svg class="cr-w-svg"><use href="#cr-ic-chevron-right"/></svg></button>
+                <div class="cr-write-tree-main">
+                  <span class="cr-write-tree-label">狂人日记</span>
+                </div>
+                <details class="cr-write-row-menu">
+                  <summary class="cr-write-row-more" aria-label="章节操作" onclick="event.stopPropagation()">
+                    <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-dots-v"/></svg>
+                  </summary>
+                  <div class="cr-write-row-pop" role="menu">
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-plus"/></svg>添加子项</button>
+                    <button type="button" class="cr-write-menu-item" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-pencil"/></svg>编辑</button>
+                    <button type="button" class="cr-write-menu-item cr-write-menu-item--danger" role="menuitem"><svg class="cr-w-menu-ic" aria-hidden="true"><use href="#cr-ic-trash"/></svg>删除</button>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <section class="cr-write-editor-wrap" aria-label="正文编辑">
+          <div class="cr-write-toolbars">
+            <div class="cr-write-tool-row">
+              <select class="cr-write-tool-select" title="段落样式" aria-label="段落样式">
+                <option>段落</option>
+                <option>标题 1</option>
+                <option>标题 2</option>
+              </select>
+              <select class="cr-write-tool-select" title="字号" aria-label="字号">
+                <option>字号</option>
+                <option>12</option>
+                <option>14</option>
+                <option>16</option>
+              </select>
+              <select class="cr-write-tool-select" title="字体" aria-label="字体">
+                <option>字体</option>
+                <option>思源黑体</option>
+                <option>宋体</option>
+              </select>
+              <span class="cr-write-tool-split"></span>
+              <button type="button" class="cr-write-tool-btn" title="撤销"><svg class="cr-w-svg"><use href="#cr-ic-undo"/></svg></button>
+              <button type="button" class="cr-write-tool-btn" title="重做"><svg class="cr-w-svg"><use href="#cr-ic-redo"/></svg></button>
+              <span class="cr-write-tool-split"></span>
+              <button type="button" class="cr-write-tool-btn" title="行距"><svg class="cr-w-svg"><use href="#cr-ic-type"/></svg></button>
+              <button type="button" class="cr-write-tool-btn" title="对齐"><svg class="cr-w-svg"><use href="#cr-ic-align-left"/></svg></button>
+              <span class="cr-write-tool-split"></span>
+              <button type="button" class="cr-write-tool-btn" title="表格"><svg class="cr-w-svg"><use href="#cr-ic-table"/></svg></button>
+              <button type="button" class="cr-write-tool-btn" title="查找"><svg class="cr-w-svg"><use href="#cr-ic-search"/></svg></button>
+              <button type="button" class="cr-write-tool-btn" title="公式"><svg class="cr-w-svg"><use href="#cr-ic-sigma"/></svg></button>
+            </div>
+            <div class="cr-write-tool-row">
+              <button type="button" class="cr-write-tool-btn" title="代码块"><svg class="cr-w-svg"><use href="#cr-ic-code"/></svg>代码块</button>
+              <button type="button" class="cr-write-tool-btn" title="气泡"><svg class="cr-w-svg"><use href="#cr-ic-message"/></svg>气泡</button>
+              <button type="button" class="cr-write-tool-btn" title="图片"><svg class="cr-w-svg"><use href="#cr-ic-image"/></svg>图片</button>
+              <button type="button" class="cr-write-tool-btn" title="视频"><svg class="cr-w-svg"><use href="#cr-ic-video"/></svg>视频</button>
+              <button type="button" class="cr-write-tool-btn" title="音频"><svg class="cr-w-svg"><use href="#cr-ic-audio"/></svg>音频</button>
+              <button type="button" class="cr-write-tool-btn" title="图集"><svg class="cr-w-svg"><use href="#cr-ic-layers"/></svg>图集</button>
+              <button type="button" class="cr-write-tool-btn" title="视频卡"><svg class="cr-w-svg"><use href="#cr-ic-clapper"/></svg>视频卡</button>
+              <button type="button" class="cr-write-tool-btn" title="附件"><svg class="cr-w-svg"><use href="#cr-ic-paperclip"/></svg>附件</button>
+              <button type="button" class="cr-write-tool-btn" title="习题"><svg class="cr-w-svg"><use href="#cr-ic-help"/></svg>习题</button>
+              <button type="button" class="cr-write-tool-btn" title="网页"><svg class="cr-w-svg"><use href="#cr-ic-globe"/></svg>网页</button>
+              <button type="button" class="cr-write-tool-btn" title="实训"><svg class="cr-w-svg"><use href="#cr-ic-wrench"/></svg>实训</button>
+              <button type="button" class="cr-write-tool-btn" title="矩形"><svg class="cr-w-svg"><use href="#cr-ic-square"/></svg>矩形</button>
+              <button type="button" class="cr-write-tool-btn" title="背景图"><svg class="cr-w-svg"><use href="#cr-ic-image-up"/></svg>背景图</button>
+              <button type="button" class="cr-write-tool-btn" title="案例"><svg class="cr-w-svg"><use href="#cr-ic-book"/></svg>案例</button>
+            </div>
+          </div>
+          <div class="cr-write-editor-pad">
+            <div class="cr-write-editor" id="writeEditor" contenteditable="true" spellcheck="false" data-placeholder="在此撰写正文…（演示占位，可接入富文本引擎）"></div>
+          </div>
+        </section>
+
+        <aside class="cr-write-rail is-collapsed" id="writeRailAside" aria-label="审核与版本侧栏">
+          <button type="button" class="cr-write-rail-handle" id="writeRailToggle" aria-expanded="false" aria-controls="writeRailPanel" title="展开侧栏（审核记录 / 版本记录）">
+            <svg class="cr-w-svg cr-write-rail-handle-ic" aria-hidden="true"><use href="#cr-ic-chevron-left"/></svg>
+            <span class="cr-write-rail-handle-hint">审核</span>
+            <span class="cr-write-rail-audit-badge" id="writeRailAuditBadge" aria-label="3 条审核记录">3条</span>
+          </button>
+          <div class="cr-write-rail-panel" id="writeRailPanel" aria-hidden="true">
+            <div class="cr-write-tabs" role="tablist">
+              <button type="button" class="cr-write-tab is-active" role="tab" aria-selected="true" data-write-tab="audit">
+                <span class="cr-write-tab-label">审核记录</span>
+                <span class="cr-write-tab-badge" id="writeAuditTabBadge">3条</span>
+              </button>
+              <button type="button" class="cr-write-tab" role="tab" aria-selected="false" data-write-tab="version">版本记录</button>
+            </div>
+            <div class="cr-write-rail-body" id="writeRailAudit">
+              <ul class="cr-write-audit-list" id="writeAuditList" role="list">
+                <li class="cr-write-audit-item">
+                  <article class="cr-write-audit-card">
+                    <div class="cr-write-audit-top">
+                      <span class="cr-write-audit-num cr-write-audit-num--a" aria-hidden="true">1</span>
+                      <div class="cr-write-audit-top-main">
+                        <div class="cr-write-audit-statusline">
+                          <span class="cr-write-audit-status">已修改</span>
+                          <time class="cr-write-audit-when" datetime="2026-02-23T18:00">2026-02-23 18:00</time>
+                        </div>
+                        <div class="cr-write-audit-quote">
+                          <span class="cr-write-audit-quote-label">引用：</span>
+                          视技术工人的素质。在市场经济条件下，技术工人的素质直接影响……
+                        </div>
+                        <p class="cr-write-audit-feedback">本页面，有错别字</p>
+                        <div class="cr-write-audit-actions">
+                          <button type="button" class="cr-write-audit-link">留言</button>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </li>
+                <li class="cr-write-audit-item">
+                  <article class="cr-write-audit-card">
+                    <div class="cr-write-audit-top">
+                      <span class="cr-write-audit-num cr-write-audit-num--b" aria-hidden="true">2</span>
+                      <div class="cr-write-audit-top-main">
+                        <div class="cr-write-audit-statusline">
+                          <span class="cr-write-audit-status cr-write-audit-status--strong">完成</span>
+                          <time class="cr-write-audit-when" datetime="2026-02-24T15:30">2026-02-24 15:30</time>
+                        </div>
+                        <div class="cr-write-audit-quote cr-write-audit-quote--media">
+                          <div class="cr-write-audit-quote-imgph" role="img" aria-label="引用附图占位">配图示意</div>
+                        </div>
+                        <p class="cr-write-audit-feedback">不能使用侵权水印的图片作为出版内容</p>
+                        <div class="cr-write-audit-actions">
+                          <button type="button" class="cr-write-audit-link">留言</button>
+                          <button type="button" class="cr-write-audit-expand-btn" aria-expanded="false" aria-controls="writeAuditThread2">
+                            留言展开<span class="cr-write-audit-expand-n">3</span>条›
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="cr-write-audit-thread" id="writeAuditThread2" hidden>
+                      <div class="cr-write-audit-msg">
+                        <div class="cr-write-audit-msg-row">
+                          <span class="cr-write-audit-chip cr-write-audit-chip--reviewer">审核人</span>
+                          <time class="cr-write-audit-msg-time" datetime="2024-05-14T10:09">2024-05-14 10:09</time>
+                        </div>
+                        <p class="cr-write-audit-msg-body">不能用这个图片</p>
+                      </div>
+                      <div class="cr-write-audit-msg">
+                        <div class="cr-write-audit-msg-row">
+                          <span class="cr-write-audit-chip cr-write-audit-chip--author">作者</span>
+                          <time class="cr-write-audit-msg-time" datetime="2024-05-14T11:02">2024-05-14 11:02</time>
+                        </div>
+                        <p class="cr-write-audit-msg-body">好的</p>
+                      </div>
+                      <div class="cr-write-audit-msg">
+                        <div class="cr-write-audit-msg-row">
+                          <span class="cr-write-audit-chip cr-write-audit-chip--reviewer">审核人</span>
+                          <time class="cr-write-audit-msg-time" datetime="2024-05-14T14:20">2024-05-14 14:20</time>
+                        </div>
+                        <p class="cr-write-audit-msg-body">请替换为无水印高清图并标注来源。</p>
+                      </div>
+                      <div class="cr-write-audit-reply">
+                        <input type="text" class="cr-write-audit-input" id="writeAuditReply2" placeholder="评论" autocomplete="off"/>
+                        <button type="button" class="cr-write-audit-send">发送</button>
+                      </div>
+                    </div>
+                  </article>
+                </li>
+                <li class="cr-write-audit-item">
+                  <article class="cr-write-audit-card">
+                    <div class="cr-write-audit-top">
+                      <span class="cr-write-audit-num cr-write-audit-num--c" aria-hidden="true">3</span>
+                      <div class="cr-write-audit-top-main">
+                        <div class="cr-write-audit-statusline">
+                          <span class="cr-write-audit-status">待处理</span>
+                          <time class="cr-write-audit-when" datetime="2026-04-20T09:40">2026-04-20 09:40</time>
+                        </div>
+                        <div class="cr-write-audit-quote">
+                          <span class="cr-write-audit-quote-label">引用：</span>
+                          第一章　导学与课标对应（节选中）
+                        </div>
+                        <p class="cr-write-audit-feedback">请补充导学目标与课标条目的对应说明，便于教研核对。</p>
+                        <div class="cr-write-audit-actions">
+                          <button type="button" class="cr-write-audit-link">留言</button>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </li>
+              </ul>
+            </div>
+            <div class="cr-write-rail-body cr-write-rail-body--version" id="writeRailVersion" hidden style="display:none">
+              <ul class="cr-write-version-list" role="list">
+                <li class="cr-write-version-item cr-write-version-item--current">
+                  <div class="cr-write-version-inner">
+                    <div class="cr-write-version-main">
+                      <div class="cr-write-version-title">
+                        第3版本<span class="cr-write-version-current-tag">（当前）</span>
+                      </div>
+                      <time class="cr-write-version-time" datetime="2024-05-11T21:27">2024-05-11 21:27</time>
+                      <div class="cr-write-version-author-row">
+                        <span class="cr-write-version-dot" aria-hidden="true"></span>
+                        <span class="cr-write-version-author">李梓发</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="cr-write-version-item">
+                  <div class="cr-write-version-inner">
+                    <div class="cr-write-version-main">
+                      <div class="cr-write-version-title">第2版本</div>
+                      <time class="cr-write-version-time" datetime="2024-05-09T16:42">2024-05-09 16:42</time>
+                      <div class="cr-write-version-author-row">
+                        <span class="cr-write-version-dot" aria-hidden="true"></span>
+                        <span class="cr-write-version-author">吴彦琛</span>
+                      </div>
+                    </div>
+                    <button type="button" class="cr-write-version-open">打开</button>
+                  </div>
+                </li>
+                <li class="cr-write-version-item">
+                  <div class="cr-write-version-inner">
+                    <div class="cr-write-version-main">
+                      <div class="cr-write-version-title">第1版本</div>
+                      <time class="cr-write-version-time" datetime="2024-04-22T09:15">2024-04-22 09:15</time>
+                      <div class="cr-write-version-author-row">
+                        <span class="cr-write-version-dot" aria-hidden="true"></span>
+                        <span class="cr-write-version-author">李梓发</span>
+                      </div>
+                    </div>
+                    <button type="button" class="cr-write-version-open">打开</button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <script src="./write.js"></script>
+</body>
+</html>

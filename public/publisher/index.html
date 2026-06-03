@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>出版社端 · 四川数字教材</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --white: #ffffff;
+      --snow: #f9fafb;
+      --cloud: #f3f4f6;
+      --mist: #e5e7eb;
+      --stone: #9ca3af;
+      --slate: #6b7280;
+      --ink: #374151;
+      --deep: #1f2937;
+      --mint: #d2f0e2;
+      --mint-mid: #6dc4a0;
+      --mint-deep: #3a9e78;
+      --sky: #d6e8f8;
+      --sky-mid: #6ea8d8;
+      --sky-deep: #3d80b8;
+      --rose: #f9dae2;
+      --rose-mid: #e48a9e;
+      --rose-deep: #c45c74;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+      --transition: 0.25s ease;
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: "Noto Sans SC", "PingFang SC", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(165deg, #ecfdf5 0%, #f9fafb 34%, #eff6ff 100%);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .pub-login-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 520;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 14px;
+      padding: 22px 14px;
+    }
+    .pub-login-overlay.open { display: flex; }
+    .pub-login-end-title {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 14px;
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 32px;
+      letter-spacing: 3px;
+      color: #2f6f95;
+      text-shadow: 0 4px 18px rgba(86, 130, 168, 0.2);
+    }
+    .pub-login-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: linear-gradient(160deg, #eff6ff 0%, #f8fafc 44%, #ecfeff 100%);
+    }
+    .pub-login-art {
+      width: 100%;
+      height: 100%;
+      display: block;
+      mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 92%, transparent 100%);
+    }
+    .pub-login-panel {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 396px;
+      border-radius: 20px;
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      background: var(--white);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.09), 0 0 0 1px rgba(255, 255, 255, 0.85) inset;
+      padding: 30px 26px 24px;
+    }
+    .pub-login-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .pub-login-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 4px;
+      border: 1px solid var(--cloud);
+      border-radius: 999px;
+      background: var(--snow);
+      margin-bottom: 10px;
+    }
+    .pub-login-tab {
+      flex: 1;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--slate);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12.5px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .pub-login-tab:hover { color: var(--ink); }
+    .pub-login-tab.is-active {
+      color: var(--mint-deep);
+      background: var(--mint);
+      border-color: rgba(58, 158, 120, 0.2);
+    }
+    .pub-login-pane--hidden { display: none; }
+    .pub-login-pwd-row {
+      position: relative;
+    }
+    .pub-login-pwd-row input {
+      padding-right: 44px;
+    }
+    .pub-login-eye-btn {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      width: 26px;
+      height: 26px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--stone);
+      cursor: pointer;
+    }
+    .pub-login-eye-btn:hover { color: var(--sky-deep); background: var(--snow); }
+    .pub-login-eye-btn svg { width: 16px; height: 16px; display: block; margin: auto; }
+    .pub-login-otp-row {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .pub-login-otp-row input {
+      flex: 1;
+    }
+    .pub-login-send-code {
+      flex-shrink: 0;
+      border: 1px solid var(--mist);
+      background: var(--white);
+      color: var(--slate);
+      border-radius: 10px;
+      padding: 0 12px;
+      min-width: 102px;
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .pub-login-send-code:hover {
+      border-color: var(--mint-mid);
+      color: var(--mint-deep);
+      background: var(--mint);
+    }
+    .pub-login-send-code:disabled { cursor: not-allowed; opacity: 0.7; }
+    .pub-login-err {
+      min-height: 22px;
+      font-size: 12px;
+      color: var(--rose-deep);
+      margin-top: 10px;
+    }
+    .pub-login-submit {
+      width: 100%;
+      margin-top: 4px;
+    }
+    .pub-login-note {
+      margin-top: 14px;
+      font-size: 11.5px;
+      color: var(--stone);
+      line-height: 1.6;
+    }
+    .page {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 16px;
+    }
+    .topbar {
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(229, 231, 235, 0.95);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--mint-deep), var(--sky-mid));
+      color: var(--white);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      letter-spacing: 1px;
+      box-shadow: 0 6px 18px rgba(58, 158, 120, 0.3);
+      flex-shrink: 0;
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .brand-text strong {
+      font-size: 16px;
+      color: var(--deep);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .brand-text span {
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      color: var(--stone);
+    }
+    .user-chip {
+      border: 1px solid var(--mist);
+      background: var(--white);
+      border-radius: 999px;
+      padding: 6px 10px 6px 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--ink);
+      font-size: 13px;
+      min-width: 0;
+    }
+    .user-chip:hover { border-color: var(--mint-mid); }
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 1px solid var(--mist);
+      background: var(--cloud);
+      flex-shrink: 0;
+    }
+    .main {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(240px, 1fr));
+      gap: 14px;
+      flex: 1;
+      min-height: 0;
+    }
+    .panel {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(229, 231, 235, 0.95);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .panel-header {
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid var(--cloud);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .panel-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--deep);
+    }
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+    .dot.published { background: var(--mint-deep); }
+    .dot.pending { background: var(--sky-deep); }
+    .dot.rework { background: var(--rose-deep); }
+    .count {
+      font-size: 12px;
+      color: var(--slate);
+      background: var(--cloud);
+      border-radius: 999px;
+      padding: 3px 8px;
+    }
+    .list {
+      list-style: none;
+      padding: 12px;
+      overflow: auto;
+      display: grid;
+      gap: 10px;
+    }
+    .item {
+      border: 1px solid var(--mist);
+      border-radius: var(--radius-sm);
+      background: var(--white);
+      padding: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      transition: var(--transition);
+    }
+    .book-cover {
+      width: 72px;
+      aspect-ratio: 3/4;
+      border-radius: 8px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.2;
+      padding: 6px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16);
+    }
+    .book-cover.published {
+      background: linear-gradient(145deg, #4aaa85, #78c8a8);
+    }
+    .book-cover.pending {
+      background: linear-gradient(145deg, #4a8ec8, #7ab4de);
+    }
+    .book-cover.rework {
+      background: linear-gradient(145deg, #c85a72, #e08898);
+    }
+    .item-main {
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+      flex: 1;
+    }
+    .panel.status-published .item:hover {
+      border-color: rgba(58, 158, 120, 0.52);
+      box-shadow: 0 0 0 3px rgba(58, 158, 120, 0.12);
+      background: rgba(210, 240, 226, 0.22);
+    }
+    .panel.status-pending .item:hover {
+      border-color: rgba(61, 128, 184, 0.55);
+      box-shadow: 0 0 0 3px rgba(61, 128, 184, 0.12);
+      background: rgba(214, 232, 248, 0.25);
+    }
+    .panel.status-rework .item:hover {
+      border-color: rgba(196, 92, 116, 0.52);
+      box-shadow: 0 0 0 3px rgba(196, 92, 116, 0.12);
+      background: rgba(249, 218, 226, 0.28);
+    }
+    .item-title {
+      font-size: 15px;
+      color: var(--deep);
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .item-line {
+      font-size: 13px;
+      color: var(--slate);
+      line-height: 1.45;
+    }
+    .item-line strong {
+      color: #667085;
+      font-weight: 500;
+      margin-right: 6px;
+    }
+    .item-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 6px;
+    }
+    .item-action {
+      border: none;
+      background: transparent;
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0;
+      font-family: inherit;
+    }
+    .item-action:hover {
+      color: var(--deep);
+    }
+    .item-action.primary {
+      color: var(--mint-deep);
+    }
+    .item-actions a.item-action {
+      text-decoration: none;
+    }
+    .item-tag {
+      justify-self: start;
+      font-size: 11px;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-weight: 500;
+    }
+    .tag-published { background: var(--mint); color: var(--mint-deep); }
+    .tag-pending { background: var(--sky); color: var(--sky-deep); }
+    .tag-rework { background: var(--rose); color: var(--rose-deep); }
+    .empty {
+      color: var(--stone);
+      text-align: center;
+      font-size: 13px;
+      padding: 20px 8px;
+      border: 1px dashed var(--mist);
+      border-radius: var(--radius-sm);
+    }
+    .back-link {
+      align-self: center;
+      text-decoration: none;
+      color: var(--slate);
+      font-size: 13px;
+    }
+    .back-link:hover { color: var(--mint-deep); }
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: min(420px, 100vw);
+      background: var(--white);
+      border-left: 1px solid var(--mist);
+      box-shadow: -18px 0 32px rgba(15, 23, 42, 0.14);
+      transform: translateX(100%);
+      transition: transform var(--transition);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 18px;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .drawer h2 {
+      font-size: 18px;
+      color: var(--deep);
+    }
+    .btn-close {
+      border: none;
+      background: var(--cloud);
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      cursor: pointer;
+      color: var(--slate);
+    }
+    .profile-preview {
+      border: 1px solid var(--mist);
+      border-radius: var(--radius);
+      background: var(--snow);
+      padding: 18px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 8px;
+    }
+    .profile-preview .avatar {
+      width: 64px;
+      height: 64px;
+    }
+    .preview-name {
+      font-size: 18px;
+      color: var(--deep);
+      font-weight: 600;
+    }
+    .preview-role {
+      font-size: 13px;
+      color: var(--slate);
+    }
+    .form-card {
+      border: 1px solid var(--mist);
+      border-radius: var(--radius);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+    .form-card h3 {
+      font-size: 14px;
+      color: var(--deep);
+    }
+    label {
+      font-size: 12px;
+      color: var(--slate);
+      display: grid;
+      gap: 6px;
+    }
+    input {
+      width: 100%;
+      border: 1px solid var(--mist);
+      border-radius: 9px;
+      padding: 9px 10px;
+      font-size: 14px;
+      color: var(--ink);
+      outline: none;
+    }
+    input:focus {
+      border-color: var(--mint-mid);
+      box-shadow: 0 0 0 3px rgba(58, 158, 120, 0.1);
+    }
+    .row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    button {
+      border: none;
+      border-radius: 9px;
+      padding: 9px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--mint-deep), var(--sky-mid));
+      color: var(--white);
+    }
+    .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--cloud);
+      color: var(--slate);
+    }
+    .btn-danger {
+      background: var(--rose);
+      color: var(--rose-deep);
+    }
+    .btn-block { width: 100%; }
+    .security-text {
+      font-size: 12px;
+      color: var(--slate);
+    }
+    .entry-link {
+      width: 100%;
+      border: 1px solid var(--mist);
+      background: var(--white);
+      color: var(--ink);
+      border-radius: 10px;
+      padding: 9px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .entry-link:hover {
+      border-color: var(--mint-mid);
+      background: var(--snow);
+    }
+    .entry-link-arrow {
+      color: var(--stone);
+      font-size: 15px;
+      line-height: 1;
+    }
+    .drawer-bottom {
+      margin-top: auto;
+      padding-top: 10px;
+      display: flex;
+      justify-content: center;
+    }
+    .logout-btn {
+      min-width: 160px;
+    }
+    .mask {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.25);
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 20;
+    }
+    .mask.open { opacity: 1; visibility: visible; }
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.32);
+      z-index: 50;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+    .modal-mask.open { opacity: 1; visibility: visible; }
+    .modal {
+      position: fixed;
+      z-index: 60;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.96);
+      width: min(460px, calc(100vw - 28px));
+      background: var(--white);
+      border: 1px solid var(--mist);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.2);
+      padding: 16px;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+    .modal.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--deep);
+    }
+    .avatar-pick-list {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+    .avatar-pick {
+      width: 100%;
+      border: 2px solid transparent;
+      border-radius: 999px;
+      background: transparent;
+      padding: 1px;
+      cursor: pointer;
+    }
+    .avatar-pick.active {
+      border-color: var(--mint-mid);
+    }
+    .avatar-pick img {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 999px;
+      object-fit: cover;
+      display: block;
+      border: 1px solid var(--mist);
+    }
+    .helper-text {
+      font-size: 11.5px;
+      color: var(--stone);
+      margin-top: -2px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      background: var(--deep);
+      color: var(--white);
+      font-size: 13px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 40;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    @media (max-width: 980px) {
+      .main { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="pub-login-overlay" id="publisherLoginOverlay" role="dialog" aria-modal="true" aria-labelledby="publisherLoginTitle">
+    <div class="pub-login-bg" aria-hidden="true">
+      <svg class="pub-login-art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="pubLoginSky" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#eaf3ff"/>
+            <stop offset="52%" stop-color="#f4f8ff"/>
+            <stop offset="100%" stop-color="#edf6ff"/>
+          </linearGradient>
+          <radialGradient id="pubLoginGlowA" cx="0%" cy="0%" r="100%">
+            <stop offset="0%" stop-color="#8fb4df" stop-opacity="0.24"/>
+            <stop offset="100%" stop-color="#8fb4df" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="pubLoginGlowB" cx="0%" cy="0%" r="100%">
+            <stop offset="0%" stop-color="#9ac7ec" stop-opacity="0.2"/>
+            <stop offset="100%" stop-color="#9ac7ec" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="pubLoginBlur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="9"/>
+          </filter>
+        </defs>
+        <rect width="1440" height="900" fill="url(#pubLoginSky)"/>
+        <circle cx="1140" cy="130" r="210" fill="url(#pubLoginGlowA)"/>
+        <circle cx="260" cy="740" r="250" fill="url(#pubLoginGlowB)"/>
+        <g fill="none" stroke="#86acd4" stroke-width="2.2" opacity="0.3">
+          <path d="M88 712c146-84 310-116 458-84" />
+          <path d="M896 646c170-96 334-102 468-46" />
+        </g>
+        <g fill="none" stroke="#8fb4db" stroke-width="1.6" opacity="0.34">
+          <path d="M110 770h222l28-16h130" />
+          <path d="M950 718h148l24-14h206" />
+        </g>
+        <g opacity="0.34" filter="url(#pubLoginBlur)">
+          <ellipse cx="300" cy="638" rx="146" ry="18" fill="#86acd4"/>
+          <ellipse cx="1130" cy="582" rx="170" ry="22" fill="#8cb2dd"/>
+        </g>
+        <g fill="none" stroke="#6f95c2" stroke-width="2.2" opacity="0.42">
+          <rect x="136" y="548" width="244" height="148" rx="16"/>
+          <path d="M170 586h176M170 614h144M170 642h106"/>
+        </g>
+        <g fill="none" stroke="#7f9fc7" stroke-width="2.2" stroke-linecap="round" opacity="0.45">
+          <rect x="1010" y="528" width="250" height="154" rx="16"/>
+          <path d="M1042 568h182M1042 598h136M1042 628h82"/>
+          <circle cx="1218" cy="618" r="20"/>
+          <path d="M1206 618h24M1218 606v24"/>
+        </g>
+      </svg>
+    </div>
+    <div class="pub-login-end-title">四川数字教材出版社</div>
+    <div class="pub-login-panel">
+      <div class="pub-login-brand">
+        <div class="logo">版</div>
+        <div class="brand-text">
+          <strong id="publisherLoginTitle">四川数字教材</strong>
+          <span>出版社端登录</span>
+        </div>
+      </div>
+      <div class="pub-login-tabs" role="tablist" aria-label="登录方式切换">
+        <button class="pub-login-tab is-active" type="button" id="publisherLoginTabPwd" role="tab" aria-selected="true">账户密码登录</button>
+        <button class="pub-login-tab" type="button" id="publisherLoginTabOtp" role="tab" aria-selected="false">手机验证码登录</button>
+      </div>
+      <div class="pub-login-pane" id="publisherLoginPanePwd" role="tabpanel" aria-labelledby="publisherLoginTabPwd">
+        <label>手机号
+          <input type="tel" id="publisherLoginPhone" maxlength="11" inputmode="numeric" placeholder="11 位手机号" value="13800000000">
+        </label>
+        <label>密码
+          <div class="pub-login-pwd-row">
+            <input type="password" id="publisherLoginPassword" minlength="6" placeholder="不少于 6 位" value="123456">
+            <button class="pub-login-eye-btn" type="button" id="publisherLoginTogglePwd" aria-label="显示密码" title="显示密码">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </label>
+        <p class="pub-login-err" id="publisherLoginErrPwd"></p>
+        <button class="btn-primary pub-login-submit" type="button" id="publisherLoginSubmitPwd">登录</button>
+      </div>
+      <div class="pub-login-pane pub-login-pane--hidden" id="publisherLoginPaneOtp" role="tabpanel" aria-labelledby="publisherLoginTabOtp" aria-hidden="true">
+        <label>手机号
+          <input type="tel" id="publisherLoginPhoneOtp" maxlength="11" inputmode="numeric" placeholder="11 位手机号" value="13800000000">
+        </label>
+        <label>短信验证码
+          <div class="pub-login-otp-row">
+            <input type="text" id="publisherLoginOtpCode" maxlength="6" inputmode="numeric" placeholder="6 位验证码" autocomplete="one-time-code">
+            <button class="pub-login-send-code" type="button" id="publisherLoginSendCodeBtn">获取验证码</button>
+          </div>
+        </label>
+        <p class="pub-login-err" id="publisherLoginErrOtp"></p>
+        <button class="btn-primary pub-login-submit" type="button" id="publisherLoginSubmitOtp">登录</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">社</div>
+        <div class="brand-text">
+          <strong>四川数字教材 · 出版社端</strong>
+          <span>PUBLISHER CENTER</span>
+        </div>
+      </div>
+      <button class="user-chip" id="profileTrigger" type="button">
+        <img class="avatar" id="headerAvatar" src="https://api.dicebear.com/7.x/thumbs/svg?seed=publisher" alt="用户头像">
+        <span id="headerName">张编辑</span>
+      </button>
+    </header>
+
+    <main class="main">
+      <section class="panel status-published">
+        <header class="panel-header">
+          <div class="panel-title"><span class="dot published"></span>已出版</div>
+          <span class="count">3</span>
+        </header>
+        <ul class="list">
+          <li class="item">
+            <div class="book-cover published">人工智能</div>
+            <div class="item-main">
+              <div class="item-title">人工智能导论（中职）</div>
+              <div class="item-line"><strong>主编</strong>赵明 等</div>
+              <div class="item-line"><strong>版次</strong>2026 第一版</div>
+              <div class="item-line"><strong>ISBN</strong>978-7-04-061001-2</div>
+              <div class="item-actions">
+                <a class="item-action" href="read.html" target="_blank" rel="noopener noreferrer">阅读</a>
+                <button class="item-action" type="button">出版信息</button>
+                <button class="item-action" type="button">导出审核记录</button>
+              </div>
+            </div>
+          </li>
+          <li class="item">
+            <div class="book-cover published">Python</div>
+            <div class="item-main">
+              <div class="item-title">Python 程序设计（项目篇）</div>
+              <div class="item-line"><strong>主编</strong>李可 等</div>
+              <div class="item-line"><strong>版次</strong>2025 第二版</div>
+              <div class="item-line"><strong>ISBN</strong>978-7-115-69432-6</div>
+              <div class="item-actions">
+                <a class="item-action" href="read.html" target="_blank" rel="noopener noreferrer">阅读</a>
+                <button class="item-action" type="button">出版信息</button>
+                <button class="item-action" type="button">导出审核记录</button>
+              </div>
+            </div>
+          </li>
+          <li class="item">
+            <div class="book-cover published">数据库</div>
+            <div class="item-main">
+              <div class="item-title">数据库应用基础</div>
+              <div class="item-line"><strong>主编</strong>刘洋</div>
+              <div class="item-line"><strong>版次</strong>2025 第三版</div>
+              <div class="item-line"><strong>ISBN</strong>978-7-121-44321-5</div>
+              <div class="item-actions">
+                <a class="item-action" href="read.html" target="_blank" rel="noopener noreferrer">阅读</a>
+                <button class="item-action" type="button">出版信息</button>
+                <button class="item-action" type="button">导出审核记录</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="panel status-pending">
+        <header class="panel-header">
+          <div class="panel-title"><span class="dot pending"></span>待审核</div>
+          <span class="count">2</span>
+        </header>
+        <ul class="list">
+          <li class="item">
+            <div class="book-cover pending">网络安全</div>
+            <div class="item-main">
+              <div class="item-title">网络安全与合规实践</div>
+              <div class="item-line"><strong>主编</strong>邹凯冰</div>
+              <div class="item-line"><strong>版次</strong>2025 第三版</div>
+              <div class="item-line"><strong>ISBN</strong>978-7-122-55116-3</div>
+              <div class="item-actions">
+                <a class="item-action" href="read.html" target="_blank" rel="noopener noreferrer">阅读</a>
+                <button class="item-action primary" type="button">开始审核</button>
+                <button class="item-action" type="button">审核记录</button>
+                <button class="item-action" type="button">导出记录</button>
+              </div>
+            </div>
+          </li>
+          <li class="item">
+            <div class="book-cover pending">移动开发</div>
+            <div class="item-main">
+              <div class="item-title">移动应用开发（第二版）</div>
+              <div class="item-line"><strong>主编</strong>周佳妮</div>
+              <div class="item-line"><strong>版次</strong>2026 第一版</div>
+              <div class="item-line"><strong>ISBN</strong>978-7-302-64387-7</div>
+              <div class="item-actions">
+                <a class="item-action" href="read.html" target="_blank" rel="noopener noreferrer">阅读</a>
+                <button class="item-action primary" type="button">开始审核</button>
+                <button class="item-action" type="button">审核记录</button>
+                <button class="item-action" type="button">导出记录</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="panel status-rework">
+        <header class="panel-header">
+          <div class="panel-title"><span class="dot rework"></span>已返修</div>
+          <span class="count">1</span>
+        </header>
+        <ul class="list">
+          <li class="item">
+            <div class="book-cover rework">计算机网络</div>
+            <div class="item-main">
+              <div class="item-title">计算机网络技术（上册）</div>
+              <div class="item-line"><strong>主编</strong>唐立新</div>
+              <div class="item-line"><strong>版次</strong>2025 第二版</div>
+              <div class="item-line"><strong>ISBN</strong>978-7-111-69883-0</div>
+              <div class="item-actions">
+                <a class="item-action" href="read.html" target="_blank" rel="noopener noreferrer">阅读</a>
+                <button class="item-action primary" type="button">返修详情</button>
+                <button class="item-action" type="button">导出记录</button>
+              </div>
+            </div>
+          </li>
+          <li class="empty">暂无更多返修教材</li>
+        </ul>
+      </section>
+    </main>
+
+    <a class="back-link" href="/">返回数字教材首页</a>
+  </div>
+
+  <aside class="drawer" id="profileDrawer" aria-hidden="true">
+    <div class="drawer-top">
+      <h2>账号设置</h2>
+      <button class="btn-close" type="button" id="closeDrawerBtn">×</button>
+    </div>
+
+    <section class="profile-preview">
+      <img class="avatar" id="previewAvatar" src="https://api.dicebear.com/7.x/thumbs/svg?seed=publisher" alt="预览头像">
+      <div>
+        <div class="preview-name" id="previewName">张编辑</div>
+        <div class="preview-role">出版社管理员</div>
+      </div>
+    </section>
+
+    <section class="form-card">
+      <h3>用户信息</h3>
+      <button class="entry-link" type="button" id="openProfileModalBtn">
+        <span>编辑资料</span>
+        <span class="entry-link-arrow">›</span>
+      </button>
+    </section>
+
+    <section class="form-card">
+      <h3>设计密码</h3>
+      <div class="security-text" id="passwordStatusText">未设置密码</div>
+      <button class="entry-link" type="button" id="openPasswordModalBtn">
+        <span id="openPasswordModalText">设置密码</span>
+        <span class="entry-link-arrow">›</span>
+      </button>
+    </section>
+
+    <div class="drawer-bottom">
+      <button class="btn-danger logout-btn" type="button" id="logoutBtn">退出账号</button>
+    </div>
+  </aside>
+
+  <div class="mask" id="drawerMask"></div>
+  <div class="modal-mask" id="modalMask"></div>
+  <section class="modal" id="profileModal" aria-hidden="true">
+    <div class="modal-head">
+      <div class="modal-title">编辑用户信息</div>
+      <button class="btn-close" type="button" id="closeProfileModalBtn">×</button>
+    </div>
+    <section class="form-card">
+      <div class="inline-user">
+        <img class="avatar" id="profileModalAvatarPreview" src="https://api.dicebear.com/7.x/thumbs/svg?seed=publisher" alt="头像预览">
+        <div>
+          <div class="inline-user-name" id="profileModalNamePreview">张编辑</div>
+          <div class="inline-user-meta">实时预览</div>
+        </div>
+      </div>
+      <label>用户名字
+        <input type="text" id="modalNameInput" maxlength="20" placeholder="请输入新的用户名字">
+      </label>
+      <label>本地上传头像
+        <input type="file" id="modalAvatarFileInput" accept="image/*">
+      </label>
+      <div class="helper-text">或选择默认头像</div>
+      <div class="avatar-pick-list" id="avatarPickList"></div>
+      <div class="row">
+        <button class="btn-primary" type="button" id="saveProfileModalBtn">保存</button>
+        <button class="btn-secondary" type="button" id="resetProfileModalBtn">恢复默认</button>
+      </div>
+    </section>
+  </section>
+  <section class="modal" id="passwordModal" aria-hidden="true">
+    <div class="modal-head">
+      <div class="modal-title" id="passwordModalTitle">设置密码</div>
+      <button class="btn-close" type="button" id="closePasswordModalBtn">×</button>
+    </div>
+    <section class="form-card">
+      <label id="oldPasswordLabel" style="display:none;">当前密码
+        <input type="password" id="oldPasswordInput" placeholder="请输入当前密码">
+      </label>
+      <label>新密码
+        <input type="password" id="newPasswordInput" minlength="6" placeholder="至少 6 位">
+      </label>
+      <label>确认密码
+        <input type="password" id="confirmPasswordInput" minlength="6" placeholder="请再次输入新密码">
+      </label>
+      <div class="row">
+        <button class="btn-primary btn-block" type="button" id="savePasswordModalBtn">确认</button>
+      </div>
+    </section>
+  </section>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const DEFAULT_NAME = "张编辑";
+    const DEFAULT_AVATAR = "https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=Lin&backgroundColor=b6e3f4";
+    const AVATAR_PRESETS = [
+      "https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=Lin&backgroundColor=b6e3f4",
+      "https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=Chen&backgroundColor=b6e3f4",
+      "https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=Wang&backgroundColor=b6e3f4",
+      "https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=Liu&backgroundColor=b6e3f4",
+      "https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=Zhao&backgroundColor=b6e3f4",
+      "https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=Yang&backgroundColor=b6e3f4",
+      "https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=Xu&backgroundColor=b6e3f4",
+      "https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=Sun&backgroundColor=b6e3f4"
+    ];
+    const STORAGE_KEY = "publisher-profile";
+    const PASSWORD_STORAGE_KEY = "publisher-password";
+    const LOGIN_STORAGE_KEY = "publisher-login-session";
+
+    const els = {
+      profileTrigger: document.getElementById("profileTrigger"),
+      profileDrawer: document.getElementById("profileDrawer"),
+      closeDrawerBtn: document.getElementById("closeDrawerBtn"),
+      drawerMask: document.getElementById("drawerMask"),
+      modalMask: document.getElementById("modalMask"),
+      headerName: document.getElementById("headerName"),
+      headerAvatar: document.getElementById("headerAvatar"),
+      previewName: document.getElementById("previewName"),
+      previewAvatar: document.getElementById("previewAvatar"),
+      openProfileModalBtn: document.getElementById("openProfileModalBtn"),
+      openPasswordModalBtn: document.getElementById("openPasswordModalBtn"),
+      openPasswordModalText: document.getElementById("openPasswordModalText"),
+      passwordStatusText: document.getElementById("passwordStatusText"),
+      profileModal: document.getElementById("profileModal"),
+      closeProfileModalBtn: document.getElementById("closeProfileModalBtn"),
+      modalNameInput: document.getElementById("modalNameInput"),
+      modalAvatarFileInput: document.getElementById("modalAvatarFileInput"),
+      avatarPickList: document.getElementById("avatarPickList"),
+      profileModalAvatarPreview: document.getElementById("profileModalAvatarPreview"),
+      profileModalNamePreview: document.getElementById("profileModalNamePreview"),
+      saveProfileModalBtn: document.getElementById("saveProfileModalBtn"),
+      resetProfileModalBtn: document.getElementById("resetProfileModalBtn"),
+      passwordModal: document.getElementById("passwordModal"),
+      passwordModalTitle: document.getElementById("passwordModalTitle"),
+      closePasswordModalBtn: document.getElementById("closePasswordModalBtn"),
+      oldPasswordLabel: document.getElementById("oldPasswordLabel"),
+      oldPasswordInput: document.getElementById("oldPasswordInput"),
+      newPasswordInput: document.getElementById("newPasswordInput"),
+      confirmPasswordInput: document.getElementById("confirmPasswordInput"),
+      savePasswordModalBtn: document.getElementById("savePasswordModalBtn"),
+      logoutBtn: document.getElementById("logoutBtn"),
+      toast: document.getElementById("toast"),
+      loginOverlay: document.getElementById("publisherLoginOverlay"),
+      loginTabPwdBtn: document.getElementById("publisherLoginTabPwd"),
+      loginTabOtpBtn: document.getElementById("publisherLoginTabOtp"),
+      loginPanePwd: document.getElementById("publisherLoginPanePwd"),
+      loginPaneOtp: document.getElementById("publisherLoginPaneOtp"),
+      loginPhoneInput: document.getElementById("publisherLoginPhone"),
+      loginPhoneOtpInput: document.getElementById("publisherLoginPhoneOtp"),
+      loginPasswordInput: document.getElementById("publisherLoginPassword"),
+      loginOtpCodeInput: document.getElementById("publisherLoginOtpCode"),
+      loginSendCodeBtn: document.getElementById("publisherLoginSendCodeBtn"),
+      loginTogglePwdBtn: document.getElementById("publisherLoginTogglePwd"),
+      loginErrPwd: document.getElementById("publisherLoginErrPwd"),
+      loginErrOtp: document.getElementById("publisherLoginErrOtp"),
+      loginSubmitPwdBtn: document.getElementById("publisherLoginSubmitPwd"),
+      loginSubmitOtpBtn: document.getElementById("publisherLoginSubmitOtp")
+    };
+    const draft = { name: DEFAULT_NAME, avatar: DEFAULT_AVATAR };
+    let currentModal = null;
+
+    function readProfile() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return { name: DEFAULT_NAME, avatar: DEFAULT_AVATAR };
+        const parsed = JSON.parse(raw);
+        return {
+          name: parsed.name || DEFAULT_NAME,
+          avatar: parsed.avatar || DEFAULT_AVATAR
+        };
+      } catch (_err) {
+        return { name: DEFAULT_NAME, avatar: DEFAULT_AVATAR };
+      }
+    }
+
+    function writeProfile(profile) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+    }
+
+    function applyProfile(profile) {
+      const name = (profile.name || DEFAULT_NAME).trim();
+      const avatar = (profile.avatar || DEFAULT_AVATAR).trim();
+      els.headerName.textContent = name;
+      els.previewName.textContent = name;
+      els.headerAvatar.src = avatar;
+      els.previewAvatar.src = avatar;
+    }
+
+    function openDrawer() {
+      els.profileDrawer.classList.add("open");
+      els.drawerMask.classList.add("open");
+      els.profileDrawer.setAttribute("aria-hidden", "false");
+    }
+
+    function closeDrawer() {
+      els.profileDrawer.classList.remove("open");
+      els.drawerMask.classList.remove("open");
+      els.profileDrawer.setAttribute("aria-hidden", "true");
+    }
+    function hasPasswordSet() {
+      return Boolean(localStorage.getItem(PASSWORD_STORAGE_KEY));
+    }
+    function refreshPasswordState() {
+      const hasPwd = hasPasswordSet();
+      els.passwordStatusText.textContent = hasPwd ? "已设置密码，可修改" : "未设置密码";
+      els.openPasswordModalText.textContent = hasPwd ? "修改密码" : "设置密码";
+    }
+    function setDraftProfile(name, avatar) {
+      draft.name = (name || DEFAULT_NAME).trim();
+      draft.avatar = (avatar || DEFAULT_AVATAR).trim();
+      els.modalNameInput.value = draft.name;
+      els.profileModalNamePreview.textContent = draft.name;
+      els.profileModalAvatarPreview.src = draft.avatar;
+      highlightActiveAvatar();
+    }
+    function openModal(modalEl) {
+      currentModal = modalEl;
+      modalEl.classList.add("open");
+      modalEl.setAttribute("aria-hidden", "false");
+      els.modalMask.classList.add("open");
+    }
+    function closeModal() {
+      if (!currentModal) return;
+      currentModal.classList.remove("open");
+      currentModal.setAttribute("aria-hidden", "true");
+      currentModal = null;
+      els.modalMask.classList.remove("open");
+    }
+    function renderAvatarPresets() {
+      els.avatarPickList.innerHTML = AVATAR_PRESETS.map((avatar) => `
+        <button class="avatar-pick" type="button" data-avatar="${avatar}">
+          <img src="${avatar}" alt="默认头像">
+        </button>
+      `).join("");
+      els.avatarPickList.querySelectorAll(".avatar-pick").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const avatar = btn.dataset.avatar;
+          if (!avatar) return;
+          draft.avatar = avatar;
+          els.profileModalAvatarPreview.src = avatar;
+          highlightActiveAvatar();
+        });
+      });
+    }
+    function highlightActiveAvatar() {
+      els.avatarPickList.querySelectorAll(".avatar-pick").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.avatar === draft.avatar);
+      });
+    }
+
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => {
+        els.toast.classList.remove("show");
+      }, 1800);
+    }
+
+    function isValidPhone(phone) {
+      return /^1\d{10}$/.test(String(phone || "").trim());
+    }
+
+    function openLoginOverlay() {
+      els.loginOverlay.classList.add("open");
+    }
+
+    function closeLoginOverlay() {
+      els.loginOverlay.classList.remove("open");
+    }
+
+    function initPublisherLogin() {
+      let loginMode = "pwd";
+      const loginOtp = { code: "", target: "", cool: 0, timer: null };
+      function setLoginErr(mode, msg) {
+        const errEl = mode === "otp" ? els.loginErrOtp : els.loginErrPwd;
+        if (errEl) errEl.textContent = msg || "";
+      }
+      function clearLoginErr() {
+        setLoginErr("pwd", "");
+        setLoginErr("otp", "");
+      }
+      function clearOtpTimer() {
+        if (loginOtp.timer) {
+          window.clearInterval(loginOtp.timer);
+          loginOtp.timer = null;
+        }
+      }
+      function resetOtpState() {
+        clearOtpTimer();
+        loginOtp.code = "";
+        loginOtp.target = "";
+        loginOtp.cool = 0;
+        if (els.loginOtpCodeInput) els.loginOtpCodeInput.value = "";
+        if (els.loginSendCodeBtn) {
+          els.loginSendCodeBtn.disabled = false;
+          els.loginSendCodeBtn.textContent = "获取验证码";
+        }
+      }
+      function setLoginMode(mode) {
+        loginMode = mode === "otp" ? "otp" : "pwd";
+        const isPwd = loginMode === "pwd";
+        els.loginTabPwdBtn.classList.toggle("is-active", isPwd);
+        els.loginTabOtpBtn.classList.toggle("is-active", !isPwd);
+        els.loginTabPwdBtn.setAttribute("aria-selected", isPwd ? "true" : "false");
+        els.loginTabOtpBtn.setAttribute("aria-selected", isPwd ? "false" : "true");
+        els.loginPanePwd.classList.toggle("pub-login-pane--hidden", !isPwd);
+        els.loginPaneOtp.classList.toggle("pub-login-pane--hidden", isPwd);
+        els.loginPanePwd.setAttribute("aria-hidden", isPwd ? "false" : "true");
+        els.loginPaneOtp.setAttribute("aria-hidden", isPwd ? "true" : "false");
+        clearLoginErr();
+      }
+      function completePublisherLogin(phone) {
+        localStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify({ phone, ts: Date.now() }));
+        clearLoginErr();
+        resetOtpState();
+        closeLoginOverlay();
+        showToast("已登录出版社端");
+      }
+      function submitPasswordLogin() {
+        const phone = (els.loginPhoneInput.value || "").trim();
+        const password = (els.loginPasswordInput.value || "").trim();
+        if (!isValidPhone(phone)) {
+          setLoginErr("pwd", "请输入正确的 11 位手机号");
+          return;
+        }
+        if (password.length < 6) {
+          setLoginErr("pwd", "密码不少于 6 位");
+          return;
+        }
+        completePublisherLogin(phone);
+      }
+      function sendLoginOtpCode() {
+        const phone = (els.loginPhoneOtpInput.value || "").trim();
+        if (!isValidPhone(phone)) {
+          setLoginErr("otp", "请输入正确的 11 位手机号");
+          return;
+        }
+        clearLoginErr();
+        loginOtp.target = phone;
+        loginOtp.code = String(Math.floor(100000 + Math.random() * 900000));
+        loginOtp.cool = 60;
+        els.loginSendCodeBtn.disabled = true;
+        els.loginSendCodeBtn.textContent = `${loginOtp.cool}s`;
+        showToast(`验证码（演示）: ${loginOtp.code}`);
+        clearOtpTimer();
+        loginOtp.timer = window.setInterval(() => {
+          loginOtp.cool -= 1;
+          if (loginOtp.cool <= 0) {
+            clearOtpTimer();
+            els.loginSendCodeBtn.disabled = false;
+            els.loginSendCodeBtn.textContent = "获取验证码";
+            return;
+          }
+          els.loginSendCodeBtn.textContent = `${loginOtp.cool}s`;
+        }, 1000);
+      }
+      function submitOtpLogin() {
+        const phone = (els.loginPhoneOtpInput.value || "").trim();
+        const code = (els.loginOtpCodeInput.value || "").trim();
+        if (!isValidPhone(phone)) {
+          setLoginErr("otp", "请输入正确的 11 位手机号");
+          return;
+        }
+        if (!/^\d{6}$/.test(code)) {
+          setLoginErr("otp", "请输入 6 位短信验证码");
+          return;
+        }
+        if (!loginOtp.code) {
+          setLoginErr("otp", "请先获取验证码");
+          return;
+        }
+        if (phone !== loginOtp.target) {
+          setLoginErr("otp", "手机号与接收验证码号码不一致");
+          return;
+        }
+        if (code !== loginOtp.code) {
+          setLoginErr("otp", "验证码错误");
+          return;
+        }
+        completePublisherLogin(phone);
+      }
+      els.loginSubmitPwdBtn.addEventListener("click", submitPasswordLogin);
+      els.loginSubmitOtpBtn.addEventListener("click", submitOtpLogin);
+      els.loginSendCodeBtn.addEventListener("click", sendLoginOtpCode);
+      els.loginTabPwdBtn.addEventListener("click", () => setLoginMode("pwd"));
+      els.loginTabOtpBtn.addEventListener("click", () => setLoginMode("otp"));
+      els.loginTogglePwdBtn.addEventListener("click", () => {
+        const isPwd = els.loginPasswordInput.type === "password";
+        els.loginPasswordInput.type = isPwd ? "text" : "password";
+        els.loginTogglePwdBtn.setAttribute("aria-label", isPwd ? "隐藏密码" : "显示密码");
+        els.loginTogglePwdBtn.setAttribute("title", isPwd ? "隐藏密码" : "显示密码");
+      });
+      els.loginPhoneInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") submitPasswordLogin();
+      });
+      els.loginPasswordInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") submitPasswordLogin();
+      });
+      els.loginPhoneOtpInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") submitOtpLogin();
+      });
+      els.loginOtpCodeInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") submitOtpLogin();
+      });
+      setLoginMode("pwd");
+      if (!localStorage.getItem(LOGIN_STORAGE_KEY)) {
+        localStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify({ phone: "13800000000", ts: Date.now() }));
+        openLoginOverlay();
+        return;
+      }
+      closeLoginOverlay();
+    }
+
+    els.profileTrigger.addEventListener("click", openDrawer);
+    els.closeDrawerBtn.addEventListener("click", closeDrawer);
+    els.drawerMask.addEventListener("click", closeDrawer);
+    els.modalMask.addEventListener("click", closeModal);
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      if (currentModal) {
+        closeModal();
+        return;
+      }
+      closeDrawer();
+    });
+
+    els.openProfileModalBtn.addEventListener("click", () => {
+      const profile = readProfile();
+      setDraftProfile(profile.name, profile.avatar);
+      els.modalAvatarFileInput.value = "";
+      openModal(els.profileModal);
+    });
+    els.closeProfileModalBtn.addEventListener("click", closeModal);
+    els.modalNameInput.addEventListener("input", () => {
+      const value = els.modalNameInput.value.trim();
+      draft.name = value || DEFAULT_NAME;
+      els.profileModalNamePreview.textContent = draft.name;
+    });
+    els.modalAvatarFileInput.addEventListener("change", () => {
+      const file = els.modalAvatarFileInput.files && els.modalAvatarFileInput.files[0];
+      if (!file) return;
+      if (!file.type.startsWith("image/")) {
+        showToast("请上传图片文件");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        draft.avatar = String(reader.result || DEFAULT_AVATAR);
+        els.profileModalAvatarPreview.src = draft.avatar;
+        highlightActiveAvatar();
+      };
+      reader.readAsDataURL(file);
+    });
+    els.saveProfileModalBtn.addEventListener("click", () => {
+      const name = els.modalNameInput.value.trim();
+      if (!name) {
+        showToast("用户名不能为空");
+        return;
+      }
+      const next = { name, avatar: draft.avatar || DEFAULT_AVATAR };
+      writeProfile(next);
+      applyProfile(next);
+      closeModal();
+      showToast("资料已更新");
+    });
+    els.resetProfileModalBtn.addEventListener("click", () => {
+      const reset = { name: DEFAULT_NAME, avatar: DEFAULT_AVATAR };
+      writeProfile(reset);
+      applyProfile(reset);
+      setDraftProfile(reset.name, reset.avatar);
+      showToast("已恢复默认资料");
+    });
+
+    els.openPasswordModalBtn.addEventListener("click", () => {
+      const hasPwd = hasPasswordSet();
+      els.passwordModalTitle.textContent = hasPwd ? "修改密码" : "设置密码";
+      els.oldPasswordLabel.style.display = hasPwd ? "grid" : "none";
+      els.oldPasswordInput.value = "";
+      els.newPasswordInput.value = "";
+      els.confirmPasswordInput.value = "";
+      openModal(els.passwordModal);
+    });
+    els.closePasswordModalBtn.addEventListener("click", closeModal);
+    els.savePasswordModalBtn.addEventListener("click", () => {
+      const hasPwd = hasPasswordSet();
+      const oldPwd = els.oldPasswordInput.value.trim();
+      const newPwd = els.newPasswordInput.value.trim();
+      const confirmPwd = els.confirmPasswordInput.value.trim();
+      if (hasPwd) {
+        const saved = localStorage.getItem(PASSWORD_STORAGE_KEY);
+        if (!oldPwd || oldPwd !== saved) {
+          showToast("当前密码不正确");
+          return;
+        }
+      }
+      if (newPwd.length < 6) {
+        showToast("密码至少 6 位");
+        return;
+      }
+      if (newPwd !== confirmPwd) {
+        showToast("两次密码不一致");
+        return;
+      }
+      localStorage.setItem(PASSWORD_STORAGE_KEY, newPwd);
+      refreshPasswordState();
+      closeModal();
+      showToast(hasPwd ? "密码已修改" : "密码已设置");
+    });
+
+    els.logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(PASSWORD_STORAGE_KEY);
+      localStorage.removeItem(LOGIN_STORAGE_KEY);
+      closeDrawer();
+      closeModal();
+      openLoginOverlay();
+      showToast("已退出账号");
+    });
+
+    const initProfile = readProfile();
+    applyProfile(initProfile);
+    renderAvatarPresets();
+    refreshPasswordState();
+    initPublisherLogin();
+  </script>
+</body>
+</html>

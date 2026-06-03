@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>四川数字教材平台创作者平台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./creator.css">
+</head>
+<body>
+  <div class="cr-login-overlay" id="creatorLoginOverlay" role="dialog" aria-modal="true" aria-labelledby="creatorLoginTitle">
+    <div class="cr-login-bg" aria-hidden="true">
+      <svg class="cr-login-art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="crLoginSky" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ebf7f2"/>
+            <stop offset="50%" stop-color="#f5faf8"/>
+            <stop offset="100%" stop-color="#edf6ff"/>
+          </linearGradient>
+          <radialGradient id="crLoginGlowA" cx="0%" cy="0%" r="100%">
+            <stop offset="0%" stop-color="#8dc8b1" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#8dc8b1" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="crLoginGlowB" cx="0%" cy="0%" r="100%">
+            <stop offset="0%" stop-color="#95bfe0" stop-opacity="0.2"/>
+            <stop offset="100%" stop-color="#95bfe0" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="crLoginBlur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="8"/>
+          </filter>
+        </defs>
+        <rect width="1440" height="900" fill="url(#crLoginSky)"/>
+        <circle cx="1210" cy="130" r="190" fill="url(#crLoginGlowA)"/>
+        <circle cx="180" cy="720" r="240" fill="url(#crLoginGlowB)"/>
+        <g fill="none" stroke="#8fb8ca" stroke-width="2.2" opacity="0.3">
+          <path d="M86 684c160-96 318-124 476-86" />
+          <path d="M868 618c168-106 332-112 486-44" />
+        </g>
+        <g fill="none" stroke="#7aa792" stroke-width="1.6" opacity="0.36">
+          <path d="M96 742h226l34-22h112" />
+          <path d="M974 694h112l26-16h226" />
+        </g>
+        <g opacity="0.38" filter="url(#crLoginBlur)">
+          <ellipse cx="320" cy="612" rx="130" ry="16" fill="#7db39d"/>
+          <ellipse cx="1150" cy="562" rx="158" ry="20" fill="#87abc9"/>
+        </g>
+        <g fill="none" stroke="#6f9db8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.46">
+          <path d="M324 544l32-18 16 24-32 18z"/>
+          <path d="M356 526l8-26"/>
+          <path d="M352 554l-10 18"/>
+        </g>
+        <g fill="none" stroke="#89adc9" stroke-width="2" opacity="0.32">
+          <rect x="1028" y="520" width="212" height="132" rx="14"/>
+          <path d="M1058 560h142M1058 590h108M1058 620h72"/>
+        </g>
+      </svg>
+    </div>
+    <div class="cr-login-end-title">四川数字教材创作者</div>
+    <div class="cr-login-panel">
+      <div class="cr-login-brand">
+        <div class="logo-icon" aria-hidden="true">创</div>
+        <div class="logo-col">
+          <div class="logo-name" id="creatorLoginTitle">四川数字教材</div>
+          <div class="logo-en">创作者端登录</div>
+        </div>
+      </div>
+      <div class="cr-login-tabs" role="tablist" aria-label="登录方式切换">
+        <button type="button" class="cr-login-tab is-active" id="creatorLoginTabPwd" role="tab" aria-selected="true">账户密码登录</button>
+        <button type="button" class="cr-login-tab" id="creatorLoginTabOtp" role="tab" aria-selected="false">手机验证码登录</button>
+      </div>
+      <div class="cr-login-pane" id="creatorLoginPanePwd" role="tabpanel" aria-labelledby="creatorLoginTabPwd">
+        <label class="login-label" for="creatorLoginPhone">手机号</label>
+        <input type="tel" class="login-input" id="creatorLoginPhone" maxlength="11" inputmode="numeric" placeholder="11 位手机号" value="13800000000">
+        <label class="login-label" for="creatorLoginPassword">密码</label>
+        <div class="cr-login-pwd-row">
+          <input type="password" class="login-input" id="creatorLoginPassword" minlength="6" placeholder="不少于 6 位" value="123456">
+          <button type="button" class="cr-login-eye-btn" id="creatorLoginTogglePwd" aria-label="显示密码" title="显示密码">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+        <p class="cr-login-err" id="creatorLoginErrPwd"></p>
+        <button type="button" class="login-submit cr-login-submit" id="creatorLoginSubmitPwd">登录</button>
+      </div>
+      <div class="cr-login-pane cr-login-pane--hidden" id="creatorLoginPaneOtp" role="tabpanel" aria-labelledby="creatorLoginTabOtp" aria-hidden="true">
+        <label class="login-label" for="creatorLoginPhoneOtp">手机号</label>
+        <input type="tel" class="login-input" id="creatorLoginPhoneOtp" maxlength="11" inputmode="numeric" placeholder="11 位手机号" value="13800000000">
+        <label class="login-label" for="creatorLoginOtpCode">短信验证码</label>
+        <div class="cr-login-otp-row">
+          <input type="text" class="login-input" id="creatorLoginOtpCode" maxlength="6" inputmode="numeric" placeholder="6 位验证码" autocomplete="one-time-code">
+          <button type="button" class="cr-login-send-code" id="creatorLoginSendCodeBtn">获取验证码</button>
+        </div>
+        <p class="cr-login-err" id="creatorLoginErrOtp"></p>
+        <button type="button" class="login-submit cr-login-submit" id="creatorLoginSubmitOtp">登录</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="创作者主导航">
+      <div class="sidebar-head">
+        <div class="logo-row">
+          <div class="logo-icon" aria-hidden="true">川</div>
+          <div class="logo-col">
+            <div class="logo-name">四川数字教材</div>
+            <div class="logo-en">创作者平台 · Creator</div>
+          </div>
+        </div>
+      </div>
+      <nav class="sidebar-nav" role="navigation">
+        <div class="nav-label">工作台</div>
+        <button type="button" class="nav-item active" data-panel="tutorials" aria-current="page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span>我的图书</span>
+        </button>
+        <button type="button" class="nav-item" data-panel="stats">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+          <span>使用统计</span>
+        </button>
+      </nav>
+      <div class="sidebar-foot">
+        <a class="login-text-link login-text-link--block" href="/">返回数字教材首页</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="topbar-title" id="creatorPageTitle">我的图书</h1>
+          <div class="topbar-sep" aria-hidden="true"></div>
+          <span class="topbar-hint" id="creatorTopHint">管理教材与多端内容配置</span>
+        </div>
+        <div class="topbar-right">
+          <button type="button" class="cr-user cr-user-btn" id="creatorSettingsTrigger" title="个人设置">
+            <img class="cr-user-av" id="creatorUserAvatar" src="https://api.dicebear.com/7.x/thumbs/svg?seed=creator-main" alt="用户头像">
+            <div>
+              <div class="cr-user-name" id="creatorUserName">李明远</div>
+              <div class="cr-user-sub">已登录 · 创作者</div>
+            </div>
+          </button>
+        </div>
+      </header>
+
+      <div class="scroll">
+        <div class="page active" id="panel-tutorials" aria-label="我的图书">
+          <div class="sec-head">
+            <div class="sec-title"><span class="dot" aria-hidden="true"></span>我的图书</div>
+            <button type="button" class="cr-btn-primary" id="btnNewBook">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              创建图书
+            </button>
+          </div>
+          <div class="cr-book-list" id="creatorBookList"></div>
+        </div>
+
+        <div class="page" id="panel-stats" aria-label="使用统计">
+          <div class="sec-head">
+            <div class="sec-title"><span class="dot" aria-hidden="true"></span>数据概览</div>
+          </div>
+          <p class="sec-hint" style="margin-top:-12px;margin-bottom:24px">近 30 天汇总（演示数据）</p>
+          <div class="cr-stats-grid">
+            <div class="cr-stat">
+              <div class="cr-stat-val">12.4k</div>
+              <div class="cr-stat-lab">教材总浏览</div>
+            </div>
+            <div class="cr-stat">
+              <div class="cr-stat-val">86%</div>
+              <div class="cr-stat-lab">任务完成率</div>
+            </div>
+            <div class="cr-stat">
+              <div class="cr-stat-val">3.2k</div>
+              <div class="cr-stat-lab">视听播放次数</div>
+            </div>
+            <div class="cr-stat">
+              <div class="cr-stat-val">214</div>
+              <div class="cr-stat-lab">教学模式开课次数</div>
+            </div>
+          </div>
+          <p class="cr-stats-foot">统计为演示占位；上线后可对接埋点、CDN 与业务库。</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="cr-settings-mask" id="creatorSettingsMask"></div>
+  <aside class="cr-settings-drawer" id="creatorSettingsDrawer" aria-hidden="true">
+    <div class="cr-settings-head">
+      <h2>账号设置</h2>
+      <button type="button" class="cr-settings-close" id="creatorSettingsCloseBtn" aria-label="关闭设置">×</button>
+    </div>
+
+    <section class="cr-settings-preview">
+      <img class="cr-settings-preview-avatar" id="creatorSettingsPreviewAvatar" src="https://api.dicebear.com/7.x/thumbs/svg?seed=creator-main" alt="头像预览">
+      <div class="cr-settings-preview-name" id="creatorSettingsPreviewName">李明远</div>
+      <div class="cr-settings-preview-sub">创作者账号</div>
+    </section>
+
+    <section class="cr-settings-card">
+      <h3>用户信息</h3>
+      <button class="cr-entry-link" type="button" id="openCreatorProfileModalBtn">
+        <span>编辑资料</span>
+        <span class="cr-entry-link-arrow">›</span>
+      </button>
+    </section>
+
+    <section class="cr-settings-card">
+      <h3>设计密码</h3>
+      <div class="cr-settings-txt" id="creatorPasswordStatusText">未设置密码</div>
+      <button class="cr-entry-link" type="button" id="openCreatorPasswordModalBtn">
+        <span id="creatorPasswordEntryText">设置密码</span>
+        <span class="cr-entry-link-arrow">›</span>
+      </button>
+    </section>
+
+    <div class="cr-settings-foot">
+      <button type="button" class="cr-btn-danger cr-settings-logout" id="creatorLogoutBtn">退出账号</button>
+    </div>
+  </aside>
+
+  <div class="login-overlay" id="modalCreatorProfile" role="dialog" aria-modal="true" aria-labelledby="modalCreatorProfileTitle">
+    <div class="login-overlay__bg" aria-hidden="true"></div>
+    <div class="login-panel cr-setting-modal-panel">
+      <p class="login-subflow-title" id="modalCreatorProfileTitle">编辑用户信息</p>
+      <div class="cr-profile-preview-inline">
+        <img class="cr-profile-preview-inline__avatar" id="creatorProfileAvatarPreview" src="https://api.dicebear.com/7.x/thumbs/svg?seed=creator-main" alt="头像预览">
+        <div>
+          <div class="cr-profile-preview-inline__name" id="creatorProfileNamePreview">李明远</div>
+          <div class="cr-profile-preview-inline__sub">实时预览</div>
+        </div>
+      </div>
+      <label class="login-label" for="creatorProfileNameInput">用户名字</label>
+      <input type="text" class="login-input" id="creatorProfileNameInput" maxlength="20" placeholder="请输入新的用户名字">
+      <label class="login-label" for="creatorProfileAvatarFile">本地上传头像</label>
+      <input type="file" class="login-input" id="creatorProfileAvatarFile" accept="image/*">
+      <p class="cr-setting-helper">或选择默认头像</p>
+      <div class="cr-avatar-pick-list" id="creatorAvatarPickList"></div>
+      <div class="cr-modal-actions">
+        <button type="button" class="login-text-link login-text-link--inline" id="creatorProfileCancel">取消</button>
+        <button type="button" class="login-text-link login-text-link--inline" id="creatorProfileReset">恢复默认</button>
+        <button type="button" class="login-submit" id="creatorProfileSave">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-overlay" id="modalCreatorPassword" role="dialog" aria-modal="true" aria-labelledby="modalCreatorPasswordTitle">
+    <div class="login-overlay__bg" aria-hidden="true"></div>
+    <div class="login-panel cr-setting-modal-panel">
+      <p class="login-subflow-title" id="modalCreatorPasswordTitle">设置密码</p>
+      <div id="creatorOldPasswordRow">
+        <label class="login-label" for="creatorOldPasswordInput">当前密码</label>
+        <input type="password" class="login-input" id="creatorOldPasswordInput" placeholder="请输入当前密码">
+      </div>
+      <label class="login-label" for="creatorNewPasswordInput">新密码</label>
+      <input type="password" class="login-input" id="creatorNewPasswordInput" minlength="6" placeholder="至少 6 位">
+      <label class="login-label" for="creatorConfirmPasswordInput">确认密码</label>
+      <input type="password" class="login-input" id="creatorConfirmPasswordInput" minlength="6" placeholder="请再次输入新密码">
+      <div class="cr-modal-actions">
+        <button type="button" class="login-text-link login-text-link--inline" id="creatorPasswordCancel">取消</button>
+        <button type="button" class="login-submit" id="creatorPasswordSave">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 创建 / 编辑图书 -->
+  <div class="login-overlay" id="modalBook" role="dialog" aria-modal="true" aria-labelledby="modalBookTitle">
+    <div class="login-overlay__bg" aria-hidden="true"></div>
+    <div class="login-panel cr-book-form-panel">
+      <p class="login-subflow-title" id="modalBookTitle">创建图书</p>
+      <label class="login-label" for="formBookTitle">教材名称（必填）</label>
+      <input type="text" class="login-input" id="formBookTitle" maxlength="80" placeholder="例如：数字媒体技术导论" autocomplete="off" required>
+      <label class="login-label" for="formBookEditor">主编</label>
+      <input type="text" class="login-input" id="formBookEditor" maxlength="40" placeholder="例如：张炜、李可（多人用顿号或逗号分隔）" autocomplete="off">
+
+      <div class="login-label">封面</div>
+      <div class="cr-cover-field">
+        <div class="cr-cover-stack">
+          <button type="button" class="cr-cover-hit" id="btnPickCover" aria-label="添加或更换封面（上传图片）">
+            <span class="cr-cover-preview" aria-live="polite">
+              <img id="formCoverPreview" class="cr-cover-preview__img" alt="" width="120" height="160" hidden>
+              <span id="formCoverPreviewPh" class="cr-cover-preview__ph">
+                <span class="cr-cover-preview__ph-main">添加封面</span>
+                <span class="cr-cover-preview__ph-sub">点击上传图片</span>
+              </span>
+            </span>
+          </button>
+          <div class="cr-cover-toolbar">
+            <button type="button" class="cr-ai-chip" id="btnToggleAiCover" aria-expanded="false" aria-controls="crCoverAiPanel">
+              <span class="cr-ai-chip__spark" aria-hidden="true"></span>
+              <span class="cr-ai-chip__txt">AI 生成</span>
+            </button>
+            <button type="button" class="cr-cover-clear" id="btnClearCover">清除封面</button>
+          </div>
+        </div>
+        <input type="file" id="formCoverFile" class="cr-visually-hidden" accept="image/jpeg,image/png,image/webp,image/gif" tabindex="-1" aria-hidden="true">
+        <div id="crCoverAiPanel" class="cr-cover-ai-panel" hidden>
+          <label class="login-label cr-cover-ai-label" for="formCoverAiPrompt">提示词</label>
+          <textarea class="login-input cr-cover-ai-ta" id="formCoverAiPrompt" maxlength="300" rows="3" placeholder="描述风格、主色、画面元素等"></textarea>
+          <button type="button" class="login-submit cr-cover-ai-btn" id="btnAiCover">生成封面</button>
+          <p class="cr-cover-ai-note">演示：根据提示词在前端生成预览图；正式环境可对接图像生成 API。</p>
+        </div>
+      </div>
+
+      <label class="login-label" for="formBookIntro">教材简介</label>
+      <textarea class="login-input cr-book-intro" id="formBookIntro" maxlength="2000" rows="5" placeholder="简要介绍教材定位、适用对象、内容结构等"></textarea>
+      <label class="login-label" for="btnPickIntroVideo">视频介绍</label>
+      <div class="cr-video-field">
+        <button type="button" class="cr-video-hit" id="btnPickIntroVideo" aria-label="上传视频介绍文件">
+          <span id="formIntroVideoPh" class="cr-video-hit__ph">点击上传视频介绍</span>
+          <span id="formIntroVideoName" class="cr-video-hit__name" hidden></span>
+        </button>
+        <button type="button" class="cr-video-clear" id="btnClearIntroVideo">清除</button>
+      </div>
+      <input type="file" id="formIntroVideoFile" class="cr-visually-hidden" accept="video/mp4,video/webm,video/quicktime,video/*" tabindex="-1" aria-hidden="true">
+
+      <div class="cr-modal-actions">
+        <button type="button" class="login-text-link login-text-link--inline" id="modalBookCancel">取消</button>
+        <button type="button" class="login-submit" id="modalBookSave">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 创作团队：成员 + 邀请链接 / 二维码 -->
+  <div class="login-overlay" id="modalInvite" role="dialog" aria-modal="true" aria-labelledby="modalInviteTitle">
+    <div class="login-overlay__bg" aria-hidden="true"></div>
+    <div class="login-panel cr-invite-panel">
+      <p class="login-subflow-title" id="modalInviteTitle">创作团队</p>
+      <p class="login-subflow-hint cr-invite-perm-hint">
+        <strong>权限说明：</strong>管理员（创建者）可删除教材、移除成员并发起邀请。
+        <span class="cr-invite-perm-muted">组员仅可参与内容协作，不可删除教材，也不可移除其他成员。</span>
+      </p>
+      <input type="hidden" id="inviteBookId" value="">
+
+      <div class="login-label" id="inviteTeamListLabel">当前成员</div>
+      <div id="inviteTeamList" class="cr-team-list" role="list"></div>
+
+      <div class="cr-invite-box">
+        <label class="login-label">邀请加入创作团队</label>
+        <p class="cr-invite-subhint">复制邀请链接或让对方扫描下方二维码，即可加入本书协作（演示链接）。</p>
+        <div class="cr-invite-link-row">
+          <input type="text" readonly class="login-input cr-invite-input" id="inviteLinkInput" value="" aria-label="邀请链接">
+          <button type="button" class="login-submit cr-invite-copy" id="btnCopyInviteLink">复制链接</button>
+        </div>
+        <div class="cr-qr-wrap">
+          <img id="inviteQrImg" class="cr-qr-img" width="144" height="144" alt="邀请二维码">
+          <p class="cr-qr-caption">扫码加入创作团队</p>
+        </div>
+        <button type="button" class="login-submit cr-invite-cta" id="btnInviteEntry">邀请</button>
+      </div>
+
+      <div class="cr-modal-actions cr-modal-actions--single">
+        <button type="button" class="login-text-link login-text-link--inline" id="modalInviteDone">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 删除确认 -->
+  <div class="login-overlay" id="modalDelete" role="dialog" aria-modal="true" aria-labelledby="modalDeleteTitle">
+    <div class="login-overlay__bg" aria-hidden="true"></div>
+    <div class="login-panel">
+      <p class="login-subflow-title" id="modalDeleteTitle">删除教材</p>
+      <p class="login-subflow-hint">删除后将从当前列表移除（演示）。正式环境需权限与二次确认。</p>
+      <div class="cr-modal-actions">
+        <button type="button" class="login-text-link login-text-link--inline" id="modalDeleteCancel">取消</button>
+        <button type="button" class="cr-btn-danger" id="modalDeleteConfirm">确认删除</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cr-toast" id="creatorToast" role="status" aria-live="polite"></div>
+  <script src="./creator.js"></script>
+</body>
+</html>

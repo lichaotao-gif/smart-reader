@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四川数字教材</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --white:#ffffff;
+  --snow:#f9fafb;
+  --cloud:#f3f4f6;
+  --mist:#e5e7eb;
+  --silver:#d1d5db;
+  --stone:#9ca3af;
+  --slate:#6b7280;
+  --ink:#374151;
+  --deep:#1f2937;
+
+  --mint:#d2f0e2;
+  --mint-mid:#6dc4a0;
+  --mint-deep:#3a9e78;
+  --sky:#d6e8f8;
+  --sky-mid:#6ea8d8;
+  --sky-deep:#3d80b8;
+  --peach:#fce6d5;
+  --peach-mid:#e8a47a;
+  --peach-deep:#cc7a42;
+  --lavender:#e2d6f2;
+  --lavender-mid:#a580d0;
+  --lavender-deep:#7a4eb0;
+  --rose:#f9dae2;
+  --rose-mid:#e48a9e;
+  --rose-deep:#c45c74;
+  --lemon:#fcf3d2;
+  --lemon-mid:#e0c45a;
+  --lemon-deep:#b89a2e;
+  --ice:#d4eef5;
+  --ice-mid:#6abed8;
+  --ice-deep:#3a92b0;
+  --sand:#f0e8d8;
+  --sand-mid:#c4aa78;
+  --sand-deep:#96784a;
+
+  --sidebar-w:240px;
+  --radius:14px;
+  --transition:0.3s ease;
+}
+
+html{font-size:16px}
+body{
+  font-family:'Noto Sans SC',system-ui,sans-serif;
+  background:var(--snow);
+  color:var(--ink);
+  overflow:hidden;height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+.app{display:flex;height:100vh}
+
+/* ===== SIDEBAR — LIGHT ===== */
+.sidebar{
+  width:var(--sidebar-w);
+  background:var(--white);
+  border-right:1px solid var(--cloud);
+  display:flex;flex-direction:column;
+  flex-shrink:0;
+}
+
+.sidebar-head{padding:28px 22px 20px}
+
+.logo-row{display:flex;align-items:center;gap:12px}
+
+.logo-icon{
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg,var(--mint-deep),var(--sky-mid));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'ZCOOL XiaoWei',serif;font-size:18px;color:var(--white);
+  box-shadow:0 3px 14px rgba(58,158,120,0.25);
+}
+
+.logo-col{display:flex;flex-direction:column;gap:1px}
+.logo-name{font-family:'ZCOOL XiaoWei',serif;font-size:15px;color:var(--deep);letter-spacing:1px}
+.logo-en{font-size:9px;color:var(--stone);letter-spacing:2px;font-weight:300}
+
+/* Nav */
+.sidebar-nav{flex:1;padding:6px 10px;display:flex;flex-direction:column;gap:1px}
+
+.nav-label{
+  font-size:10px;letter-spacing:3px;
+  color:var(--silver);padding:18px 14px 8px;font-weight:500;
+}
+
+.nav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:10px;
+  cursor:pointer;transition:var(--transition);
+  color:var(--slate);font-size:13.5px;font-weight:400;
+  position:relative;
+}
+
+.nav-item:hover{color:var(--ink);background:var(--snow)}
+
+.nav-item.active{
+  color:var(--mint-deep);
+  background:var(--mint);
+  font-weight:500;
+}
+
+.nav-item svg{width:18px;height:18px;opacity:0.5;flex-shrink:0}
+.nav-item.active svg{opacity:0.9}
+
+.nav-num{
+  margin-left:auto;font-size:11px;font-weight:500;
+  color:var(--stone);background:var(--cloud);
+  padding:2px 9px;border-radius:12px;
+}
+
+.nav-item.active .nav-num{
+  color:var(--mint-deep);background:rgba(58,158,120,0.14);
+}
+
+/* Footer */
+.sidebar-foot{
+  padding:14px 16px 24px;
+  border-top:1px solid var(--cloud);
+}
+
+.user-row{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 10px;border-radius:10px;
+  cursor:pointer;transition:var(--transition);
+}
+.user-row:hover{background:var(--snow)}
+
+.avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--peach-mid),var(--rose-mid));
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:500;color:var(--white);
+}
+
+.user-meta{display:flex;flex-direction:column;gap:1px}
+.user-name{font-size:13px;color:var(--ink);font-weight:500}
+.user-role{font-size:10.5px;color:var(--stone)}
+
+/* ===== MAIN ===== */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--snow)}
+
+/* Header */
+.topbar{
+  height:64px;padding:0 36px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(249,250,251,0.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--cloud);
+  flex-shrink:0;
+}
+
+.topbar-left{display:flex;align-items:center;gap:14px}
+
+.topbar-title{
+  font-family:'ZCOOL XiaoWei',serif;
+  font-size:20px;color:var(--deep);letter-spacing:1px;
+}
+
+.topbar-sep{width:1px;height:16px;background:var(--mist)}
+.topbar-hint{font-size:12.5px;color:var(--stone);font-weight:300}
+
+.topbar-right{display:flex;align-items:center;gap:10px}
+
+.search-box{
+  display:flex;align-items:center;gap:9px;
+  background:var(--white);border:1px solid var(--mist);
+  border-radius:10px;padding:9px 16px;width:280px;
+  transition:var(--transition);
+}
+
+.search-box:focus-within{
+  border-color:var(--mint-mid);
+  box-shadow:0 0 0 3px rgba(58,158,120,0.1);
+}
+
+.search-box input{
+  border:none;outline:none;background:none;
+  font-family:inherit;font-size:12.5px;color:var(--ink);
+  width:100%;font-weight:300;
+}
+.search-box input::placeholder{color:var(--silver)}
+.search-box svg{flex-shrink:0;color:var(--silver)}
+
+.tb-btn{
+  width:38px;height:38px;border-radius:10px;
+  border:1px solid var(--mist);background:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:var(--transition);color:var(--slate);
+}
+.tb-btn:hover{border-color:var(--mint-mid);color:var(--mint-deep);background:var(--mint)}
+
+/* Scroll area */
+.scroll{flex:1;overflow-y:auto;padding:28px 36px 44px}
+.scroll::-webkit-scrollbar{width:4px}
+.scroll::-webkit-scrollbar-track{background:transparent}
+.scroll::-webkit-scrollbar-thumb{background:var(--mist);border-radius:2px}
+
+/* Filters — light pills */
+.filters{display:flex;align-items:center;gap:7px;margin-bottom:28px;flex-wrap:wrap}
+
+.pill{
+  padding:7px 18px;border-radius:8px;font-size:12.5px;
+  cursor:pointer;transition:var(--transition);
+  color:var(--slate);background:var(--white);
+  border:1px solid var(--mist);font-weight:400;
+}
+.pill:hover{border-color:var(--silver);color:var(--ink)}
+
+.pill.active{
+  background:var(--mint);color:var(--mint-deep);
+  border-color:var(--mint-mid);font-weight:500;
+}
+
+.pill-sep{width:1px;height:20px;background:var(--mist);margin:0 4px}
+
+/* Section header */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+
+.sec-title{
+  font-size:15px;font-weight:500;color:var(--deep);
+  display:flex;align-items:center;gap:10px;
+}
+
+.sec-title .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--mint-mid);
+}
+
+.sec-extra{font-size:12px;color:var(--stone);font-weight:300;cursor:pointer;transition:var(--transition)}
+.sec-extra:hover{color:var(--mint-deep)}
+
+/* ===== BOOK CARDS ===== */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  gap:20px;margin-bottom:40px;
+}
+
+.card{
+  background:var(--white);
+  border:1px solid var(--cloud);
+  border-radius:var(--radius);
+  overflow:hidden;cursor:pointer;
+  transition:var(--transition);
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 8px 30px rgba(0,0,0,0.09);
+  border-color:var(--silver);
+}
+
+/* Pastel gradient covers */
+.cover{aspect-ratio:3/4;position:relative;overflow:hidden}
+
+.cover-inner{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:26px 18px;position:relative;
+}
+
+/* Soft circular decoration */
+.cover-inner::before{
+  content:'';position:absolute;
+  top:-20%;right:-20%;width:70%;height:70%;
+  border-radius:50%;
+  background:rgba(255,255,255,0.15);
+  pointer-events:none;
+}
+
+.cover-inner::after{
+  content:'';position:absolute;
+  bottom:-15%;left:-15%;width:50%;height:50%;
+  border-radius:50%;
+  background:rgba(255,255,255,0.1);
+  pointer-events:none;
+}
+
+.cover-grade{
+  font-size:10px;font-weight:500;
+  color:rgba(255,255,255,0.85);
+  background:rgba(255,255,255,0.2);
+  padding:4px 14px;border-radius:20px;
+  margin-bottom:12px;letter-spacing:2px;z-index:1;
+}
+
+.cover-name{
+  font-family:'ZCOOL XiaoWei',serif;
+  font-size:28px;color:white;text-align:center;
+  z-index:1;letter-spacing:4px;line-height:1.35;
+  text-shadow:0 2px 10px rgba(0,0,0,0.15);
+}
+
+.cover-sub{
+  font-size:10.5px;color:rgba(255,255,255,0.7);
+  margin-top:8px;z-index:1;letter-spacing:1px;font-weight:300;
+}
+
+.detail{padding:14px 16px 16px}
+
+.detail-title{
+  font-size:13px;font-weight:500;color:var(--ink);
+  margin-bottom:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+.detail-row{display:flex;align-items:center;justify-content:space-between}
+.detail-pub{font-size:10.5px;color:var(--stone);font-weight:300}
+
+.tag{font-size:10px;padding:3px 9px;border-radius:6px;font-weight:500}
+.tag-req{background:var(--sky);color:var(--sky-deep)}
+.tag-opt{background:var(--lavender);color:var(--lavender-deep)}
+
+/* Progress */
+.prog{margin-top:10px;display:flex;align-items:center;gap:9px}
+
+.prog-track{
+  flex:1;height:4px;background:var(--cloud);
+  border-radius:2px;overflow:hidden;
+}
+
+.prog-fill{height:100%;border-radius:2px;transition:width 0.8s ease}
+.prog-pct{font-size:10.5px;color:var(--stone);font-weight:500;min-width:32px;text-align:right}
+
+/* Card status */
+.card-st{
+  position:absolute;top:12px;right:12px;z-index:3;
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.st-ok{background:rgba(255,255,255,0.6);color:var(--mint-deep);backdrop-filter:blur(6px)}
+.st-cl{background:rgba(255,255,255,0.4);color:var(--slate);backdrop-filter:blur(6px)}
+
+/* Stats */
+.stats{display:flex;gap:16px;margin-bottom:28px}
+
+.stat-box{
+  flex:1;background:var(--white);border:1px solid var(--cloud);
+  border-radius:var(--radius);padding:20px 22px;
+  display:flex;align-items:center;gap:16px;
+  transition:var(--transition);
+}
+.stat-box:hover{box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+
+.stat-ic{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.si-mint{background:var(--mint);color:var(--mint-deep)}
+.si-sky{background:var(--sky);color:var(--sky-deep)}
+.si-peach{background:var(--peach);color:var(--peach-deep)}
+
+.stat-data{display:flex;flex-direction:column;gap:2px}
+.stat-val{font-size:24px;font-weight:600;color:var(--deep)}
+.stat-lab{font-size:11px;color:var(--stone);font-weight:300}
+
+/* Pages */
+.page{display:none}
+.page.active{display:block;animation:fadeUp 0.4s ease}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.card{opacity:0;animation:cardIn 0.35s ease forwards}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ===== BOOK DETAIL OVERLAY ===== */
+.overlay{
+  position:fixed;inset:0;z-index:100;
+  display:none;align-items:center;justify-content:center;
+}
+.overlay.open{display:flex}
+
+.overlay-bg{
+  position:absolute;inset:0;
+  background:rgba(31,41,55,0.3);
+  backdrop-filter:blur(6px);
+  animation:bgIn 0.3s ease;
+}
+@keyframes bgIn{from{opacity:0}to{opacity:1}}
+
+.detail-panel{
+  position:relative;z-index:1;
+  width:860px;max-width:calc(100vw - 80px);
+  max-height:calc(100vh - 60px);
+  background:var(--white);
+  border-radius:20px;
+  box-shadow:0 24px 80px rgba(0,0,0,0.12);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  animation:panelIn 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+@keyframes panelIn{
+  from{opacity:0;transform:translateY(20px) scale(0.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* Close button */
+.detail-close{
+  position:absolute;top:18px;right:18px;z-index:5;
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid var(--mist);background:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:var(--transition);color:var(--slate);
+}
+.detail-close:hover{background:var(--cloud);color:var(--deep)}
+
+/* Top hero section */
+.detail-hero{
+  display:flex;gap:32px;padding:36px 36px 28px;
+  border-bottom:1px solid var(--cloud);
+  flex-shrink:0;
+}
+
+.detail-cover{
+  width:160px;height:213px;
+  border-radius:12px;overflow:hidden;
+  flex-shrink:0;
+  box-shadow:0 8px 28px rgba(0,0,0,0.1);
+}
+
+.detail-cover .cover-inner{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:20px 14px;position:relative;
+}
+
+.detail-cover .cover-inner::before{
+  content:'';position:absolute;
+  top:-20%;right:-20%;width:70%;height:70%;
+  border-radius:50%;background:rgba(255,255,255,0.15);pointer-events:none;
+}
+
+.detail-cover .cover-name{
+  font-family:'ZCOOL XiaoWei',serif;
+  font-size:26px;color:white;text-align:center;
+  letter-spacing:4px;line-height:1.3;
+  text-shadow:0 2px 10px rgba(0,0,0,0.15);
+}
+
+.detail-cover .cover-sub{
+  font-size:10px;color:rgba(255,255,255,0.7);
+  margin-top:6px;letter-spacing:1px;font-weight:300;
+}
+
+/* Book info */
+.detail-info{flex:1;display:flex;flex-direction:column;justify-content:center;min-width:0}
+
+.detail-book-title{
+  font-family:'ZCOOL XiaoWei',serif;
+  font-size:24px;color:var(--deep);letter-spacing:1px;
+  margin-bottom:6px;
+}
+
+.detail-book-sub{
+  font-size:14px;color:var(--slate);font-weight:300;margin-bottom:18px;
+}
+
+.detail-meta-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;
+  margin-bottom:22px;
+}
+
+.meta-item{display:flex;align-items:center;gap:8px}
+.meta-label{font-size:12px;color:var(--stone);min-width:48px}
+.meta-value{font-size:13px;color:var(--ink);font-weight:400}
+
+.detail-actions{display:flex;gap:10px;align-items:center}
+
+.btn-buy{
+  padding:10px 32px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,var(--mint-deep),var(--sky-mid));
+  color:white;font-size:14px;font-weight:500;
+  cursor:pointer;transition:var(--transition);
+  font-family:inherit;letter-spacing:0.5px;
+  box-shadow:0 3px 14px rgba(58,158,120,0.2);
+}
+.btn-buy:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 20px rgba(58,158,120,0.3);
+}
+
+.btn-buy.purchased{
+  background:var(--mint);color:var(--mint-deep);
+  box-shadow:none;cursor:default;
+}
+.btn-buy.purchased:hover{transform:none;box-shadow:none}
+
+.btn-trial{
+  padding:10px 24px;border-radius:10px;
+  border:1px solid var(--mist);background:var(--white);
+  color:var(--ink);font-size:13px;font-weight:400;
+  cursor:pointer;transition:var(--transition);font-family:inherit;
+}
+.btn-trial:hover{border-color:var(--silver);background:var(--snow)}
+
+.detail-price{
+  margin-left:8px;
+  font-size:22px;font-weight:600;color:var(--peach-deep);
+  font-family:'ZCOOL XiaoWei',serif;
+}
+
+.detail-price-orig{
+  font-size:12px;color:var(--silver);text-decoration:line-through;
+  font-weight:300;margin-left:4px;
+}
+
+/* Tabs section */
+.detail-body{flex:1;overflow:hidden;display:flex;flex-direction:column}
+
+.detail-tabs{
+  display:flex;gap:0;padding:0 36px;
+  border-bottom:1px solid var(--cloud);
+  flex-shrink:0;
+}
+
+.detail-tab{
+  padding:14px 24px;font-size:13.5px;
+  color:var(--slate);cursor:pointer;
+  position:relative;transition:var(--transition);
+  font-weight:400;
+}
+
+.detail-tab:hover{color:var(--ink)}
+
+.detail-tab.active{color:var(--mint-deep);font-weight:500}
+
+.detail-tab.active::after{
+  content:'';position:absolute;
+  bottom:-1px;left:24px;right:24px;height:2px;
+  background:var(--mint-deep);border-radius:1px;
+}
+
+.detail-content{
+  flex:1;overflow-y:auto;padding:24px 36px 36px;
+}
+
+.detail-content::-webkit-scrollbar{width:4px}
+.detail-content::-webkit-scrollbar-track{background:transparent}
+.detail-content::-webkit-scrollbar-thumb{background:var(--mist);border-radius:2px}
+
+/* Tab content */
+.tab-pane{display:none;animation:fadeUp 0.3s ease}
+.tab-pane.active{display:block}
+
+/* Introduction */
+.intro-section{margin-bottom:24px}
+.intro-heading{
+  font-size:14px;font-weight:500;color:var(--deep);
+  margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+.intro-heading .bar{
+  width:3px;height:14px;border-radius:2px;
+  background:var(--mint-mid);
+}
+.intro-text{
+  font-size:13.5px;line-height:1.9;color:var(--slate);
+  font-weight:300;text-align:justify;
+}
+
+.intro-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.intro-tag{
+  padding:5px 14px;border-radius:6px;font-size:11px;
+  background:var(--cloud);color:var(--slate);font-weight:400;
+}
+
+/* Table of Contents */
+.toc-list{list-style:none}
+
+.toc-unit{margin-bottom:6px}
+
+.toc-unit-head{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;border-radius:10px;
+  cursor:pointer;transition:var(--transition);
+  font-size:14px;font-weight:500;color:var(--deep);
+}
+.toc-unit-head:hover{background:var(--snow)}
+
+.toc-unit-num{
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:500;flex-shrink:0;
+}
+
+.toc-unit-arrow{
+  margin-left:auto;color:var(--silver);
+  transition:var(--transition);
+}
+
+.toc-unit.open .toc-unit-arrow{transform:rotate(90deg)}
+
+.toc-lessons{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.35s ease;
+}
+.toc-unit.open .toc-lessons{max-height:600px}
+
+.toc-lesson{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px 10px 54px;
+  font-size:13px;color:var(--slate);font-weight:300;
+  cursor:pointer;transition:var(--transition);
+  border-radius:8px;margin:1px 0;
+}
+.toc-lesson:hover{background:var(--snow);color:var(--ink)}
+
+.toc-lesson-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--silver);flex-shrink:0;
+}
+
+.toc-lesson-lock{margin-left:auto;color:var(--silver)}
+
+/* ===== REDEEM MODAL ===== */
+.redeem-overlay{
+  position:fixed;inset:0;z-index:200;
+  display:none;align-items:center;justify-content:center;
+}
+.redeem-overlay.open{display:flex}
+
+.redeem-bg{
+  position:absolute;inset:0;
+  background:rgba(31,41,55,0.35);
+  backdrop-filter:blur(4px);
+}
+
+.redeem-box{
+  position:relative;z-index:1;
+  width:420px;max-width:calc(100vw - 60px);
+  background:var(--white);border-radius:18px;
+  padding:32px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.12);
+  animation:panelIn 0.3s ease;
+}
+
+.redeem-title{
+  font-family:'ZCOOL XiaoWei',serif;
+  font-size:18px;color:var(--deep);margin-bottom:6px;
+}
+
+.redeem-desc{font-size:13px;color:var(--stone);font-weight:300;margin-bottom:22px}
+
+.redeem-input-row{
+  display:flex;gap:10px;margin-bottom:16px;
+}
+
+.redeem-input{
+  flex:1;padding:11px 16px;border-radius:10px;
+  border:1.5px solid var(--mist);background:var(--snow);
+  font-family:inherit;font-size:13.5px;color:var(--ink);
+  outline:none;transition:var(--transition);
+  letter-spacing:2px;text-transform:uppercase;
+}
+
+.redeem-input:focus{
+  border-color:var(--mint-mid);
+  box-shadow:0 0 0 3px rgba(58,158,120,0.1);
+}
+
+.redeem-input::placeholder{color:var(--silver);letter-spacing:0;text-transform:none}
+
+.btn-redeem{
+  padding:11px 24px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,var(--lavender-deep),var(--sky-deep));
+  color:white;font-size:13.5px;font-weight:500;
+  cursor:pointer;transition:var(--transition);
+  font-family:inherit;white-space:nowrap;
+}
+.btn-redeem:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(122,78,176,0.2)}
+
+.redeem-hint{font-size:11.5px;color:var(--stone);font-weight:300;line-height:1.6}
+
+.redeem-close{
+  position:absolute;top:16px;right:16px;
+  width:30px;height:30px;border-radius:50%;
+  border:1px solid var(--mist);background:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:var(--transition);color:var(--slate);
+}
+.redeem-close:hover{background:var(--cloud);color:var(--deep)}
+
+.redeem-success{
+  display:none;text-align:center;padding:10px 0 6px;
+}
+.redeem-success.show{display:block;animation:fadeUp 0.3s ease}
+
+.redeem-success-icon{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--mint);color:var(--mint-deep);
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-bottom:12px;
+}
+
+.redeem-success-text{font-size:15px;font-weight:500;color:var(--deep);margin-bottom:4px}
+.redeem-success-sub{font-size:12px;color:var(--stone);font-weight:300}
+
+/* ===== PRINT BUTTON ===== */
+.btn-print{
+  padding:10px 20px;border-radius:10px;
+  border:1px solid var(--mist);background:var(--white);
+  color:var(--ink);font-size:13px;font-weight:400;
+  cursor:pointer;transition:var(--transition);
+  font-family:inherit;display:flex;align-items:center;gap:6px;
+}
+.btn-print:hover{border-color:var(--silver);background:var(--snow)}
+
+/* ===== MODE CARDS (for 我的教材 detail) ===== */
+.mode-section{margin-top:28px}
+
+.mode-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:14px;margin-top:14px;
+}
+
+.mode-card{
+  display:flex;align-items:center;gap:16px;
+  padding:18px 20px;border-radius:14px;
+  border:1.5px solid var(--cloud);
+  background:var(--white);
+  cursor:pointer;transition:var(--transition);
+  position:relative;overflow:hidden;
+}
+
+.mode-card:hover{
+  border-color:var(--silver);
+  box-shadow:0 4px 16px rgba(0,0,0,0.05);
+  transform:translateY(-2px);
+}
+
+.mode-card::before{
+  content:'';position:absolute;inset:0;
+  opacity:0;transition:var(--transition);
+  pointer-events:none;border-radius:14px;
+}
+.mode-card:hover::before{opacity:1}
+
+.mode-card:nth-child(1)::before{background:linear-gradient(135deg,rgba(58,158,120,0.04),transparent)}
+.mode-card:nth-child(2)::before{background:linear-gradient(135deg,rgba(110,168,216,0.04),transparent)}
+.mode-card:nth-child(3)::before{background:linear-gradient(135deg,rgba(204,122,66,0.04),transparent)}
+.mode-card:nth-child(4)::before{background:linear-gradient(135deg,rgba(165,128,208,0.04),transparent)}
+
+.mode-icon{
+  width:46px;height:46px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+
+.mi-read{background:var(--mint);color:var(--mint-deep)}
+.mi-av{background:var(--sky);color:var(--sky-deep)}
+.mi-task{background:var(--peach);color:var(--peach-deep)}
+.mi-kg{background:var(--lavender);color:var(--lavender-deep)}
+
+.mode-info{display:flex;flex-direction:column;gap:3px;min-width:0}
+.mode-name{font-size:14px;font-weight:500;color:var(--deep)}
+.mode-desc{font-size:11.5px;color:var(--stone);font-weight:300;line-height:1.4}
+
+.mode-arrow{
+  margin-left:auto;color:var(--silver);
+  flex-shrink:0;transition:var(--transition);
+}
+.mode-card:hover .mode-arrow{color:var(--slate);transform:translateX(2px)}
+
+/* ===== CLASS GROUP MANAGEMENT ===== */
+.class-section{margin-top:44px}
+
+.class-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:18px;margin-top:18px;
+}
+
+.class-card{
+  background:var(--white);border:1.5px solid var(--cloud);
+  border-radius:var(--radius);padding:22px;
+  cursor:pointer;transition:var(--transition);
+  position:relative;overflow:hidden;
+}
+.class-card:hover{
+  border-color:var(--silver);
+  box-shadow:0 6px 24px rgba(0,0,0,0.07);
+  transform:translateY(-3px);
+}
+.class-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  border-radius:var(--radius) var(--radius) 0 0;
+}
+.class-card:nth-child(1)::before{background:linear-gradient(90deg,var(--mint-deep),var(--mint-mid))}
+.class-card:nth-child(2)::before{background:linear-gradient(90deg,var(--sky-deep),var(--sky-mid))}
+.class-card:nth-child(3)::before{background:linear-gradient(90deg,var(--peach-deep),var(--peach-mid))}
+.class-card:nth-child(4)::before{background:linear-gradient(90deg,var(--lavender-deep),var(--lavender-mid))}
+.class-card:nth-child(5)::before{background:linear-gradient(90deg,var(--rose-deep),var(--rose-mid))}
+
+.class-card-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.class-card-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.class-card:nth-child(1) .class-card-icon{background:var(--mint);color:var(--mint-deep)}
+.class-card:nth-child(2) .class-card-icon{background:var(--sky);color:var(--sky-deep)}
+.class-card:nth-child(3) .class-card-icon{background:var(--peach);color:var(--peach-deep)}
+.class-card:nth-child(4) .class-card-icon{background:var(--lavender);color:var(--lavender-deep)}
+.class-card:nth-child(5) .class-card-icon{background:var(--rose);color:var(--rose-deep)}
+
+.class-card-info{display:flex;flex-direction:column;gap:3px;min-width:0}
+.class-card-name{font-size:15px;font-weight:500;color:var(--deep);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.class-card-sub{font-size:11.5px;color:var(--stone);font-weight:300}
+
+.class-card-stats{display:flex;gap:20px;margin-bottom:14px}
+.class-stat{display:flex;flex-direction:column;gap:2px}
+.class-stat-val{font-size:18px;font-weight:600;color:var(--deep)}
+.class-stat-lab{font-size:10.5px;color:var(--stone);font-weight:300}
+
+.class-card-bar{height:4px;border-radius:2px;background:var(--cloud);overflow:hidden}
+.class-card-bar-fill{height:100%;border-radius:2px;transition:width 0.6s ease}
+
+.class-card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.class-card-date{font-size:11px;color:var(--silver);font-weight:300}
+.class-card-arrow{color:var(--silver);transition:var(--transition)}
+.class-card:hover .class-card-arrow{color:var(--slate);transform:translateX(3px)}
+
+/* Create class button card */
+.class-card-create{
+  background:var(--snow);border:2px dashed var(--mist);
+  border-radius:var(--radius);padding:22px;
+  cursor:pointer;transition:var(--transition);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:180px;gap:12px;
+}
+.class-card-create::before{display:none}
+.class-card-create:hover{
+  border-color:var(--mint-mid);background:var(--mint);
+  transform:translateY(-3px);
+}
+.class-create-icon{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--white);border:2px dashed var(--mist);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--stone);transition:var(--transition);
+}
+.class-card-create:hover .class-create-icon{
+  border-color:var(--mint-mid);color:var(--mint-deep);background:var(--white);
+}
+.class-create-text{font-size:13.5px;color:var(--slate);font-weight:400;transition:var(--transition)}
+.class-card-create:hover .class-create-text{color:var(--mint-deep)}
+
+/* ===== CREATE CLASS MODAL ===== */
+.create-class-overlay{
+  position:fixed;inset:0;z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.25s ease;
+}
+.create-class-overlay.open{opacity:1;pointer-events:all}
+.create-class-bg{position:absolute;inset:0;background:rgba(31,41,55,0.35);backdrop-filter:blur(4px)}
+
+.create-class-box{
+  position:relative;z-index:1;
+  background:var(--white);border-radius:20px;
+  padding:32px 34px 28px;width:440px;max-width:92vw;
+  box-shadow:0 20px 60px rgba(0,0,0,0.12);
+  animation:panelIn 0.3s ease;
+}
+
+.create-class-close{
+  position:absolute;top:16px;right:16px;
+  width:30px;height:30px;border-radius:8px;
+  border:none;background:var(--snow);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--stone);transition:var(--transition);
+}
+.create-class-close:hover{background:var(--cloud);color:var(--ink)}
+
+.ccm-title{font-size:18px;font-weight:500;color:var(--deep);margin-bottom:4px}
+.ccm-desc{font-size:12.5px;color:var(--stone);font-weight:300;margin-bottom:24px}
+
+.ccm-field{margin-bottom:18px}
+.ccm-label{font-size:12.5px;color:var(--slate);font-weight:500;margin-bottom:7px;display:block}
+.ccm-input{
+  width:100%;padding:11px 16px;border-radius:10px;
+  border:1.5px solid var(--mist);background:var(--snow);
+  font-family:inherit;font-size:13.5px;color:var(--ink);
+  transition:var(--transition);outline:none;
+}
+.ccm-input:focus{border-color:var(--mint-mid);box-shadow:0 0 0 3px rgba(58,158,120,0.1);background:var(--white)}
+.ccm-input::placeholder{color:var(--silver)}
+
+.ccm-select{
+  width:100%;padding:11px 16px;border-radius:10px;
+  border:1.5px solid var(--mist);background:var(--snow);
+  font-family:inherit;font-size:13.5px;color:var(--ink);
+  transition:var(--transition);outline:none;cursor:pointer;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+}
+.ccm-select:focus{border-color:var(--mint-mid);box-shadow:0 0 0 3px rgba(58,158,120,0.1)}
+
+.ccm-btn{
+  width:100%;padding:13px;border:none;border-radius:12px;
+  background:linear-gradient(135deg,var(--mint-deep),var(--sky-mid));
+  color:var(--white);font-family:inherit;font-size:14px;font-weight:500;
+  cursor:pointer;transition:var(--transition);margin-top:8px;
+}
+.ccm-btn:hover{box-shadow:0 4px 16px rgba(58,158,120,0.3);transform:translateY(-1px)}
+
+/* ===== CLASS DETAIL OVERLAY ===== */
+.class-overlay{
+  position:fixed;inset:0;z-index:150;
+  opacity:0;pointer-events:none;transition:opacity 0.3s ease;
+}
+.class-overlay.open{opacity:1;pointer-events:all}
+.class-overlay-bg{position:absolute;inset:0;background:rgba(31,41,55,0.3);backdrop-filter:blur(6px)}
+
+.class-panel{
+  position:absolute;top:0;right:0;bottom:0;
+  width:680px;max-width:100vw;
+  background:var(--white);
+  box-shadow:-12px 0 50px rgba(0,0,0,0.1);
+  overflow-y:auto;animation:panelIn 0.35s ease;
+}
+.class-panel::-webkit-scrollbar{width:4px}
+.class-panel::-webkit-scrollbar-thumb{background:var(--mist);border-radius:2px}
+
+.class-detail-close{
+  position:absolute;top:20px;right:20px;z-index:2;
+  width:34px;height:34px;border-radius:10px;
+  border:1px solid var(--cloud);background:var(--white);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--slate);transition:var(--transition);
+}
+.class-detail-close:hover{background:var(--snow);color:var(--ink)}
+
+.class-detail-header{
+  padding:36px 32px 28px;
+  border-bottom:1px solid var(--cloud);
+}
+.class-detail-name{font-size:22px;font-weight:600;color:var(--deep);margin-bottom:4px}
+.class-detail-meta{font-size:12.5px;color:var(--stone);font-weight:300;display:flex;gap:16px;align-items:center}
+.class-detail-meta span{display:flex;align-items:center;gap:4px}
+
+/* Invite section */
+.invite-section{
+  padding:24px 32px;border-bottom:1px solid var(--cloud);
+  display:flex;gap:28px;align-items:flex-start;
+}
+
+.invite-code-box{flex:1}
+.invite-label{font-size:12px;color:var(--stone);font-weight:500;margin-bottom:10px;letter-spacing:1px}
+.invite-code-display{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 18px;border-radius:12px;
+  background:var(--snow);border:1.5px solid var(--cloud);
+}
+.invite-code-text{
+  font-size:22px;font-weight:600;color:var(--deep);
+  letter-spacing:4px;font-family:'Noto Sans SC',monospace;
+}
+.invite-copy-btn{
+  margin-left:auto;padding:7px 14px;border-radius:8px;
+  border:1px solid var(--mist);background:var(--white);
+  font-family:inherit;font-size:12px;color:var(--slate);
+  cursor:pointer;transition:var(--transition);
+}
+.invite-copy-btn:hover{border-color:var(--mint-mid);color:var(--mint-deep);background:var(--mint)}
+.invite-copy-btn.copied{border-color:var(--mint-mid);color:var(--mint-deep);background:var(--mint)}
+
+.invite-qr-box{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.qr-canvas{
+  width:120px;height:120px;border-radius:12px;
+  background:var(--white);border:1.5px solid var(--cloud);
+  padding:8px;display:flex;align-items:center;justify-content:center;
+}
+.qr-hint{font-size:10.5px;color:var(--stone);font-weight:300}
+
+/* Stats row */
+.class-stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:14px;padding:24px 32px;border-bottom:1px solid var(--cloud);
+}
+.cs-box{
+  text-align:center;padding:16px 8px;border-radius:12px;
+  background:var(--snow);
+}
+.cs-val{font-size:22px;font-weight:600;color:var(--deep);margin-bottom:2px}
+.cs-lab{font-size:11px;color:var(--stone);font-weight:300}
+
+/* Student list */
+.student-section{padding:24px 32px 36px}
+.student-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.student-title{font-size:14px;font-weight:500;color:var(--deep);display:flex;align-items:center;gap:8px}
+.student-count{font-size:11px;color:var(--stone);font-weight:300;background:var(--cloud);padding:3px 10px;border-radius:12px}
+
+.student-list{display:flex;flex-direction:column;gap:2px}
+
+.student-row{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border-radius:10px;
+  transition:var(--transition);
+}
+.student-row:hover{background:var(--snow)}
+
+.student-avatar{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:500;color:var(--white);flex-shrink:0;
+}
+.student-info{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.student-name{font-size:13.5px;font-weight:500;color:var(--deep)}
+.student-id{font-size:11px;color:var(--stone);font-weight:300}
+
+.student-progress{width:120px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.student-bar{flex:1;height:4px;border-radius:2px;background:var(--cloud);overflow:hidden}
+.student-bar-fill{height:100%;border-radius:2px;transition:width 0.5s ease}
+.student-pct{font-size:12px;font-weight:500;min-width:36px;text-align:right}
+
+.student-books{font-size:12px;color:var(--stone);font-weight:300;flex-shrink:0;min-width:48px;text-align:center}
+.student-last{font-size:11px;color:var(--silver);font-weight:300;flex-shrink:0;min-width:70px;text-align:right}
+
+/* Rank badge */
+.student-rank{
+  width:22px;height:22px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:600;flex-shrink:0;
+}
+.rank-1{background:var(--lemon);color:var(--lemon-deep)}
+.rank-2{background:var(--cloud);color:var(--slate)}
+.rank-3{background:var(--peach);color:var(--peach-deep)}
+.rank-other{background:transparent;color:var(--silver)}
+
+/* Admin badge */
+.admin-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 10px;border-radius:6px;font-size:10.5px;font-weight:600;
+  background:linear-gradient(135deg,#f0c040,#e8a020);color:#7a5c00;
+  letter-spacing:0.5px;
+}
+.admin-badge svg{width:12px;height:12px}
+
+.class-card-admin{
+  position:absolute;top:14px;right:14px;
+  display:inline-flex;align-items:center;gap:3px;
+  padding:3px 8px;border-radius:6px;font-size:10px;font-weight:600;
+  background:linear-gradient(135deg,#f0c040,#e8a020);color:#7a5c00;
+}
+
+/* Class books section in detail */
+.class-books-section{padding:24px 32px;border-bottom:1px solid var(--cloud)}
+.class-books-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.class-books-title{font-size:14px;font-weight:500;color:var(--deep);display:flex;align-items:center;gap:8px}
+.class-books-count{font-size:11px;color:var(--stone);font-weight:300;background:var(--cloud);padding:3px 10px;border-radius:12px}
+
+.btn-add-book{
+  padding:7px 14px;border-radius:8px;border:1px solid var(--mist);
+  background:var(--white);font-family:inherit;font-size:12px;color:var(--slate);
+  cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:5px;
+}
+.btn-add-book:hover{border-color:var(--mint-mid);color:var(--mint-deep);background:var(--mint)}
+
+.class-book-list{display:flex;flex-direction:column;gap:8px}
+
+.class-book-row{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 14px;border-radius:10px;
+  background:var(--snow);border:1px solid var(--cloud);
+  transition:var(--transition);
+}
+.class-book-row:hover{border-color:var(--silver)}
+
+.class-book-cover{
+  width:38px;height:50px;border-radius:6px;flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:4px;
+}
+.class-book-cover-name{font-size:9px;font-weight:600;color:rgba(255,255,255,0.95);text-align:center;line-height:1.2}
+
+.class-book-info{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.class-book-name{font-size:13px;font-weight:500;color:var(--deep)}
+.class-book-pub{font-size:11px;color:var(--stone);font-weight:300}
+
+.class-book-avg{
+  display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;
+}
+.class-book-avg-val{font-size:14px;font-weight:600}
+.class-book-avg-lab{font-size:10px;color:var(--stone);font-weight:300}
+
+.class-book-remove{
+  width:28px;height:28px;border-radius:6px;border:none;
+  background:transparent;cursor:pointer;color:var(--silver);
+  display:flex;align-items:center;justify-content:center;
+  transition:var(--transition);flex-shrink:0;
+}
+.class-book-remove:hover{background:var(--rose);color:var(--rose-deep)}
+
+/* Add book picker overlay */
+.book-picker-overlay{
+  position:fixed;inset:0;z-index:250;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.25s ease;
+}
+.book-picker-overlay.open{opacity:1;pointer-events:all}
+.book-picker-bg{position:absolute;inset:0;background:rgba(31,41,55,0.35);backdrop-filter:blur(4px)}
+
+.book-picker-box{
+  position:relative;z-index:1;
+  background:var(--white);border-radius:20px;
+  padding:28px 30px 24px;width:480px;max-width:92vw;max-height:80vh;
+  box-shadow:0 20px 60px rgba(0,0,0,0.12);
+  animation:panelIn 0.3s ease;display:flex;flex-direction:column;
+}
+.book-picker-close{
+  position:absolute;top:14px;right:14px;
+  width:30px;height:30px;border-radius:8px;
+  border:none;background:var(--snow);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--stone);transition:var(--transition);
+}
+.book-picker-close:hover{background:var(--cloud);color:var(--ink)}
+
+.bp-title{font-size:16px;font-weight:500;color:var(--deep);margin-bottom:4px}
+.bp-desc{font-size:12px;color:var(--stone);font-weight:300;margin-bottom:18px}
+
+.bp-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding-right:4px}
+.bp-list::-webkit-scrollbar{width:3px}
+.bp-list::-webkit-scrollbar-thumb{background:var(--mist);border-radius:2px}
+
+.bp-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:10px;
+  border:1.5px solid var(--cloud);cursor:pointer;
+  transition:var(--transition);
+}
+.bp-item:hover{border-color:var(--silver);background:var(--snow)}
+.bp-item.added{opacity:0.45;pointer-events:none}
+.bp-item.added::after{
+  content:'已添加';font-size:11px;color:var(--stone);
+  margin-left:auto;font-weight:400;
+}
+
+.bp-cover{
+  width:34px;height:44px;border-radius:5px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.bp-cover-name{font-size:8px;font-weight:600;color:rgba(255,255,255,0.95)}
+
+.bp-info{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.bp-name{font-size:13px;font-weight:500;color:var(--deep)}
+.bp-sub{font-size:11px;color:var(--stone);font-weight:300}
+
+/* Student per-book progress in detail */
+.student-book-progress{display:flex;gap:6px;flex-shrink:0;align-items:center}
+.sbp-item{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:40px}
+.sbp-bar{width:32px;height:4px;border-radius:2px;background:var(--cloud);overflow:hidden}
+.sbp-fill{height:100%;border-radius:2px}
+.sbp-pct{font-size:9px;font-weight:500}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <div class="logo-row">
+        <div class="logo-icon">川</div>
+        <div class="logo-col">
+          <div class="logo-name">四川数字教材</div>
+          <div class="logo-en">Sichuan Digital Textbook</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">教材中心</div>
+      <div class="nav-item active" data-page="library" onclick="go('library')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>数字教材</span>
+        <span class="nav-num">128</span>
+      </div>
+      <div class="nav-item" data-page="my" onclick="go('my')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span>我的教材</span>
+        <span class="nav-num">6</span>
+      </div>
+
+      <div class="nav-label" style="margin-top:20px">系统</div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>设置</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="user-row">
+        <div class="avatar">李</div>
+        <div class="user-meta">
+          <div class="user-name">李明远</div>
+          <div class="user-role">成都七中 · 高二教师</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="topbar-title" id="pTitle">数字教材</h1>
+        <div class="topbar-sep"></div>
+        <span class="topbar-hint" id="pHint">浏览全部数字教材资源</span>
+      </div>
+      <div class="topbar-right">
+        <div class="search-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="搜索教材名称、科目..." id="sInput" oninput="renderLib()">
+        </div>
+        <button class="tb-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+        <button class="tb-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></button>
+      </div>
+    </header>
+
+    <div class="scroll">
+      <div class="page active" id="page-library"></div>
+      <div class="page" id="page-my"></div>
+    </div>
+  </main>
+</div>
+
+<!-- Book Detail Overlay -->
+<div class="overlay" id="overlay">
+  <div class="overlay-bg" onclick="closeDetail()"></div>
+  <div class="detail-panel">
+    <button class="detail-close" onclick="closeDetail()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="detail-hero" id="detailHero"></div>
+    <div class="detail-body">
+      <div class="detail-tabs">
+        <div class="detail-tab active" data-tab="intro" onclick="switchTab('intro')">简介</div>
+        <div class="detail-tab" data-tab="toc" onclick="switchTab('toc')">目录</div>
+      </div>
+      <div class="detail-content">
+        <div class="tab-pane active" id="pane-intro"></div>
+        <div class="tab-pane" id="pane-toc"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Redeem Code Modal -->
+<div class="redeem-overlay" id="redeemOverlay">
+  <div class="redeem-bg" onclick="closeRedeem()"></div>
+  <div class="redeem-box">
+    <button class="redeem-close" onclick="closeRedeem()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="redeemForm">
+      <div class="redeem-title">兑换码激活</div>
+      <div class="redeem-desc">输入教材兑换码，免费获取数字教材使用权</div>
+      <div class="redeem-input-row">
+        <input class="redeem-input" id="redeemCode" type="text" placeholder="请输入16位兑换码" maxlength="19">
+        <button class="btn-redeem" onclick="doRedeem()">立即兑换</button>
+      </div>
+      <div class="redeem-hint">兑换码通常印刷在纸质教材封底或由学校统一发放。每个兑换码仅限使用一次，兑换后不可转让。如有问题请联系学校管理员。</div>
+    </div>
+    <div class="redeem-success" id="redeemSuccess">
+      <div class="redeem-success-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="redeem-success-text">兑换成功</div>
+      <div class="redeem-success-sub">教材已添加至「我的教材」，可立即开始学习</div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Class Modal -->
+<div class="create-class-overlay" id="createClassOverlay">
+  <div class="create-class-bg" onclick="closeCreateClass()"></div>
+  <div class="create-class-box">
+    <button class="create-class-close" onclick="closeCreateClass()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="ccm-title">创建新班级</div>
+    <div class="ccm-desc">创建班级后可通过邀请码或二维码邀请学生加入</div>
+    <div class="ccm-field">
+      <label class="ccm-label">班级名称</label>
+      <input class="ccm-input" id="ccmName" type="text" placeholder="例如：高二（3）班语文学习组">
+    </div>
+    <div class="ccm-field">
+      <label class="ccm-label">关联科目</label>
+      <select class="ccm-select" id="ccmSubject">
+        <option value="语文">语文</option><option value="数学">数学</option>
+        <option value="英语">英语</option><option value="物理">物理</option>
+        <option value="化学">化学</option><option value="生物">生物</option>
+        <option value="历史">历史</option><option value="地理">地理</option>
+      </select>
+    </div>
+    <div class="ccm-field">
+      <label class="ccm-label">班级描述（选填）</label>
+      <input class="ccm-input" id="ccmDesc" type="text" placeholder="简要描述班级学习目标">
+    </div>
+    <button class="ccm-btn" onclick="doCreateClass()">创建班级</button>
+  </div>
+</div>
+
+<!-- Class Detail Overlay -->
+<div class="class-overlay" id="classOverlay">
+  <div class="class-overlay-bg" onclick="closeClassDetail()"></div>
+  <div class="class-panel">
+    <button class="class-detail-close" onclick="closeClassDetail()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="classDetailContent"></div>
+  </div>
+</div>
+
+<!-- Book Picker for Class -->
+<div class="book-picker-overlay" id="bookPickerOverlay">
+  <div class="book-picker-bg" onclick="closeBookPicker()"></div>
+  <div class="book-picker-box">
+    <button class="book-picker-close" onclick="closeBookPicker()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="bp-title">添加教材到班级</div>
+    <div class="bp-desc">从「我的教材」中选择要添加到该班级的教材</div>
+    <div class="bp-list" id="bpList"></div>
+  </div>
+</div>
+
+<script>
+// Pastel palette for covers — soft, airy
+const PAL=[
+  ['#4aaa85','#78c8a8'],  // mint
+  ['#4a8ec8','#7ab4de'],  // sky
+  ['#d48548','#e8a870'],  // peach
+  ['#8a60b8','#aa88d0'],  // lavender
+  ['#c85a72','#e08898'],  // rose
+  ['#b8a030','#d0c060'],  // lemon
+  ['#4a98b0','#78bcd0'],  // ice
+  ['#98804a','#b8a878'],  // sand
+];
+
+const SM={语文:0,数学:1,英语:2,物理:3,化学:4,生物:5,历史:6,地理:7,政治:0,信息技术:1,美术:3,音乐:5};
+
+const books=[
+  {t:'语文',s:'必修上册',g:'高一',p:'人民教育出版社',tp:'r',sub:'语文'},
+  {t:'语文',s:'必修下册',g:'高一',p:'人民教育出版社',tp:'r',sub:'语文'},
+  {t:'数学',s:'必修第一册',g:'高一',p:'人民教育出版社',tp:'r',sub:'数学'},
+  {t:'数学',s:'必修第二册',g:'高一',p:'人民教育出版社',tp:'r',sub:'数学'},
+  {t:'英语',s:'必修第一册',g:'高一',p:'外语教学与研究出版社',tp:'r',sub:'英语'},
+  {t:'英语',s:'必修第二册',g:'高一',p:'外语教学与研究出版社',tp:'r',sub:'英语'},
+  {t:'物理',s:'必修第一册',g:'高一',p:'人民教育出版社',tp:'r',sub:'物理'},
+  {t:'物理',s:'必修第二册',g:'高一',p:'人民教育出版社',tp:'r',sub:'物理'},
+  {t:'化学',s:'必修第一册',g:'高一',p:'人民教育出版社',tp:'r',sub:'化学'},
+  {t:'化学',s:'必修第二册',g:'高一',p:'人民教育出版社',tp:'r',sub:'化学'},
+  {t:'生物',s:'必修一 分子与细胞',g:'高一',p:'人民教育出版社',tp:'r',sub:'生物'},
+  {t:'历史',s:'必修 中外历史纲要(上)',g:'高一',p:'人民教育出版社',tp:'r',sub:'历史'},
+  {t:'地理',s:'必修第一册',g:'高一',p:'人民教育出版社',tp:'r',sub:'地理'},
+  {t:'政治',s:'必修一 中国特色社会主义',g:'高一',p:'人民教育出版社',tp:'r',sub:'政治'},
+  {t:'信息技术',s:'必修一 数据与计算',g:'高一',p:'教育科学出版社',tp:'o',sub:'信息技术'},
+  {t:'美术',s:'必修 美术鉴赏',g:'高一',p:'人民美术出版社',tp:'o',sub:'美术'},
+  {t:'音乐',s:'必修 音乐鉴赏',g:'高一',p:'人民音乐出版社',tp:'o',sub:'音乐'},
+  {t:'语文',s:'选择性必修上册',g:'高二',p:'人民教育出版社',tp:'r',sub:'语文'},
+  {t:'数学',s:'选择性必修第一册',g:'高二',p:'人民教育出版社',tp:'r',sub:'数学'},
+  {t:'英语',s:'选择性必修第一册',g:'高二',p:'外语教学与研究出版社',tp:'r',sub:'英语'},
+  {t:'物理',s:'选择性必修第一册',g:'高二',p:'人民教育出版社',tp:'r',sub:'物理'},
+  {t:'化学',s:'选择性必修一',g:'高二',p:'人民教育出版社',tp:'r',sub:'化学'},
+  {t:'生物',s:'选择性必修一 稳态与调节',g:'高二',p:'人民教育出版社',tp:'r',sub:'生物'},
+  {t:'历史',s:'选择性必修一 国家制度',g:'高二',p:'人民教育出版社',tp:'r',sub:'历史'},
+];
+
+const myB=[
+  {t:'语文',s:'选择性必修上册',g:'高二',p:'人民教育出版社',tp:'r',sub:'语文',pr:78,dl:true},
+  {t:'数学',s:'选择性必修第一册',g:'高二',p:'人民教育出版社',tp:'r',sub:'数学',pr:45,dl:true},
+  {t:'英语',s:'选择性必修第一册',g:'高二',p:'外语教学与研究出版社',tp:'r',sub:'英语',pr:92,dl:true},
+  {t:'物理',s:'选择性必修第一册',g:'高二',p:'人民教育出版社',tp:'r',sub:'物理',pr:30,dl:true},
+  {t:'化学',s:'选择性必修一',g:'高二',p:'人民教育出版社',tp:'r',sub:'化学',pr:15,dl:false},
+  {t:'历史',s:'选择性必修一 国家制度',g:'高二',p:'人民教育出版社',tp:'r',sub:'历史',pr:60,dl:true},
+];
+
+function c(sub){return PAL[SM[sub]??0]}
+
+// Book descriptions
+const DESC={
+  '语文':'本教材以立德树人为根本任务，落实语文学科核心素养，精选古今中外优秀作品，涵盖诗歌、散文、小说、戏剧等多种文体。教材注重培养学生的语言建构与运用、思维发展与提升、审美鉴赏与创造、文化传承与理解等能力，引导学生在阅读与写作实践中提升语文素养。',
+  '数学':'本教材遵循《普通高中数学课程标准》，系统介绍函数、几何与代数、概率与统计等核心内容。通过问题驱动的教学设计，注重数学抽象、逻辑推理、数学建模等核心素养的培养，帮助学生建立完整的数学知识体系。',
+  '英语':'本教材围绕"人与自然""人与社会""人与自我"三大主题语境，设计真实的语言交际活动。采用任务型教学法，融合听说读写看五项技能训练，注重跨文化交际能力和英语思维品质的培养。',
+  '物理':'本教材以物理学科核心素养为导向，涵盖力学、热学、电磁学等基础内容。通过实验探究和科学推理，培养学生的物理观念、科学思维、科学探究和科学态度，激发对自然规律的探索兴趣。',
+  '化学':'本教材以"宏观辨识与微观探析"为核心，系统讲授物质结构、化学反应原理、有机化学基础等内容。注重实验探究与创新意识的培养，帮助学生理解化学与生活、社会的密切联系。',
+  '生物':'本教材围绕生命的本质、生命活动的调节、生态系统等核心概念展开。通过观察、实验和探究活动，培养学生的生命观念、理性思维和社会责任感，理解生物学在现代社会中的重要作用。',
+  '历史':'本教材以唯物史观为指导，系统梳理中外历史发展的基本脉络。通过丰富的史料和多元视角，培养学生的时空观念、史料实证、历史解释和家国情怀，提升历史学科核心素养。',
+  '地理':'本教材以人地关系为主线，涵盖自然地理、人文地理和区域地理等内容。注重地理实践力的培养，引导学生用地理的眼光观察世界，理解人类活动与地理环境的相互关系。',
+  '政治':'本教材以习近平新时代中国特色社会主义思想为指导，系统讲授中国特色社会主义理论与实践。培养学生的政治认同、科学精神、法治意识和公共参与等学科核心素养。',
+  '信息技术':'本教材围绕数据与计算这一核心主题，介绍数据处理、算法设计、程序编写等基础知识。通过项目式学习，培养学生的信息意识、计算思维、数字化学习与创新能力。',
+  '美术':'本教材精选中外经典美术作品，涵盖绘画、雕塑、建筑、设计等领域。通过鉴赏与实践相结合的方式，培养学生的审美感知、艺术表现和文化理解能力。',
+  '音乐':'本教材精选中外经典音乐作品，涵盖声乐、器乐、戏曲等多种形式。通过聆听、演唱和音乐分析，培养学生的音乐审美感知和文化理解能力。',
+};
+
+// TOC data per subject
+const TOC={
+  '语文':[
+    {u:'第一单元 青春的价值',ls:['1 沁园春·长沙','2 立在地球边上放号','3 峨日朵雪峰之侧','4 致云雀']},
+    {u:'第二单元 劳动光荣',ls:['5 喜看稻菽千重浪','6 心有一团火，温暖众人心','7 "探界者"钟扬']},
+    {u:'第三单元 生命的诗意',ls:['8 短歌行','9 归园田居（其一）','10 梦游天姥吟留别','11 登高','12 琵琶行']},
+    {u:'第四单元 家乡文化',ls:['13 故都的秋','14 荷塘月色','15 我与地坛（节选）']},
+  ],
+  '数学':[
+    {u:'第一章 集合与常用逻辑用语',ls:['1.1 集合的概念','1.2 集合间的基本关系','1.3 集合的基本运算','1.4 充分条件与必要条件']},
+    {u:'第二章 一元二次函数、方程和不等式',ls:['2.1 等式性质与不等式性质','2.2 基本不等式','2.3 二次函数与一元二次方程、不等式']},
+    {u:'第三章 函数的概念与性质',ls:['3.1 函数的概念及其表示','3.2 函数的基本性质','3.3 幂函数','3.4 函数的应用（一）']},
+    {u:'第四章 指数函数与对数函数',ls:['4.1 指数','4.2 指数函数','4.3 对数','4.4 对数函数','4.5 函数的应用（二）']},
+  ],
+  '英语':[
+    {u:'Unit 1 Teenage Life',ls:['Reading and Thinking','Discovering Useful Structures','Listening and Talking','Reading for Writing']},
+    {u:'Unit 2 Travelling Around',ls:['Reading and Thinking','Discovering Useful Structures','Listening and Talking','Reading for Writing']},
+    {u:'Unit 3 Sports and Fitness',ls:['Reading and Thinking','Discovering Useful Structures','Listening and Talking','Reading for Writing']},
+    {u:'Unit 4 Natural Disasters',ls:['Reading and Thinking','Discovering Useful Structures','Listening and Talking','Reading for Writing']},
+  ],
+  '物理':[
+    {u:'第一章 运动的描述',ls:['1.1 质点 参考系','1.2 时间 位移','1.3 位置变化快慢的描述——速度','1.4 速度变化快慢的描述——加速度']},
+    {u:'第二章 匀变速直线运动的研究',ls:['2.1 实验：探究小车速度随时间变化的规律','2.2 匀变速直线运动的速度与时间的关系','2.3 匀变速直线运动的位移与时间的关系','2.4 自由落体运动']},
+    {u:'第三章 相互作用——力',ls:['3.1 重力与弹力','3.2 摩擦力','3.3 牛顿第三定律']},
+  ],
+  '化学':[
+    {u:'第一章 物质及其变化',ls:['1.1 物质的分类及转化','1.2 离子反应','1.3 氧化还原反应']},
+    {u:'第二章 海水中的重要元素——钠和氯',ls:['2.1 钠及其化合物','2.2 氯及其化合物','2.3 物质的量']},
+    {u:'第三章 铁 金属材料',ls:['3.1 铁及其化合物','3.2 金属材料']},
+  ],
+  '生物':[
+    {u:'第一章 走近细胞',ls:['1.1 细胞是生命活动的基本单位','1.2 细胞的多样性和统一性']},
+    {u:'第二章 组成细胞的分子',ls:['2.1 细胞中的元素和化合物','2.2 细胞中的无机物','2.3 细胞中的糖类和脂质','2.4 蛋白质是生命活动的主要承担者','2.5 核酸是遗传信息的携带者']},
+    {u:'第三章 细胞的基本结构',ls:['3.1 细胞膜的结构和功能','3.2 细胞器之间的分工合作','3.3 细胞核的结构和功能']},
+  ],
+  '历史':[
+    {u:'第一单元 从中华文明起源到秦汉统一多民族封建国家的建立与巩固',ls:['1 中华文明的起源与早期国家','2 诸侯纷争与变法运动','3 秦统一多民族封建国家的建立','4 西汉与东汉——统一多民族封建国家的巩固']},
+    {u:'第二单元 三国两晋南北朝的民族交融与隋唐统一多民族封建国家的发展',ls:['5 三国两晋南北朝的政权更迭与民族交融','6 从隋唐盛世到五代十国','7 隋唐制度的变化与创新']},
+    {u:'第三单元 辽宋夏金多民族政权的并立与元朝的统一',ls:['8 两宋的政治和军事','9 辽夏金元的统治','10 辽宋夏金元的经济与社会']},
+  ],
+  '地理':[
+    {u:'第一章 宇宙中的地球',ls:['1.1 地球的宇宙环境','1.2 太阳对地球的影响','1.3 地球的历史','1.4 地球的圈层结构']},
+    {u:'第二章 地球上的大气',ls:['2.1 大气的组成和垂直分层','2.2 大气受热过程和大气运动','2.3 常见天气系统']},
+    {u:'第三章 地球上的水',ls:['3.1 水循环','3.2 海水的性质','3.3 海水的运动']},
+  ],
+  '政治':[
+    {u:'第一课 社会主义从空想到科学',ls:['1.1 原始社会的解体和阶级社会的演进','1.2 科学社会主义的理论与实践']},
+    {u:'第二课 只有社会主义才能救中国',ls:['2.1 新民主主义革命的胜利','2.2 社会主义制度在中国的确立']},
+    {u:'第三课 只有中国特色社会主义才能发展中国',ls:['3.1 伟大的改革开放','3.2 中国特色社会主义的创立、发展和完善']},
+  ],
+};
+
+// Prices
+const PRICES={语文:18.90,数学:22.50,英语:24.00,物理:20.80,化学:19.50,生物:18.00,历史:17.50,地理:16.80,政治:17.00,信息技术:25.00,美术:15.50,音乐:14.00};
+
+// === CLASS GROUP DATA ===
+const classGroups=[
+  {
+    id:1,name:'高二（3）班语文研读组',subject:'语文',desc:'语文选择性必修课程深度研读',
+    code:'SCH2-YWRD',created:'2026-03-15',admin:'李明远',
+    books:[
+      {t:'语文',s:'选择性必修上册',g:'高二',p:'人民教育出版社',sub:'语文'},
+      {t:'语文',s:'必修下册',g:'高一',p:'人民教育出版社',sub:'语文'},
+    ],
+    students:[
+      {name:'王思涵',id:'2024030101',bp:[95,88],last:'今天'},
+      {name:'张子墨',id:'2024030102',bp:[82,79],last:'今天'},
+      {name:'刘雨桐',id:'2024030103',bp:[78,65],last:'昨天'},
+      {name:'陈思远',id:'2024030104',bp:[70,60],last:'昨天'},
+      {name:'赵梓涵',id:'2024030105',bp:[66,55],last:'2天前'},
+      {name:'孙晓彤',id:'2024030106',bp:[62,50],last:'2天前'},
+      {name:'周文博',id:'2024030107',bp:[55,48],last:'3天前'},
+      {name:'吴思琪',id:'2024030108',bp:[50,40],last:'3天前'},
+      {name:'郑浩然',id:'2024030109',bp:[42,35],last:'4天前'},
+      {name:'马欣怡',id:'2024030110',bp:[35,28],last:'5天前'},
+      {name:'黄子轩',id:'2024030111',bp:[28,20],last:'6天前'},
+      {name:'林雅琪',id:'2024030112',bp:[22,15],last:'1周前'},
+    ]
+  },
+  {
+    id:2,name:'高二数学提高班',subject:'数学',desc:'选择性必修函数与导数专题',
+    code:'SCH2-SXTG',created:'2026-03-20',admin:'李明远',
+    books:[
+      {t:'数学',s:'选择性必修第一册',g:'高二',p:'人民教育出版社',sub:'数学'},
+    ],
+    students:[
+      {name:'李泽宇',id:'2024030201',bp:[88],last:'今天'},
+      {name:'杨思涵',id:'2024030202',bp:[82],last:'今天'},
+      {name:'何子豪',id:'2024030203',bp:[75],last:'昨天'},
+      {name:'罗雨萱',id:'2024030204',bp:[70],last:'昨天'},
+      {name:'谢明轩',id:'2024030205',bp:[62],last:'2天前'},
+      {name:'韩思琪',id:'2024030206',bp:[55],last:'3天前'},
+      {name:'唐文杰',id:'2024030207',bp:[48],last:'4天前'},
+      {name:'曹雅婷',id:'2024030208',bp:[40],last:'5天前'},
+    ]
+  },
+];
+
+const AVATAR_COLORS=[
+  ['#4aaa85','#78c8a8'],['#4a8ec8','#7ab4de'],['#d48548','#e8a870'],
+  ['#8a60b8','#aa88d0'],['#c85a72','#e08898'],['#b8a030','#d0c060'],
+  ['#4a98b0','#78bcd0'],['#98804a','#b8a878'],
+];
+
+function openDetail(bookIdx, source){
+  const list = source === 'my' ? myB : books;
+  const b = list[bookIdx];
+  const [c1,c2] = c(b.sub);
+  const price = PRICES[b.sub] || 19.90;
+  const isMine = source === 'my';
+
+  // Hero
+  document.getElementById('detailHero').innerHTML = `
+    <div class="detail-cover">
+      <div class="cover-inner" style="background:linear-gradient(145deg,${c1},${c2})">
+        <div class="cover-name">${b.t}</div>
+        <div class="cover-sub">${b.s}</div>
+      </div>
+    </div>
+    <div class="detail-info">
+      <div class="detail-book-title">${b.t} · ${b.s}</div>
+      <div class="detail-book-sub">${b.g} · ${b.tp==='r'?'必修教材':'选修教材'}</div>
+      <div class="detail-meta-grid">
+        <div class="meta-item"><span class="meta-label">出版社</span><span class="meta-value">${b.p}</span></div>
+        <div class="meta-item"><span class="meta-label">版本</span><span class="meta-value">2024年修订版</span></div>
+        <div class="meta-item"><span class="meta-label">ISBN</span><span class="meta-value">978-7-${Math.floor(1000+Math.random()*9000)}-${Math.floor(1000+Math.random()*9000)}-${Math.floor(1+Math.random()*9)}</span></div>
+        <div class="meta-item"><span class="meta-label">格式</span><span class="meta-value">PDF / EPUB</span></div>
+      </div>
+      <div class="detail-actions">
+        ${isMine
+          ? `<button class="btn-buy purchased">已购买</button>
+             <button class="btn-print" onclick="handlePrint(event)">
+               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+               打印
+             </button>`
+          : `<button class="btn-buy" onclick="handleBuy(this)">立即购买</button>
+             <button class="btn-trial" onclick="openRedeem()">
+               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="margin-right:4px;vertical-align:-2px"><path d="M21 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/><path d="M16 2v6M8 2v6"/></svg>兑换码
+             </button>
+             <button class="btn-trial">免费试读</button>
+             <span class="detail-price">¥${price.toFixed(2)}</span>
+             <span class="detail-price-orig">¥${(price*1.5).toFixed(2)}</span>`
+        }
+      </div>
+    </div>`;
+
+  // Intro
+  const desc = DESC[b.sub] || '本教材严格按照国家课程标准编写，内容科学规范，注重学科核心素养的培养。';
+  const modeHtml = isMine ? `
+    <div class="mode-section">
+      <div class="intro-heading"><span class="bar"></span>学习模式</div>
+      <div class="mode-grid">
+        <div class="mode-card" onclick="alertMode('阅读模式')">
+          <div class="mode-icon mi-read">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="mode-info">
+            <div class="mode-name">阅读模式</div>
+            <div class="mode-desc">沉浸式阅读体验，支持批注、书签、笔记和划线标注</div>
+          </div>
+          <svg class="mode-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="mode-card" onclick="alertMode('视听模式')">
+          <div class="mode-icon mi-av">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div class="mode-info">
+            <div class="mode-name">视听模式</div>
+            <div class="mode-desc">配套微课视频、课文朗读、名师讲解音频资源</div>
+          </div>
+          <svg class="mode-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="mode-card" onclick="alertMode('任务模式')">
+          <div class="mode-icon mi-task">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div class="mode-info">
+            <div class="mode-name">任务模式</div>
+            <div class="mode-desc">章节练习、课后作业、自测试卷，自动批改与错题收集</div>
+          </div>
+          <svg class="mode-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="mode-card" onclick="alertMode('知识图谱')">
+          <div class="mode-icon mi-kg">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><line x1="12" y1="8" x2="5" y2="16"/><line x1="12" y1="8" x2="19" y2="16"/><line x1="5" y1="19" x2="19" y2="19"/></svg>
+          </div>
+          <div class="mode-info">
+            <div class="mode-name">知识图谱</div>
+            <div class="mode-desc">可视化知识结构，智能关联跨章节概念与考点脉络</div>
+          </div>
+          <svg class="mode-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>` : '';
+
+  document.getElementById('pane-intro').innerHTML = `
+    ${isMine ? modeHtml : ''}
+    <div class="intro-section" ${isMine?'style="margin-top:28px"':''}>
+      <div class="intro-heading"><span class="bar"></span>教材简介</div>
+      <div class="intro-text">${desc}</div>
+    </div>
+    <div class="intro-section">
+      <div class="intro-heading"><span class="bar"></span>教材特色</div>
+      <div class="intro-text">本教材具有以下特色：紧扣课程标准，科学设计教学内容；注重情境创设，激发学习兴趣；设置多样化练习，巩固知识要点；融入信息技术，支持数字化学习。配套丰富的数字资源，包括教学课件、微课视频、在线练习等。</div>
+      <div class="intro-tags">
+        <span class="intro-tag">${b.g}</span>
+        <span class="intro-tag">${b.tp==='r'?'必修':'选修'}</span>
+        <span class="intro-tag">数字版</span>
+        <span class="intro-tag">配套资源</span>
+        <span class="intro-tag">课程标准</span>
+      </div>
+    </div>`;
+
+  // TOC
+  const toc = TOC[b.sub] || [{u:'第一单元',ls:['第1课','第2课','第3课']},{u:'第二单元',ls:['第4课','第5课','第6课']}];
+  const tocColor = c1;
+  document.getElementById('pane-toc').innerHTML = `
+    <ul class="toc-list">
+      ${toc.map((unit,ui) => `
+        <li class="toc-unit${ui===0?' open':''}">
+          <div class="toc-unit-head" onclick="toggleUnit(this)">
+            <span class="toc-unit-num" style="background:${tocColor}15;color:${tocColor}">${ui+1}</span>
+            <span>${unit.u}</span>
+            <svg class="toc-unit-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="toc-lessons">
+            ${unit.ls.map(l => `
+              <div class="toc-lesson">
+                <span class="toc-lesson-dot" style="background:${tocColor}"></span>
+                <span>${l}</span>
+                ${!isMine?`<svg class="toc-lesson-lock" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`:''}
+              </div>`).join('')}
+          </div>
+        </li>`).join('')}
+    </ul>`;
+
+  // Reset tabs
+  document.querySelectorAll('.detail-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab==='intro'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('active',p.id==='pane-intro'));
+
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeDetail(){
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.detail-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('active',p.id===`pane-${tab}`));
+}
+
+function toggleUnit(el){
+  el.parentElement.classList.toggle('open');
+}
+
+function handleBuy(btn){
+  btn.textContent='已购买';
+  btn.classList.add('purchased');
+  // hide trial & price
+  const actions = btn.parentElement;
+  const trial = actions.querySelector('.btn-trial');
+  const price = actions.querySelector('.detail-price');
+  const orig = actions.querySelector('.detail-price-orig');
+  if(trial) trial.style.display='none';
+  if(price) price.style.display='none';
+  if(orig) orig.style.display='none';
+}
+
+// Close on Escape
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeRedeem();closeDetail();closeCreateClass();closeClassDetail();closeBookPicker()}
+});
+
+// Redeem code
+function openRedeem(){
+  document.getElementById('redeemForm').style.display='block';
+  document.getElementById('redeemSuccess').classList.remove('show');
+  document.getElementById('redeemCode').value='';
+  document.getElementById('redeemOverlay').classList.add('open');
+}
+
+function closeRedeem(){
+  document.getElementById('redeemOverlay').classList.remove('open');
+}
+
+function doRedeem(){
+  const code=document.getElementById('redeemCode').value.trim();
+  if(code.length<4){
+    document.getElementById('redeemCode').style.borderColor='var(--rose-deep)';
+    document.getElementById('redeemCode').style.boxShadow='0 0 0 3px rgba(196,92,116,0.1)';
+    setTimeout(()=>{
+      document.getElementById('redeemCode').style.borderColor='';
+      document.getElementById('redeemCode').style.boxShadow='';
+    },1500);
+    return;
+  }
+  document.getElementById('redeemForm').style.display='none';
+  document.getElementById('redeemSuccess').classList.add('show');
+  setTimeout(()=>closeRedeem(),2000);
+}
+
+// Auto-format redeem code (add dashes)
+document.getElementById('redeemCode').addEventListener('input',function(e){
+  let v=this.value.replace(/[^A-Za-z0-9]/g,'').toUpperCase();
+  if(v.length>16) v=v.slice(0,16);
+  let formatted='';
+  for(let i=0;i<v.length;i++){
+    if(i>0 && i%4===0) formatted+='-';
+    formatted+=v[i];
+  }
+  this.value=formatted;
+});
+
+// Print
+function handlePrint(e){
+  e&&e.stopPropagation();
+  const btn=e.target.closest('.btn-print');
+  const orig=btn.innerHTML;
+  btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 已发送至打印队列';
+  btn.style.color='var(--mint-deep)';
+  btn.style.borderColor='var(--mint-mid)';
+  btn.style.background='var(--mint)';
+  setTimeout(()=>{
+    btn.innerHTML=orig;
+    btn.style.color='';
+    btn.style.borderColor='';
+    btn.style.background='';
+  },2500);
+}
+
+// Mode alert
+function alertMode(name){
+  closeDetail();
+  const toast=document.createElement('div');
+  toast.style.cssText='position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:var(--deep);color:white;padding:14px 28px;border-radius:12px;font-size:13px;z-index:300;box-shadow:0 8px 30px rgba(0,0,0,0.15);animation:fadeUp 0.3s ease;display:flex;align-items:center;gap:10px';
+  toast.innerHTML=`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>正在进入「${name}」...`;
+  document.body.appendChild(toast);
+  setTimeout(()=>{toast.style.opacity='0';toast.style.transition='opacity 0.3s';setTimeout(()=>toast.remove(),300)},2000);
+}
+
+// === CLASS GROUP FUNCTIONS ===
+function openCreateClass(){
+  document.getElementById('ccmName').value='';
+  document.getElementById('ccmDesc').value='';
+  document.getElementById('createClassOverlay').classList.add('open');
+}
+function closeCreateClass(){
+  document.getElementById('createClassOverlay').classList.remove('open');
+}
+function doCreateClass(){
+  const name=document.getElementById('ccmName').value.trim();
+  if(!name){
+    document.getElementById('ccmName').style.borderColor='var(--rose-deep)';
+    document.getElementById('ccmName').style.boxShadow='0 0 0 3px rgba(196,92,116,0.1)';
+    setTimeout(()=>{document.getElementById('ccmName').style.borderColor='';document.getElementById('ccmName').style.boxShadow=''},1500);
+    return;
+  }
+  const sub=document.getElementById('ccmSubject').value;
+  const desc=document.getElementById('ccmDesc').value.trim();
+  const code='SC'+String.fromCharCode(65+Math.floor(Math.random()*26))+Math.floor(Math.random()*9)+'-'+sub.slice(0,2).toUpperCase()+Math.floor(1000+Math.random()*9000);
+  classGroups.push({id:Date.now(),name,subject:sub,desc:desc||sub+'学习小组',code,created:new Date().toISOString().slice(0,10),admin:'李明远',books:[],students:[]});
+  closeCreateClass();
+  renderMy();
+  // success toast
+  const toast=document.createElement('div');
+  toast.style.cssText='position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:var(--deep);color:white;padding:14px 28px;border-radius:12px;font-size:13px;z-index:300;box-shadow:0 8px 30px rgba(0,0,0,0.15);animation:fadeUp 0.3s ease;display:flex;align-items:center;gap:10px';
+  toast.innerHTML=`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>班级「${name}」创建成功`;
+  document.body.appendChild(toast);
+  setTimeout(()=>{toast.style.opacity='0';toast.style.transition='opacity 0.3s';setTimeout(()=>toast.remove(),300)},2000);
+}
+
+function drawQR(canvas,text){
+  // Simple visual QR-like pattern (decorative)
+  const ctx=canvas.getContext('2d');
+  const s=canvas.width;ctx.clearRect(0,0,s,s);
+  const grid=21,cell=Math.floor(s/grid);
+  // Seed from text
+  let seed=0;for(let i=0;i<text.length;i++)seed=(seed*31+text.charCodeAt(i))&0x7fffffff;
+  function rng(){seed=(seed*16807)%2147483647;return seed/2147483647}
+  // Draw modules
+  ctx.fillStyle='#1f2937';
+  for(let r=0;r<grid;r++)for(let cl=0;cl<grid;cl++){
+    // Fixed patterns (finder)
+    const inFinder=(r<7&&cl<7)||(r<7&&cl>=grid-7)||(r>=grid-7&&cl<7);
+    if(inFinder){
+      const fr=r<7?0:grid-7,fc=cl<7?0:grid-7;
+      const lr=r-fr,lc=cl-fc;
+      if(lr===0||lr===6||lc===0||lc===6||(lr>=2&&lr<=4&&lc>=2&&lc<=4))
+        ctx.fillRect(cl*cell,r*cell,cell,cell);
+    } else if(rng()>0.5){
+      ctx.fillRect(cl*cell,r*cell,cell,cell);
+    }
+  }
+}
+
+let currentClassIdx=null;
+
+function openClassDetail(idx){
+  currentClassIdx=idx;
+  const cls=classGroups[idx];
+  if(!cls)return;
+  // Compute avg progress per student across class books
+  const students=[...cls.students].map(st=>{
+    const avg=st.bp.length?Math.round(st.bp.reduce((a,b)=>a+b,0)/st.bp.length):0;
+    return {...st,pr:avg};
+  }).sort((a,b)=>b.pr-a.pr);
+  const totalPr=students.length?Math.round(students.reduce((s,st)=>s+st.pr,0)/students.length):0;
+  const activeCnt=students.filter(s=>s.last==='今天'||s.last==='昨天').length;
+  const completedCnt=students.filter(s=>s.pr>=80).length;
+
+  // Class books HTML
+  const classBooksHtml=cls.books.map((bk,bi)=>{
+    const [c1,c2]=c(bk.sub);
+    // Avg progress for this book across students
+    const bAvg=cls.students.length?Math.round(cls.students.reduce((s,st)=>s+(st.bp[bi]||0),0)/cls.students.length):0;
+    const bpc=bAvg>=70?'var(--mint-deep)':bAvg>=40?'var(--peach-deep)':'var(--rose-deep)';
+    return `<div class="class-book-row">
+      <div class="class-book-cover" style="background:linear-gradient(145deg,${c1},${c2})">
+        <div class="class-book-cover-name">${bk.t}</div>
+      </div>
+      <div class="class-book-info">
+        <div class="class-book-name">${bk.t} · ${bk.s}</div>
+        <div class="class-book-pub">${bk.p} · ${bk.g}</div>
+      </div>
+      <div class="class-book-avg">
+        <div class="class-book-avg-val" style="color:${bpc}">${bAvg}%</div>
+        <div class="class-book-avg-lab">班级均分</div>
+      </div>
+      <button class="class-book-remove" title="移除教材" onclick="removeClassBook(${idx},${bi})">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>`;
+  }).join('');
+
+  const content=document.getElementById('classDetailContent');
+  content.innerHTML=`
+    <div class="class-detail-header">
+      <div class="class-detail-name">${cls.name} <span class="admin-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>管理员</span></div>
+      <div class="class-detail-meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>${cls.subject}</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${cls.created}</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>${students.length} 名学生</span>
+        <span>创建者: ${cls.admin}</span>
+      </div>
+    </div>
+    <div class="invite-section">
+      <div class="invite-code-box">
+        <div class="invite-label">邀请码</div>
+        <div class="invite-code-display">
+          <span class="invite-code-text">${cls.code}</span>
+          <button class="invite-copy-btn" onclick="copyCode(this,'${cls.code}')">复制</button>
+        </div>
+      </div>
+      <div class="invite-qr-box">
+        <div class="invite-label">扫码加入</div>
+        <div class="qr-canvas"><canvas id="qrCanvas" width="104" height="104"></canvas></div>
+        <div class="qr-hint">学生扫码即可加入</div>
+      </div>
+    </div>
+    <div class="class-books-section">
+      <div class="class-books-head">
+        <div class="class-books-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          班级教材
+          <span class="class-books-count">${cls.books.length} 本</span>
+        </div>
+        <button class="btn-add-book" onclick="openBookPicker(${idx})">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          添加教材
+        </button>
+      </div>
+      <div class="class-book-list">
+        ${cls.books.length?classBooksHtml:'<div style="text-align:center;padding:24px;color:var(--stone);font-size:12.5px">暂未添加教材，点击上方按钮从「我的教材」中添加</div>'}
+      </div>
+    </div>
+    <div class="class-stats-row">
+      <div class="cs-box"><div class="cs-val">${students.length}</div><div class="cs-lab">班级人数</div></div>
+      <div class="cs-box"><div class="cs-val">${totalPr}%</div><div class="cs-lab">平均进度</div></div>
+      <div class="cs-box"><div class="cs-val">${activeCnt}</div><div class="cs-lab">近期活跃</div></div>
+      <div class="cs-box"><div class="cs-val">${completedCnt}</div><div class="cs-lab">已完成</div></div>
+    </div>
+    <div class="student-section">
+      <div class="student-head">
+        <div class="student-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          学生学习进度排行
+        </div>
+        <span class="student-count">共 ${students.length} 人</span>
+      </div>
+      ${cls.books.length?`<div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
+        ${cls.books.map((bk,bi)=>{
+          const [bc1]=c(bk.sub);
+          return `<span style="font-size:10px;padding:3px 10px;border-radius:6px;background:${bc1}18;color:${bc1};font-weight:500">${bk.t}·${bk.s.length>6?bk.s.slice(0,6)+'…':bk.s}</span>`;
+        }).join('')}
+      </div>`:''}
+      <div class="student-list">
+        ${students.map((st,i)=>{
+          const ac=AVATAR_COLORS[i%AVATAR_COLORS.length];
+          const pc=st.pr>=80?'var(--mint-deep)':st.pr>=50?'var(--peach-deep)':'var(--rose-deep)';
+          const rc=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other';
+          // Per-book progress bars
+          const bpHtml=cls.books.length?`<div class="student-book-progress">${st.bp.map((p,bi)=>{
+            const bpc=p>=70?'var(--mint-deep)':p>=40?'var(--peach-deep)':'var(--rose-deep)';
+            return `<div class="sbp-item"><div class="sbp-bar"><div class="sbp-fill" style="width:${p}%;background:${bpc}"></div></div><div class="sbp-pct" style="color:${bpc}">${p}%</div></div>`;
+          }).join('')}</div>`:'';
+          return `<div class="student-row">
+            <div class="student-rank ${rc}">${i+1}</div>
+            <div class="student-avatar" style="background:linear-gradient(135deg,${ac[0]},${ac[1]})">${st.name.slice(-1)}</div>
+            <div class="student-info">
+              <div class="student-name">${st.name}</div>
+              <div class="student-id">${st.id}</div>
+            </div>
+            <div class="student-progress">
+              <div class="student-bar"><div class="student-bar-fill" style="width:${st.pr}%;background:${pc}"></div></div>
+              <span class="student-pct" style="color:${pc}">${st.pr}%</span>
+            </div>
+            ${bpHtml}
+            <div class="student-last">${st.last}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+
+  document.getElementById('classOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>{
+    const cv=document.getElementById('qrCanvas');
+    if(cv)drawQR(cv,cls.code);
+  },50);
+}
+
+function closeClassDetail(){
+  document.getElementById('classOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function copyCode(btn,code){
+  navigator.clipboard.writeText(code).catch(()=>{});
+  btn.textContent='已复制';btn.classList.add('copied');
+  setTimeout(()=>{btn.textContent='复制';btn.classList.remove('copied')},2000);
+}
+
+function openBookPicker(classIdx){
+  currentClassIdx=classIdx;
+  const cls=classGroups[classIdx];
+  const list=document.getElementById('bpList');
+  list.innerHTML=myB.map((bk,i)=>{
+    const [c1,c2]=c(bk.sub);
+    const already=cls.books.some(cb=>cb.t===bk.t&&cb.s===bk.s);
+    return `<div class="bp-item${already?' added':''}" onclick="${already?'':'addBookToClass('+classIdx+','+i+',this)'}">
+      <div class="bp-cover" style="background:linear-gradient(145deg,${c1},${c2})">
+        <div class="bp-cover-name">${bk.t}</div>
+      </div>
+      <div class="bp-info">
+        <div class="bp-name">${bk.t} · ${bk.s}</div>
+        <div class="bp-sub">${bk.p} · ${bk.g}</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('bookPickerOverlay').classList.add('open');
+}
+
+function closeBookPicker(){
+  document.getElementById('bookPickerOverlay').classList.remove('open');
+}
+
+function addBookToClass(classIdx,bookIdx,el){
+  const cls=classGroups[classIdx];
+  const bk=myB[bookIdx];
+  cls.books.push({t:bk.t,s:bk.s,g:bk.g,p:bk.p,sub:bk.sub});
+  // Add random progress for existing students
+  cls.students.forEach(st=>{st.bp.push(Math.floor(Math.random()*60))});
+  el.classList.add('added');
+  el.onclick=null;
+  // Refresh detail
+  closeBookPicker();
+  openClassDetail(classIdx);
+}
+
+function removeClassBook(classIdx,bookIdx){
+  const cls=classGroups[classIdx];
+  cls.books.splice(bookIdx,1);
+  cls.students.forEach(st=>{st.bp.splice(bookIdx,1)});
+  openClassDetail(classIdx);
+}
+
+function mkCard(b,i,wp){
+  const [c1,c2]=c(b.sub);
+  const pc=(b.pr||0)>=80?'var(--mint-deep)':(b.pr||0)>=40?'var(--peach-deep)':'var(--rose-deep)';
+  let st='';
+  if(wp) st=b.dl
+    ?`<div class="card-st st-ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>`
+    :`<div class="card-st st-cl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>`;
+  let pg='';
+  if(wp) pg=`<div class="prog"><div class="prog-track"><div class="prog-fill" style="width:${b.pr}%;background:${pc}"></div></div><span class="prog-pct">${b.pr}%</span></div>`;
+  return `<div class="card" style="animation-delay:${i*0.04}s" onclick="openDetail(${i},'${wp?'my':'lib'}')">${st}<div class="cover"><div class="cover-inner" style="background:linear-gradient(145deg,${c1},${c2})"><span class="cover-grade">${b.g}</span><div class="cover-name">${b.t}</div><div class="cover-sub">${b.s}</div></div></div><div class="detail"><div class="detail-title">${b.t} · ${b.s}</div><div class="detail-row"><span class="detail-pub">${b.p}</span><span class="tag ${b.tp==='r'?'tag-req':'tag-opt'}">${b.tp==='r'?'必修':'选修'}</span></div>${pg}</div></div>`;
+}
+
+let fG='全部',fS='全部科目';
+const GS=['全部','高一','高二','高三'];
+const SS=['全部科目','语文','数学','英语','物理','化学','生物','历史','地理','政治'];
+
+function renderLib(){
+  let list=books;
+  if(fG!=='全部')list=list.filter(b=>b.g===fG);
+  if(fS!=='全部科目')list=list.filter(b=>b.sub===fS);
+  const q=(document.getElementById('sInput').value||'').trim().toLowerCase();
+  if(q)list=list.filter(b=>b.t.includes(q)||b.s.includes(q)||b.p.includes(q));
+
+  const gc=GS.map(g=>`<div class="pill ${g===fG?'active':''}" onclick="fG='${g}';renderLib()">${g}</div>`).join('');
+  const sc=SS.map(s=>`<div class="pill ${s===fS?'active':''}" onclick="fS='${s}';renderLib()">${s}</div>`).join('');
+
+  const bk=list.length
+    ?`<div class="grid">${list.map((b,i)=>mkCard(b,i,false)).join('')}</div>`
+    :`<div style="text-align:center;padding:80px;color:var(--stone)"><p style="font-size:14px;margin-bottom:4px">未找到匹配的教材</p><p style="font-size:12px;color:var(--silver)">请尝试调整筛选条件</p></div>`;
+
+  document.getElementById('page-library').innerHTML=`
+    <div class="filters">${gc}<div class="pill-sep"></div>${sc}</div>
+    <div class="sec-head"><div class="sec-title"><span class="dot"></span>教材资源</div><div class="sec-extra">共 ${list.length} 本</div></div>${bk}`;
+}
+
+function renderMy(){
+  const dl=myB.filter(b=>b.dl).length;
+  const avg=Math.round(myB.reduce((s,b)=>s+b.pr,0)/myB.length);
+
+  const classHtml=classGroups.map((cls,i)=>{
+    const avgPr=cls.students.length?Math.round(cls.students.reduce((s,st)=>{
+      const sp=st.bp.length?Math.round(st.bp.reduce((a,b)=>a+b,0)/st.bp.length):0;
+      return s+sp;
+    },0)/cls.students.length):0;
+    const barColor=avgPr>=60?'var(--mint-deep)':avgPr>=30?'var(--peach-deep)':'var(--rose-deep)';
+    return `<div class="class-card" onclick="openClassDetail(${i})">
+      ${cls.admin==='李明远'?'<div class="class-card-admin"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>管理员</div>':''}
+      <div class="class-card-head">
+        <div class="class-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="class-card-info">
+          <div class="class-card-name">${cls.name}</div>
+          <div class="class-card-sub">${cls.subject} · ${cls.books.length} 本教材 · ${cls.students.length} 人</div>
+        </div>
+      </div>
+      <div class="class-card-stats">
+        <div class="class-stat"><div class="class-stat-val">${cls.students.length}</div><div class="class-stat-lab">学生人数</div></div>
+        <div class="class-stat"><div class="class-stat-val">${avgPr}%</div><div class="class-stat-lab">平均进度</div></div>
+        <div class="class-stat"><div class="class-stat-val">${cls.books.length}</div><div class="class-stat-lab">班级教材</div></div>
+      </div>
+      <div class="class-card-bar"><div class="class-card-bar-fill" style="width:${avgPr}%;background:${barColor}"></div></div>
+      <div class="class-card-foot">
+        <div class="class-card-date">创建于 ${cls.created}</div>
+        <svg class="class-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('page-my').innerHTML=`
+    <div class="stats">
+      <div class="stat-box"><div class="stat-ic si-mint"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="stat-data"><div class="stat-val">${myB.length}</div><div class="stat-lab">我的教材总数</div></div></div>
+      <div class="stat-box"><div class="stat-ic si-sky"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="stat-data"><div class="stat-val">${dl}</div><div class="stat-lab">已下载至本地</div></div></div>
+      <div class="stat-box"><div class="stat-ic si-peach"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div class="stat-data"><div class="stat-val">${avg}%</div><div class="stat-lab">平均学习进度</div></div></div>
+    </div>
+    <div class="sec-head"><div class="sec-title"><span class="dot"></span>我的书架</div><div class="sec-extra">管理教材 →</div></div>
+    <div class="grid">${myB.map((b,i)=>mkCard(b,i,true)).join('')}</div>
+    <div class="class-section">
+      <div class="sec-head"><div class="sec-title"><span class="dot"></span>我的班级</div><div class="sec-extra">共 ${classGroups.length} 个班级</div></div>
+      <div class="class-grid">
+        ${classHtml}
+        <div class="class-card-create" onclick="openCreateClass()">
+          <div class="class-create-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+          <div class="class-create-text">创建新班级</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function go(p){
+  document.querySelectorAll('.nav-item[data-page]').forEach(el=>el.classList.toggle('active',el.dataset.page===p));
+  document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id===`page-${p}`));
+  const t=document.getElementById('pTitle'),h=document.getElementById('pHint');
+  if(p==='library'){t.textContent='数字教材';h.textContent='浏览全部数字教材资源';renderLib()}
+  else{t.textContent='我的教材';h.textContent='管理已添加的教材与学习进度';renderMy()}
+}
+
+renderLib();
+</script>
+</body>
+</html>
