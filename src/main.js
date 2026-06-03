@@ -26,6 +26,21 @@ const BOOK_READ_MODES = [
   { key: 'kg', label: '知识图谱' },
 ];
 
+const HOME_RECOMMENDED_BOOKS = [
+  { t: '运动营养学', en: 'SPORTS NUTRITION', editor: '赵建国', publisher: '四川电教馆电子音像出版社', theme: 'sports' },
+  { t: '中华优秀传统文化', en: 'TRADITIONAL CULTURE', editor: '刘文静', publisher: '四川电教馆电子音像出版社', theme: 'culture' },
+  { t: '新能源汽车概论', en: 'NEW ENERGY VEHICLE', editor: '李娟强', publisher: '四川电教馆电子音像出版社', theme: 'vehicle' },
+  { t: '数据算法与结构', en: 'DATA STRUCTURE', editor: '姚晓明', publisher: '四川电教馆电子', theme: 'data' },
+  { t: '新时代下的媒体资源', en: 'MEDIA RESOURCE', editor: '王晓晴', publisher: '四川电教馆电子音像出版社', theme: 'media' },
+  { t: '智能家居', en: 'SMART HOME', editor: '陈思远', publisher: '四川电教馆电子音像出版社', theme: 'home' },
+  { t: '半导体物理学', en: 'SEMICONDUCTOR PHYSICS', editor: '李国强', publisher: '四川电教馆电子音像出版社', theme: 'chip' },
+  { t: '人工智能导论', en: 'ARTIFICIAL INTELLIGENCE', editor: '周明', publisher: '四川电教馆电子音像出版社', theme: 'ai' },
+  { t: '数字化设计与3D打印', en: 'DIGITAL DESIGN & 3D PRINTING', editor: '陈明', publisher: '四川电教馆电子音像出版社', theme: 'print' },
+  { t: '田野书香', en: 'FIELD READING', editor: '余小梅', publisher: '四川电教馆电子音像出版社', theme: 'field' },
+  { t: '摄像技术', en: 'CAMERA TECHNOLOGY', editor: '李霖', publisher: '四川电教馆电子音像出版社', theme: 'camera' },
+  { t: '首饰组织', en: 'JEWELRY DESIGN', editor: '吴理珍', publisher: '四川电教馆电子音像出版社', theme: 'jewel' },
+];
+
 function resolveLibReadModes(b) {
   const keys = b && Array.isArray(b.readModeKeys) ? b.readModeKeys : [];
   if (!keys.length) return [];
@@ -97,6 +112,7 @@ function detailLearningModesSectionHtml(modeEntries) {
 }
 
 const books=[
+  {t:'运动营养学',s:'实践篇',g:'中职 二年级',p:'四川电教馆电子音像出版社',tp:'o',sub:'运动营养',cat:'体育健康',paperDigital:true,editor:'赵建国',readModeKeys:['read','av','task']},
   {t:'计算机应用基础',s:'上册',g:'中职 一年级',p:'高等教育出版社',tp:'o',sub:'计算机基础',cat:'计算机基础',paperDigital:true,editor:'张炜 等',readModeKeys:['read','av','task','kg']},
   {t:'计算机应用基础',s:'下册',g:'中职 一年级',p:'高等教育出版社',tp:'o',sub:'计算机基础',cat:'计算机基础',editor:'张炜 等',readModeKeys:['read','av','task']},
   {t:'C语言程序设计',s:'上册',g:'中职 一年级',p:'高等教育出版社',tp:'o',sub:'程序设计',cat:'程序与开发',readModeKeys:['read','task']},
@@ -134,11 +150,46 @@ const myB=[
 
 function c(sub){return PAL[SM[sub]??0]}
 
+function buildLibraryHeroHtml() {
+  return `<section class="home-hero">
+    <div class="home-hero__copy">
+      <h2 class="home-hero__title">发现优质数字教材</h2>
+      <p class="home-hero__desc">海量优质资源，助力高效学习</p>
+      <div class="home-hero__actions">
+        <button type="button" class="home-hero__btn home-hero__btn--primary" onclick="openLibraryCatalog()">探索全部教材 <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+    <div class="home-hero__visual" aria-hidden="true">
+      <img class="home-hero__image" src="/reader/home-hero-digital-textbook.png" width="1774" height="887" alt="">
+    </div>
+  </section>`;
+}
+
+function mkLibraryShowcaseCard(item, i) {
+  const matchedBookIdx = books.findIndex((b) => b.t === item.t);
+  const bookIdx = matchedBookIdx >= 0 ? matchedBookIdx : i % books.length;
+  return `<article class="library-card" onclick="openDetail(${bookIdx},'lib')">
+    <div class="library-card__cover library-cover--${item.theme}">
+      <div class="library-card__cover-inner">
+        <div class="library-card__title">${escAttr(item.t)}</div>
+        <div class="library-card__en">${escAttr(item.en)}</div>
+        <div class="library-card__editor">主编：${escAttr(item.editor)}</div>
+        <div class="library-card__figure" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="library-card__body">
+      <h3 class="library-card__name">${escAttr(item.t)}</h3>
+      <p class="library-card__publisher">${escAttr(item.publisher)}</p>
+    </div>
+  </article>`;
+}
+
 /** 后台配置：是否为纸数融合教材 */
 function isPaperDigital(b){return !!(b&&b.paperDigital)}
 
 // Book descriptions
 const DESC={
+  运动营养:'本教材围绕运动前、中、后的能量供给、营养补给与身体恢复，结合校园运动、体能训练和职业健康场景展开。通过饮食记录、能量消耗估算与补水方案设计，帮助学习者理解营养素、运动强度和恢复节奏之间的关系。',
   计算机基础:'本教材依据中等职业学校信息技术课程标准，从计算机软硬件、操作系统、信息素养与安全等方面建立完整认知。通过上机任务与项目案例，培养规范操作、信息意识与基本的信息技术应用能力，为后续专业学习打牢基础。',
   程序设计:'本教材以中职学生认知规律为主线，从语法基础到模块化与面向对象，配合大量例题与综合实训。强调算法思维、调试能力与代码规范，衔接岗位常见的控制台与小型应用开发场景。',
   Python:'本教材选用 Python 作为首门编程语言，涵盖基本语法、数据结构、文件与异常、简单类与包管理等内容。以「做中学」为路径，通过脚本自动化、小工具与轻量项目培养计算思维与可迁移的编程能力。',
@@ -414,6 +465,8 @@ function syncSidebarUser() {
   const u = getUserProfile();
   const av = document.getElementById('sidebarAvatar') || document.querySelector('.sidebar-foot .avatar');
   const nameEl = document.getElementById('sidebarUserName') || document.querySelector('.sidebar-foot .user-name');
+  const topbarAvatar = document.getElementById('topbarAvatar');
+  const topbarName = document.getElementById('topbarUserName');
   if (!u) {
     if (av) {
       av.style.backgroundImage = '';
@@ -422,6 +475,8 @@ function syncSidebarUser() {
       av.textContent = '登';
     }
     if (nameEl) nameEl.textContent = '未登录';
+    if (topbarAvatar) topbarAvatar.textContent = '登';
+    if (topbarName) topbarName.textContent = '请先登录';
     const schoolEl = document.getElementById('sidebarUserSchool');
     if (schoolEl) schoolEl.hidden = true;
     return;
@@ -441,6 +496,8 @@ function syncSidebarUser() {
     }
   }
   if (nameEl) nameEl.textContent = u.nickname || DEFAULT_USER_PROFILE.nickname;
+  if (topbarAvatar) topbarAvatar.textContent = (u.nickname || DEFAULT_USER_PROFILE.nickname).trim().slice(0, 1);
+  if (topbarName) topbarName.textContent = u.nickname || DEFAULT_USER_PROFILE.nickname;
   const schoolEl = document.getElementById('sidebarUserSchool');
   if (schoolEl) {
     if (!FEATURE_SCHOOL_UI) {
@@ -2312,10 +2369,51 @@ function mkCard(b,i,wp){
 }
 
 let fG='全部',fS='全部科目';
+let libraryView='home';
 let myShelfView = 'mine';
 let myShelfClassFilter = 'all';
 function setGradeFilter(g){fG=g;renderLib();}
 function setSubjectFilter(s){fS=s;renderLib();}
+
+function syncLibraryTopbar(){
+  const topbar=document.querySelector('.topbar');
+  const backBtn=document.getElementById('topbarBackBtn');
+  const onLibrary=document.getElementById('page-library')?.classList.contains('active');
+  if(!topbar||!onLibrary)return;
+  const isCatalog=libraryView==='catalog';
+  topbar.classList.toggle('topbar--library',!isCatalog);
+  topbar.classList.toggle('topbar--catalog',isCatalog);
+  if(backBtn)backBtn.hidden=!isCatalog;
+  const sw=document.getElementById('topbarSearchWrap');
+  if(sw)sw.style.display=isCatalog?'none':(onLibrary?'':'none');
+  const t=document.getElementById('pTitle'),h=document.getElementById('pHint');
+  if(!t||!h)return;
+  if(isCatalog){
+    t.textContent='全部数字教材';
+    h.textContent='按年级与科目筛选浏览';
+  }else{
+    t.textContent='数字教材';
+    h.textContent='浏览、选购全部上架数字教材';
+  }
+}
+
+function openLibraryCatalog(){
+  libraryView='catalog';
+  syncLibraryTopbar();
+  renderLib();
+  document.querySelector('.scroll')?.scrollTo({top:0,behavior:'smooth'});
+}
+
+function closeLibraryCatalog(){
+  libraryView='home';
+  syncLibraryTopbar();
+  renderLib();
+  document.querySelector('.scroll')?.scrollTo({top:0,behavior:'smooth'});
+}
+
+function onLibrarySearchInput(){
+  renderLib();
+}
 function setMyShelfTab(tabId){
   if (tabId === 'mine') {
     myShelfView = 'mine';
@@ -2328,11 +2426,11 @@ function setMyShelfTab(tabId){
   refreshMyPageIfActive();
 }
 
-/** 组群书架无书时的空态（图标 + 文案 + 管理员可添加图书） */
+/** 组群书架无书时的空态（图标 + 文案 + 管理员可添加教材） */
 function mkMyGroupShelfEmptyState(className, classIdx, isClassAdmin) {
   const name = className || '该组群';
   const addBlock = isClassAdmin && typeof classIdx === 'number'
-    ? `<button type="button" class="my-shelf-empty-btn" onclick="openBookPicker(${classIdx})">添加图书</button>`
+    ? `<button type="button" class="my-shelf-empty-btn" onclick="openBookPicker(${classIdx})">添加教材</button>`
     : `<p class="my-shelf-empty-hint">请联系组群管理员添加教材</p>`;
   return `<div class="my-shelf-empty my-shelf-empty--with-icon">
     <div class="my-shelf-empty-icon" aria-hidden="true">
@@ -2348,23 +2446,65 @@ const GS=['全部','中职 一年级','中职 二年级','中职 三年级'];
 /** 数字教材页「科目」筛选项（大类）；与书目字段 cat 对应，细分类仍用 sub 展示简介/目录 */
 const SS=['全部科目','计算机基础','程序与开发','网络与运维','数据与平台','人工智能'];
 
-function renderLib(){
-  let list=books;
-  if(fG!=='全部')list=list.filter(b=>b.g===fG);
-  if(fS!=='全部科目')list=list.filter(b=>(b.cat||b.sub)===fS);
-  const q=(document.getElementById('sInput').value||'').trim().toLowerCase();
-  if(q)list=list.filter(b=>b.t.includes(q)||b.s.includes(q)||b.p.includes(q));
+function filterLibraryBookItems(){
+  let items=books.map((b,i)=>({b,i}));
+  if(fG!=='全部')items=items.filter(({b})=>b.g===fG);
+  if(fS!=='全部科目')items=items.filter(({b})=>(b.cat||b.sub)===fS);
+  const q=(document.getElementById('sInput')?.value||'').trim().toLowerCase();
+  if(q)items=items.filter(({b})=>b.t.includes(q)||b.s.includes(q)||b.p.includes(q)||(b.cat||'').includes(q)||(b.sub||'').includes(q));
+  return items;
+}
 
-  const gc=GS.map(g=>`<div class="pill ${g===fG?'active':''}" onclick="setGradeFilter('${g}')">${g}</div>`).join('');
-  const sc=SS.map(s=>`<div class="pill ${s===fS?'active':''}" onclick="setSubjectFilter('${s}')">${s}</div>`).join('');
-
-  const bk=list.length
-    ?`<div class="grid">${list.map((b)=>mkCard(b,books.indexOf(b),false)).join('')}</div>`
-    :`<div style="text-align:center;padding:80px;color:var(--stone)"><p style="font-size:14px;margin-bottom:4px">未找到匹配的图书</p><p style="font-size:12px;color:var(--silver)">请尝试调整筛选条件</p></div>`;
+function renderLibraryCatalog(){
+  syncLibraryTopbar();
+  const items=filterLibraryBookItems();
+  const gc=GS.map(g=>`<button type="button" class="pill ${g===fG?'active':''}" onclick='setGradeFilter(${JSON.stringify(g)})'>${escAttr(g)}</button>`).join('');
+  const sc=SS.map(s=>`<button type="button" class="pill ${s===fS?'active':''}" onclick='setSubjectFilter(${JSON.stringify(s)})'>${escAttr(s)}</button>`).join('');
+  const bk=items.length
+    ?`<div class="grid">${items.map(({b,i})=>mkCard(b,i,false)).join('')}</div>`
+    :`<div class="library-empty">
+        <p class="library-empty__title">未找到匹配教材</p>
+        <p class="library-empty__desc">请尝试调整筛选条件或搜索关键词。</p>
+      </div>`;
 
   document.getElementById('page-library').innerHTML=`
-    <div class="filters">${gc}<div class="pill-sep"></div>${sc}</div>
-    <div class="sec-head"><div class="sec-title"><span class="dot"></span>数字教材</div><div class="sec-extra">共 ${list.length} 本</div></div>${bk}`;
+    <div class="library-catalog">
+      <div class="filters" role="toolbar" aria-label="教材筛选">${gc}<div class="pill-sep"></div>${sc}</div>
+      <div class="sec-head">
+        <div class="sec-title"><span class="dot"></span>教材资源</div>
+        <div class="sec-extra">共 ${items.length} 本</div>
+      </div>
+      ${bk}
+    </div>`;
+}
+
+function renderLibraryHome(){
+  syncLibraryTopbar();
+  const q=(document.getElementById('sInput')?.value||'').trim().toLowerCase();
+  const featuredList = q ? HOME_RECOMMENDED_BOOKS.filter((b) => b.t.includes(q) || b.publisher.includes(q)) : HOME_RECOMMENDED_BOOKS;
+  const content = featuredList.length
+    ? `<div class="library-grid">${featuredList.map((b, i) => mkLibraryShowcaseCard(b, i)).join('')}</div>`
+    : `<div class="library-empty">
+        <p class="library-empty__title">未找到匹配教材</p>
+        <p class="library-empty__desc">请尝试调整关键词后重新搜索。</p>
+      </div>`;
+
+  document.getElementById('page-library').innerHTML=`
+    <div class="library-home">
+      ${buildLibraryHeroHtml()}
+      <div class="library-section-head">
+        <div class="library-section-head__title"><span class="library-fire" aria-hidden="true">🔥</span>热门教材</div>
+        <button type="button" class="library-section-head__more" onclick="openLibraryCatalog()">查看全部教材 <span aria-hidden="true">›</span></button>
+      </div>
+      <div class="library-content">
+        ${content}
+      </div>
+    </div>`;
+}
+
+function renderLib(){
+  if(libraryView==='catalog')renderLibraryCatalog();
+  else renderLibraryHome();
 }
 
 function renderMy(){
@@ -2548,10 +2688,22 @@ function go(p){
   document.querySelectorAll('.nav-item[data-page]').forEach(el=>el.classList.toggle('active',el.dataset.page===p));
   document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id===`page-${p}`));
   const t=document.getElementById('pTitle'),h=document.getElementById('pHint');
+  const topbar=document.querySelector('.topbar');
   const sw=document.getElementById('topbarSearchWrap');
   if(sw) sw.style.display=p==='library'?'':'none';
-  if(p==='library'){t.textContent='数字教材';h.textContent='浏览、选购全部上架数字教材';renderLib()}
-  else if(p==='my'){t.textContent='我的教材';h.textContent='管理已添加的教材与学习进度';renderMy()}
+  if(p!=='library'){
+    libraryView='home';
+    if(topbar){
+      topbar.classList.remove('topbar--library','topbar--catalog');
+    }
+    const backBtn=document.getElementById('topbarBackBtn');
+    if(backBtn)backBtn.hidden=true;
+  }
+  if(p==='library'){
+    libraryView='home';
+    renderLib();
+  }
+  else if(p==='my'){t.textContent='我的书架';h.textContent='管理已添加的教材与学习进度';renderMy()}
   else if(p==='settings'){t.textContent='设置';h.textContent='账号与个人信息';renderSettings()}
 }
 
@@ -2889,6 +3041,17 @@ const READER_LAB_UNITS = [
   },
 ];
 
+const READER_AI_PAINTING_EXPERIMENT_UNIT = {
+  id: 'ai-painting-lab',
+  kicker: '',
+  title: 'AI绘画',
+  desc: '只要输入文字，我就能帮你画出心里的画面。实验标题、说明文案和跳转链接后期可在作者端配置。',
+  pill: '',
+  buttonLabel: '立即进入实验',
+  url: 'https://scmeow.com/',
+  visualUrl: '/reader/ai-painting-lab.jpg',
+};
+
 const READER_LAB_IMAGE_SAMPLES = [
   { src: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=640&q=80', label: '猫' },
   { src: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=640&q=80', label: '狗' },
@@ -2907,23 +3070,51 @@ function readerLabUnitHtml(unit) {
   const d = escAttr(String(unit.desc));
   const aria = escAttr([kicker, unit.title].filter(Boolean).join(' · '));
   const id = String(unit.id).replace(/"/g, '');
+  const pillRaw = Object.prototype.hasOwnProperty.call(unit, 'pill') ? unit.pill : '实训';
+  const pill = pillRaw && String(pillRaw).trim() ? escAttr(String(pillRaw).trim()) : '';
+  const buttonLabel = escAttr(unit.buttonLabel || '进入实训');
+  const url = unit.url && String(unit.url).trim();
+  const visualUrl = unit.visualUrl && String(unit.visualUrl).trim();
+  const cardCls = visualUrl ? 'reader-lab-card reader-lab-card--feature' : 'reader-lab-card';
+  const visualHtml = visualUrl
+    ? `<div class="reader-lab-card__visual" aria-hidden="true">
+        <img class="reader-lab-card__img" src="${escAttr(visualUrl)}" alt="" loading="lazy">
+      </div>`
+    : '';
+  const cta = url
+    ? `<a class="reader-lab-btn reader-lab-btn--link" href="${escAttr(url)}" target="_blank" rel="noopener noreferrer"><span>${buttonLabel}</span><span class="reader-lab-btn__arrow" aria-hidden="true">→</span></a>`
+    : `<button type="button" class="reader-lab-btn" onclick="readerOpenLab('${id}')"><span>${buttonLabel}</span><span class="reader-lab-btn__arrow" aria-hidden="true">→</span></button>`;
   return `<section class="reader-lab-section" aria-label="${aria}">
-    <div class="reader-lab-card">
-      <header class="reader-lab-card__head">
-        <div class="reader-lab-card__head-main">
-          ${kickerHtml}
-          <h3 class="reader-lab-h3">${t}</h3>
-        </div>
-        <span class="reader-lab-pill" aria-hidden="true">实训</span>
-      </header>
-      <div class="reader-lab-card__body">
-        <p class="reader-lab-lede">${d}</p>
-        <div class="reader-lab-cta">
-          <button type="button" class="reader-lab-btn" onclick="readerOpenLab('${id}')">进入实训</button>
+    <div class="${cardCls}">
+      ${visualHtml}
+      <div class="reader-lab-card__content">
+        <header class="reader-lab-card__head">
+          <div class="reader-lab-card__head-main">
+            ${kickerHtml}
+            <h3 class="reader-lab-h3">${t}</h3>
+          </div>
+          ${pill ? `<span class="reader-lab-pill" aria-hidden="true">${pill}</span>` : ''}
+        </header>
+        <div class="reader-lab-card__body">
+          <p class="reader-lab-lede">${d}</p>
+          <div class="reader-lab-cta">
+            ${cta}
+          </div>
         </div>
       </div>
     </div>
   </section>`;
+}
+
+function readerIsSportsNutritionBook(b) {
+  return !!(b && b.t === '运动营养学');
+}
+
+function readerSportsExperimentSectionHtml(b) {
+  if (!readerIsSportsNutritionBook(b)) return '';
+  return `<div class="reader-lab-below reader-lab-below--experiment" aria-label="本课科学小实验">
+        ${readerLabUnitHtml(READER_AI_PAINTING_EXPERIMENT_UNIT)}
+      </div>`;
 }
 
 /** 阅读页「交互案例」可挂载项（可在线调参、观察可视化，可接 CMS / 多案例 id） */
@@ -3797,6 +3988,7 @@ function buildReaderArticleHtml(cid, b) {
       <div class="reader-practice-below" aria-label="拓展阅读之下的测评区">
         ${READER_PRACTICE_SLOTS.map((s) => readerPracticeSectionHtml(b, s)).join('')}
       </div>
+      ${readerSportsExperimentSectionHtml(b)}
     </div>`,
   };
   return blocks[cid] || `<div class="reader-block"><p>本节暂无演示内容。</p></div>`;
@@ -5838,7 +6030,7 @@ document.getElementById('readerFontRange')?.addEventListener('input', (e) => {
 });
 
 Object.assign(window, {
-  go, renderLib, openDetail, closeDetail, switchTab, toggleUnit, handleBuy, handlePrint, onTocLockedClick,
+  go, renderLib, openLibraryCatalog, closeLibraryCatalog, onLibrarySearchInput, openDetail, closeDetail, switchTab, toggleUnit, handleBuy, handlePrint, onTocLockedClick,
   openRedeem, closeRedeem, doRedeem, openCreateClass, closeCreateClass, doCreateClass,
   openJoinClass, closeJoinClass, doJoinClass,
   openClassDetail, closeClassDetail, copyCode, openBookPicker, closeBookPicker, dissolveClass, leaveClass,
@@ -5864,4 +6056,3 @@ Object.assign(window, {
   sendRegisterSmsCode, sendForgotSmsCode, submitRegister, submitForgotPassword,
   onFeedbackFilesChange, removeFeedbackImage, submitUserFeedback, openFeedbackModal, closeFeedbackModal
 });
-

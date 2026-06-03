@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>四川数字教材</title>
+  <title>缤果数字教材</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
 </head>
 <body>
-<!-- 未登录时全屏展示；与侧栏同一品牌（川 + 四川数字教材） -->
+<!-- 未登录时全屏展示；与侧栏同一品牌（缤果数字教材） -->
 <div class="login-overlay" id="loginOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="loginBrandName">
   <div class="login-overlay__bg" aria-hidden="true">
     <!-- 登录插画：克制扁平（低饱和、小编辑风，非童趣卡通） -->
@@ -73,10 +73,10 @@
   </div>
   <div class="login-panel">
     <div class="login-brand" id="loginBrand">
-      <div class="login-brand__icon">川</div>
+      <div class="login-brand__icon" aria-hidden="true"></div>
       <div class="login-brand__text">
-        <div class="login-brand__name" id="loginBrandName">四川数字教材</div>
-        <div class="login-brand__en">Sichuan Digital Textbook</div>
+        <div class="login-brand__name" id="loginBrandName">缤果数字教材</div>
+        <div class="login-brand__en">BINGO DIGITAL TEXTBOOK</div>
       </div>
     </div>
     <div id="loginMainBlock" class="login-main">
@@ -156,51 +156,55 @@
   <aside class="sidebar">
     <div class="sidebar-head">
       <div class="logo-row">
-        <div class="logo-icon">川</div>
+        <div class="logo-icon" aria-hidden="true"></div>
         <div class="logo-col">
-          <div class="logo-name">四川数字教材</div>
-          <div class="logo-en">Sichuan Digital Textbook</div>
+          <div class="logo-name">缤果数字教材</div>
+          <div class="logo-en">BINGO DIGITAL TEXTBOOK</div>
         </div>
       </div>
     </div>
 
-    <nav class="sidebar-nav">
-      <div class="nav-label">教材中心</div>
+    <nav class="sidebar-nav" aria-label="主导航">
       <div class="nav-item active" data-page="library" onclick="go('library')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span>数字教材</span>
+        <span>图书商城</span>
       </div>
       <div class="nav-item" data-page="my" onclick="go('my')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        <span>我的教材</span>
-        <span class="nav-num">6</span>
+        <span>我的书架</span>
       </div>
 
-      <div class="nav-label" style="margin-top:20px">系统</div>
       <div class="nav-item" data-page="settings" onclick="go('settings')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         <span>设置</span>
       </div>
     </nav>
 
+    <div class="sidebar-promo" aria-label="平台推广">
+      <div class="sidebar-promo__copy">
+        <p class="sidebar-promo__title">探索知识<br>无限可能</p>
+        <p class="sidebar-promo__desc">开启你的数字阅读之旅</p>
+      </div>
+      <div class="sidebar-promo__scene" aria-hidden="true">
+        <img class="sidebar-promo__img" src="/sidebar-promo.png" width="328" height="512" alt="">
+      </div>
+      <div class="sidebar-promo__links">
+        <button type="button" class="sidebar-promo__links-trigger" aria-haspopup="true">友情链接</button>
+        <div class="sidebar-promo__links-menu" role="menu">
+          <a class="sidebar-promo__links-item" role="menuitem" href="/creator/index.html">作者端</a>
+          <a class="sidebar-promo__links-item" role="menuitem" href="/publisher/index.html">出版社端</a>
+        </div>
+      </div>
+    </div>
+
     <div class="sidebar-foot">
-      <div class="sidebar-friendly" tabindex="0" aria-expanded="false" aria-haspopup="true" aria-label="友情链接">
-        <div class="sidebar-friendly-trigger">
-          <span class="sidebar-friendly-label">友情链接</span>
-          <svg class="sidebar-friendly-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="sidebar-friendly-pop" role="menu" aria-label="友情链接选项">
-          <a class="sidebar-friendly-btn" role="menuitem" href="/creator/index.html" target="_blank" rel="noopener noreferrer">创作者平台</a>
-          <a class="sidebar-friendly-btn" role="menuitem" href="/publisher/index.html" target="_blank" rel="noopener noreferrer">出版社</a>
-        </div>
-      </div>
-      <div class="user-row">
-        <div class="avatar" id="sidebarAvatar">李</div>
-        <div class="user-meta">
-          <div class="user-name" id="sidebarUserName">李明远</div>
-          <div class="user-school" id="sidebarUserSchool" hidden>成都市第七中学（演示）</div>
-        </div>
-      </div>
+      <button type="button" class="sidebar-help-btn" onclick="openFeedbackModal()">
+        <span class="sidebar-help-btn__icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-6h3v4zM3 19a2 2 0 0 0 2 2h1v-6H3v4z"/></svg>
+        </span>
+        <span class="sidebar-help-btn__text">帮助与反馈</span>
+        <svg class="sidebar-help-btn__arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
   </aside>
 
@@ -208,19 +212,28 @@
   <main class="main">
     <header class="topbar">
       <div class="topbar-left">
+        <button type="button" class="topbar-back" id="topbarBackBtn" onclick="closeLibraryCatalog()" aria-label="返回首页" hidden>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
         <h1 class="topbar-title" id="pTitle">数字教材</h1>
         <div class="topbar-sep"></div>
         <span class="topbar-hint" id="pHint">浏览、选购全部上架数字教材</span>
       </div>
       <div class="topbar-right">
         <div class="search-box" id="topbarSearchWrap">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" placeholder="搜索图书名称、专业或出版社…" id="sInput" oninput="renderLib()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="搜索教材名称、专业或出版社…" id="sInput" oninput="onLibrarySearchInput()">
         </div>
-        <button type="button" class="tb-btn tb-btn--redeem tb-btn--redeem-txt" onclick="openRedeem()" title="兑换码激活教材" aria-label="兑换">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/><path d="M16 2v6M8 2v6"/></svg>
-          <span class="tb-redeem-lab">兑换</span>
+        <div class="topbar-actions">
+        <button type="button" class="tb-btn tb-btn--redeem tb-btn--redeem-txt" onclick="openRedeem()" title="兑换码激活教材" aria-label="兑换教材">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M22 7h-5l-2-3H9L7 7H2"/><path d="M12 7v10"/><path d="M8.5 10.5 12 14l3.5-3.5"/></svg>
+          <span class="tb-redeem-lab">兑换教材</span>
         </button>
+        <button type="button" class="tb-user" aria-label="当前用户">
+          <span class="tb-user-avatar" id="topbarAvatar">书</span>
+          <span class="tb-user-name" id="topbarUserName">书海漫游者</span>
+        </button>
+        </div>
       </div>
     </header>
 

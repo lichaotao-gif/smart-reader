@@ -3,95 +3,379 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>阅读界面 · 出版社端</title>
+  <title>Smart Reader · 阅读器预览</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --white: #ffffff;
-      --snow: #f9fafb;
-      --cloud: #f3f4f6;
-      --mist: #e5e7eb;
-      --stone: #9ca3af;
-      --ink: #374151;
-      --deep: #1f2937;
-      --mint: #d2f0e2;
+      --paper: #fffdf7;
+      --snow: #f8fafc;
+      --mist: #e2e8f0;
+      --stone: #94a3b8;
+      --slate: #475569;
+      --ink: #1e293b;
       --mint-deep: #3a9e78;
-      --sky-deep: #3d80b8;
-      --radius: 14px;
+      --sky-deep: #2563eb;
+      --peach-deep: #ea580c;
     }
     html, body { height: 100%; }
     body {
       font-family: "Noto Sans SC", "PingFang SC", system-ui, -apple-system, sans-serif;
-      background: linear-gradient(165deg, #ecfdf5 0%, #f9fafb 34%, #eff6ff 100%);
+      background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(58, 158, 120, 0.15), transparent 30%),
+        linear-gradient(165deg, #eff6ff 0%, #f8fafc 38%, #ecfdf5 100%);
       color: var(--ink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       padding: 24px;
-      line-height: 1.6;
     }
-    .pub-read-card {
-      width: 100%;
-      max-width: 420px;
-      background: var(--white);
-      border: 1px solid var(--mist);
-      border-radius: var(--radius);
-      padding: 28px 26px 24px;
-      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
-      text-align: center;
+    .reader-shell {
+      max-width: 1400px;
+      height: calc(100vh - 48px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr) 320px;
+      gap: 18px;
     }
-    .pub-read-badge {
+    .panel {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      border-radius: 24px;
+      box-shadow: 0 24px 54px rgba(15, 23, 42, 0.08);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+    .side {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand {
+      padding: 22px 22px 18px;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    }
+    .brand-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--mint-deep), #60a5fa);
+      color: var(--white);
+      font-family: "ZCOOL XiaoWei", serif;
+      font-size: 19px;
+      box-shadow: 0 10px 24px rgba(58, 158, 120, 0.28);
+    }
+    .brand h1 {
+      margin-top: 14px;
+      font-family: "ZCOOL XiaoWei", serif;
+      font-size: 26px;
+      line-height: 1.15;
+    }
+    .brand p {
+      margin-top: 8px;
+      color: var(--slate);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .toc {
+      padding: 18px 16px 20px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toc h2,
+    .insight h2 {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--stone);
+      margin-bottom: 4px;
+    }
+    .toc-item {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: var(--snow);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+    .toc-item.active {
+      background: linear-gradient(135deg, rgba(58, 158, 120, 0.12), rgba(37, 99, 235, 0.08));
+      border-color: rgba(109, 196, 160, 0.6);
+    }
+    .toc-item strong {
+      display: block;
+      font-size: 14px;
+      color: var(--ink);
+    }
+    .toc-item span {
+      display: block;
+      margin-top: 6px;
+      color: var(--slate);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .reader-main {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .reader-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    }
+    .reader-top-meta span {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
       border-radius: 999px;
-      background: var(--mint);
+      background: rgba(58, 158, 120, 0.1);
       color: var(--mint-deep);
       font-size: 12px;
       font-weight: 600;
-      margin-bottom: 16px;
-    }
-    .pub-read-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--deep);
       margin-bottom: 10px;
     }
-    .pub-read-desc {
-      font-size: 14px;
-      color: var(--stone);
-      margin-bottom: 22px;
+    .reader-top h2 {
+      font-size: 24px;
+      line-height: 1.25;
+      margin-bottom: 6px;
     }
-    .pub-read-back {
+    .reader-top p {
+      color: var(--slate);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .reader-tools {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .tool-chip {
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      background: var(--white);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--slate);
+    }
+    .article {
+      flex: 1;
+      overflow: auto;
+      padding: 28px 30px 34px;
+      background: linear-gradient(180deg, #fffef9 0%, #fffdf7 100%);
+    }
+    .article-card {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 34px;
+      border-radius: 28px;
+      background: var(--paper);
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+    }
+    .article-card h3 {
+      font-size: 30px;
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+    .article-card p {
+      font-size: 17px;
+      line-height: 2;
+      color: #334155;
+      margin-bottom: 16px;
+      text-align: justify;
+    }
+    .quote {
+      margin: 22px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--mint-deep);
+      border-radius: 16px;
+      background: rgba(58, 158, 120, 0.08);
+      color: #285a48;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .insight {
+      display: flex;
+      flex-direction: column;
+      padding: 18px;
+      gap: 14px;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .stat {
+      padding: 14px;
+      border-radius: 18px;
+      background: var(--snow);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+    .stat strong {
+      display: block;
+      font-size: 20px;
+      color: var(--ink);
+    }
+    .stat span {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--stone);
+    }
+    .card {
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.98));
+    }
+    .card strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    .card p,
+    .card li {
+      color: var(--slate);
+      font-size: 12.5px;
+      line-height: 1.7;
+    }
+    .card ul {
+      padding-left: 18px;
+      display: grid;
+      gap: 6px;
+    }
+    .back-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 18px;
-      border-radius: 10px;
-      border: 1px solid var(--mist);
-      background: var(--white);
+      margin-top: auto;
+      padding: 14px 16px;
+      border-top: 1px solid rgba(226, 232, 240, 0.9);
       color: var(--sky-deep);
       font-size: 13px;
       font-weight: 600;
       text-decoration: none;
-      transition: background 0.2s ease, border-color 0.2s ease;
+      background: rgba(255,255,255,0.7);
     }
-    .pub-read-back:hover {
-      background: var(--snow);
-      border-color: var(--cloud);
+    .back-link:hover {
+      background: rgba(219, 234, 254, 0.45);
+    }
+    .highlight {
+      color: var(--peach-deep);
+      font-weight: 700;
+    }
+    @media (max-width: 1180px) {
+      .reader-shell {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .reader-main {
+        order: -1;
+      }
+    }
+    @media (max-width: 640px) {
+      body { padding: 14px; }
+      .reader-top,
+      .article,
+      .brand,
+      .insight { padding-left: 16px; padding-right: 16px; }
+      .article-card {
+        padding: 22px 18px;
+        border-radius: 22px;
+      }
+      .article-card h3 {
+        font-size: 24px;
+      }
+      .article-card p {
+        font-size: 15px;
+      }
+      .stat-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="pub-read-card" role="main">
-    <div class="pub-read-badge" aria-hidden="true">演示占位</div>
-    <h1 class="pub-read-title">阅读界面</h1>
-    <p class="pub-read-desc">当前页面为阅读界面占位；后续可替换为正式阅读端或与数字教材阅读器对接。</p>
-    <a class="pub-read-back" href="index.html">返回出版社端</a>
+  <main class="reader-shell" role="main">
+    <aside class="panel side">
+      <div class="brand">
+        <div class="brand-badge">SR</div>
+        <h1>Smart Reader</h1>
+        <p>新版阅读器预览页，面向出版社演示阅读软件的版式、学习辅助和章节导航能力。</p>
+      </div>
+      <div class="toc">
+        <h2>章节导航</h2>
+        <div class="toc-item active">
+          <strong>01 智能阅读导论</strong>
+          <span>阅读器入口、目录组织、学习模式切换与用户路径。</span>
+        </div>
+        <div class="toc-item">
+          <strong>02 学习辅助</strong>
+          <span>高亮、笔记、AI 问答、任务入口与课件联动。</span>
+        </div>
+        <div class="toc-item">
+          <strong>03 数据回流</strong>
+          <span>阅读进度、课堂使用、练习结果与资源使用统计。</span>
+        </div>
+      </div>
+      <a class="back-link" href="index.html">返回出版社端</a>
+    </aside>
+
+    <section class="panel reader-main">
+      <header class="reader-top">
+        <div class="reader-top-meta">
+          <span>阅读模式 · 预览页</span>
+          <h2>把“看书”升级成可教学、可跟踪、可沉浸的数字阅读体验</h2>
+          <p>新版阅读器不再只是正文容器，而是教材阅读、课堂演示、学习任务和过程记录的统一工作台。</p>
+        </div>
+        <div class="reader-tools" aria-label="阅读器功能">
+          <div class="tool-chip">目录导航</div>
+          <div class="tool-chip">字号切换</div>
+          <div class="tool-chip">阅读笔记</div>
+          <div class="tool-chip">AI 助手</div>
+        </div>
+      </header>
+      <div class="article">
+        <article class="article-card">
+          <h3>新版图书阅读软件的核心方向</h3>
+          <p>传统数字图书经常停留在“把纸书搬到屏幕上”。Smart Reader 希望往前再走一步，把 <span class="highlight">阅读场景、教学场景和任务场景</span> 用同一套界面语言组织起来，让学生、教师和出版社都能在同一内容底座上工作。</p>
+          <p>在阅读主界面里，用户首先获得的是清晰的章节结构和舒适的正文排版；当需要延展学习时，可以自然切换到讲解视频、练习任务、知识关联和课堂课件，而不是跳进割裂的子系统。</p>
+          <div class="quote">这类改版的重点，不只是“更好看”，而是让内容入口、学习路径和阅读动作更顺手，真正形成一套可持续扩展的图书阅读软件框架。</div>
+          <p>对于出版社端，这张预览页也可以作为之后接入正式书稿、EPUB、PDF 切片或 CMS 内容接口前的中间态展示页，用来快速演示阅读器形态与产品能力。</p>
+        </article>
+      </div>
+    </section>
+
+    <aside class="panel insight">
+      <h2>阅读概览</h2>
+      <div class="stat-grid">
+        <div class="stat"><strong>78%</strong><span>当前阅读进度</span></div>
+        <div class="stat"><strong>12</strong><span>本章重点标注</span></div>
+        <div class="stat"><strong>4</strong><span>学习模式</span></div>
+        <div class="stat"><strong>3 min</strong><span>课堂切换耗时</span></div>
+      </div>
+      <div class="card">
+        <strong>本次重构价值</strong>
+        <p>把原来的演示占位页升级成正式阅读器展示页，后面接入真实内容时可以直接沿着这套框架扩展。</p>
+      </div>
+      <div class="card">
+        <strong>下一步可继续接入</strong>
+        <ul>
+          <li>真实章节数据与目录树</li>
+          <li>EPUB / HTML 内容渲染</li>
+          <li>课堂课件与音视频资源</li>
+          <li>阅读进度与学习记录接口</li>
+        </ul>
+      </div>
+    </aside>
   </main>
 </body>
 </html>

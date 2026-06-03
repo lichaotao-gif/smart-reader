@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>出版社端 · 四川数字教材</title>
+  <title>出版社端 · 缤果数字教材</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -87,6 +87,35 @@
       gap: 12px;
       margin-bottom: 12px;
     }
+    .pub-login-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 4px;
+      border: 1px solid var(--cloud);
+      border-radius: 999px;
+      background: var(--snow);
+      margin-bottom: 10px;
+    }
+    .pub-login-tab {
+      flex: 1;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--slate);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12.5px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .pub-login-tab:hover { color: var(--ink); }
+    .pub-login-tab.is-active {
+      color: var(--mint-deep);
+      background: var(--mint);
+      border-color: rgba(58, 158, 120, 0.2);
+    }
+    .pub-login-pane--hidden { display: none; }
     .pub-login-pwd-row {
       position: relative;
     }
@@ -108,6 +137,33 @@
     }
     .pub-login-eye-btn:hover { color: var(--sky-deep); background: var(--snow); }
     .pub-login-eye-btn svg { width: 16px; height: 16px; display: block; margin: auto; }
+    .pub-login-otp-row {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .pub-login-otp-row input {
+      flex: 1;
+    }
+    .pub-login-send-code {
+      flex-shrink: 0;
+      border: 1px solid var(--mist);
+      background: var(--white);
+      color: var(--slate);
+      border-radius: 10px;
+      padding: 0 12px;
+      min-width: 102px;
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .pub-login-send-code:hover {
+      border-color: var(--mint-mid);
+      color: var(--mint-deep);
+      background: var(--mint);
+    }
+    .pub-login-send-code:disabled { cursor: not-allowed; opacity: 0.7; }
     .pub-login-err {
       min-height: 22px;
       font-size: 12px;
@@ -693,31 +749,50 @@
         </g>
       </svg>
     </div>
-    <div class="pub-login-end-title">四川数字教材出版社</div>
+    <div class="pub-login-end-title">缤果数字教材出版社</div>
     <div class="pub-login-panel">
       <div class="pub-login-brand">
         <div class="logo">版</div>
         <div class="brand-text">
-          <strong id="publisherLoginTitle">四川数字教材</strong>
+          <strong id="publisherLoginTitle">缤果数字教材</strong>
           <span>出版社端登录</span>
         </div>
       </div>
-      <label>手机号
-        <input type="tel" id="publisherLoginPhone" maxlength="11" inputmode="numeric" placeholder="11 位手机号" value="13800000000">
-      </label>
-      <label>密码
-        <div class="pub-login-pwd-row">
-          <input type="password" id="publisherLoginPassword" minlength="6" placeholder="不少于 6 位" value="123456">
-          <button class="pub-login-eye-btn" type="button" id="publisherLoginTogglePwd" aria-label="显示密码" title="显示密码">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
-              <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-          </button>
-        </div>
-      </label>
-      <p class="pub-login-err" id="publisherLoginErr"></p>
-      <button class="btn-primary pub-login-submit" type="button" id="publisherLoginSubmit">登录出版社端</button>
+      <div class="pub-login-tabs" role="tablist" aria-label="登录方式切换">
+        <button class="pub-login-tab is-active" type="button" id="publisherLoginTabPwd" role="tab" aria-selected="true">账户密码登录</button>
+        <button class="pub-login-tab" type="button" id="publisherLoginTabOtp" role="tab" aria-selected="false">手机验证码登录</button>
+      </div>
+      <div class="pub-login-pane" id="publisherLoginPanePwd" role="tabpanel" aria-labelledby="publisherLoginTabPwd">
+        <label>手机号
+          <input type="tel" id="publisherLoginPhone" maxlength="11" inputmode="numeric" placeholder="11 位手机号" value="13800000000">
+        </label>
+        <label>密码
+          <div class="pub-login-pwd-row">
+            <input type="password" id="publisherLoginPassword" minlength="6" placeholder="不少于 6 位" value="123456">
+            <button class="pub-login-eye-btn" type="button" id="publisherLoginTogglePwd" aria-label="显示密码" title="显示密码">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </label>
+        <p class="pub-login-err" id="publisherLoginErrPwd"></p>
+        <button class="btn-primary pub-login-submit" type="button" id="publisherLoginSubmitPwd">登录</button>
+      </div>
+      <div class="pub-login-pane pub-login-pane--hidden" id="publisherLoginPaneOtp" role="tabpanel" aria-labelledby="publisherLoginTabOtp" aria-hidden="true">
+        <label>手机号
+          <input type="tel" id="publisherLoginPhoneOtp" maxlength="11" inputmode="numeric" placeholder="11 位手机号" value="13800000000">
+        </label>
+        <label>短信验证码
+          <div class="pub-login-otp-row">
+            <input type="text" id="publisherLoginOtpCode" maxlength="6" inputmode="numeric" placeholder="6 位验证码" autocomplete="one-time-code">
+            <button class="pub-login-send-code" type="button" id="publisherLoginSendCodeBtn">获取验证码</button>
+          </div>
+        </label>
+        <p class="pub-login-err" id="publisherLoginErrOtp"></p>
+        <button class="btn-primary pub-login-submit" type="button" id="publisherLoginSubmitOtp">登录</button>
+      </div>
     </div>
   </div>
 
@@ -726,7 +801,7 @@
       <div class="brand">
         <div class="logo">社</div>
         <div class="brand-text">
-          <strong>四川数字教材 · 出版社端</strong>
+          <strong>缤果数字教材 · 出版社端</strong>
           <span>PUBLISHER CENTER</span>
         </div>
       </div>
@@ -852,7 +927,7 @@
       </section>
     </main>
 
-    <a class="back-link" href="/">返回数字教材首页</a>
+    <a class="back-link" href="/">返回缤果数字教材首页</a>
   </div>
 
   <aside class="drawer" id="profileDrawer" aria-hidden="true">
@@ -993,11 +1068,20 @@
       logoutBtn: document.getElementById("logoutBtn"),
       toast: document.getElementById("toast"),
       loginOverlay: document.getElementById("publisherLoginOverlay"),
+      loginTabPwdBtn: document.getElementById("publisherLoginTabPwd"),
+      loginTabOtpBtn: document.getElementById("publisherLoginTabOtp"),
+      loginPanePwd: document.getElementById("publisherLoginPanePwd"),
+      loginPaneOtp: document.getElementById("publisherLoginPaneOtp"),
       loginPhoneInput: document.getElementById("publisherLoginPhone"),
+      loginPhoneOtpInput: document.getElementById("publisherLoginPhoneOtp"),
       loginPasswordInput: document.getElementById("publisherLoginPassword"),
+      loginOtpCodeInput: document.getElementById("publisherLoginOtpCode"),
+      loginSendCodeBtn: document.getElementById("publisherLoginSendCodeBtn"),
       loginTogglePwdBtn: document.getElementById("publisherLoginTogglePwd"),
-      loginErr: document.getElementById("publisherLoginErr"),
-      loginSubmitBtn: document.getElementById("publisherLoginSubmit")
+      loginErrPwd: document.getElementById("publisherLoginErrPwd"),
+      loginErrOtp: document.getElementById("publisherLoginErrOtp"),
+      loginSubmitPwdBtn: document.getElementById("publisherLoginSubmitPwd"),
+      loginSubmitOtpBtn: document.getElementById("publisherLoginSubmitOtp")
     };
     const draft = { name: DEFAULT_NAME, avatar: DEFAULT_AVATAR };
     let currentModal = null;
@@ -1113,26 +1197,121 @@
     }
 
     function initPublisherLogin() {
-      function setLoginErr(msg) {
-        els.loginErr.textContent = msg || "";
+      let loginMode = "pwd";
+      const loginOtp = { code: "", target: "", cool: 0, timer: null };
+      function setLoginErr(mode, msg) {
+        const errEl = mode === "otp" ? els.loginErrOtp : els.loginErrPwd;
+        if (errEl) errEl.textContent = msg || "";
       }
-      function submitLogin() {
-        const phone = (els.loginPhoneInput.value || "").trim();
-        const password = (els.loginPasswordInput.value || "").trim();
-        if (!isValidPhone(phone)) {
-          setLoginErr("请输入正确的 11 位手机号");
-          return;
+      function clearLoginErr() {
+        setLoginErr("pwd", "");
+        setLoginErr("otp", "");
+      }
+      function clearOtpTimer() {
+        if (loginOtp.timer) {
+          window.clearInterval(loginOtp.timer);
+          loginOtp.timer = null;
         }
-        if (password.length < 6) {
-          setLoginErr("密码不少于 6 位");
-          return;
+      }
+      function resetOtpState() {
+        clearOtpTimer();
+        loginOtp.code = "";
+        loginOtp.target = "";
+        loginOtp.cool = 0;
+        if (els.loginOtpCodeInput) els.loginOtpCodeInput.value = "";
+        if (els.loginSendCodeBtn) {
+          els.loginSendCodeBtn.disabled = false;
+          els.loginSendCodeBtn.textContent = "获取验证码";
         }
+      }
+      function setLoginMode(mode) {
+        loginMode = mode === "otp" ? "otp" : "pwd";
+        const isPwd = loginMode === "pwd";
+        els.loginTabPwdBtn.classList.toggle("is-active", isPwd);
+        els.loginTabOtpBtn.classList.toggle("is-active", !isPwd);
+        els.loginTabPwdBtn.setAttribute("aria-selected", isPwd ? "true" : "false");
+        els.loginTabOtpBtn.setAttribute("aria-selected", isPwd ? "false" : "true");
+        els.loginPanePwd.classList.toggle("pub-login-pane--hidden", !isPwd);
+        els.loginPaneOtp.classList.toggle("pub-login-pane--hidden", isPwd);
+        els.loginPanePwd.setAttribute("aria-hidden", isPwd ? "false" : "true");
+        els.loginPaneOtp.setAttribute("aria-hidden", isPwd ? "true" : "false");
+        clearLoginErr();
+      }
+      function completePublisherLogin(phone) {
         localStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify({ phone, ts: Date.now() }));
-        setLoginErr("");
+        clearLoginErr();
+        resetOtpState();
         closeLoginOverlay();
         showToast("已登录出版社端");
       }
-      els.loginSubmitBtn.addEventListener("click", submitLogin);
+      function submitPasswordLogin() {
+        const phone = (els.loginPhoneInput.value || "").trim();
+        const password = (els.loginPasswordInput.value || "").trim();
+        if (!isValidPhone(phone)) {
+          setLoginErr("pwd", "请输入正确的 11 位手机号");
+          return;
+        }
+        if (password.length < 6) {
+          setLoginErr("pwd", "密码不少于 6 位");
+          return;
+        }
+        completePublisherLogin(phone);
+      }
+      function sendLoginOtpCode() {
+        const phone = (els.loginPhoneOtpInput.value || "").trim();
+        if (!isValidPhone(phone)) {
+          setLoginErr("otp", "请输入正确的 11 位手机号");
+          return;
+        }
+        clearLoginErr();
+        loginOtp.target = phone;
+        loginOtp.code = String(Math.floor(100000 + Math.random() * 900000));
+        loginOtp.cool = 60;
+        els.loginSendCodeBtn.disabled = true;
+        els.loginSendCodeBtn.textContent = `${loginOtp.cool}s`;
+        showToast(`验证码（演示）: ${loginOtp.code}`);
+        clearOtpTimer();
+        loginOtp.timer = window.setInterval(() => {
+          loginOtp.cool -= 1;
+          if (loginOtp.cool <= 0) {
+            clearOtpTimer();
+            els.loginSendCodeBtn.disabled = false;
+            els.loginSendCodeBtn.textContent = "获取验证码";
+            return;
+          }
+          els.loginSendCodeBtn.textContent = `${loginOtp.cool}s`;
+        }, 1000);
+      }
+      function submitOtpLogin() {
+        const phone = (els.loginPhoneOtpInput.value || "").trim();
+        const code = (els.loginOtpCodeInput.value || "").trim();
+        if (!isValidPhone(phone)) {
+          setLoginErr("otp", "请输入正确的 11 位手机号");
+          return;
+        }
+        if (!/^\d{6}$/.test(code)) {
+          setLoginErr("otp", "请输入 6 位短信验证码");
+          return;
+        }
+        if (!loginOtp.code) {
+          setLoginErr("otp", "请先获取验证码");
+          return;
+        }
+        if (phone !== loginOtp.target) {
+          setLoginErr("otp", "手机号与接收验证码号码不一致");
+          return;
+        }
+        if (code !== loginOtp.code) {
+          setLoginErr("otp", "验证码错误");
+          return;
+        }
+        completePublisherLogin(phone);
+      }
+      els.loginSubmitPwdBtn.addEventListener("click", submitPasswordLogin);
+      els.loginSubmitOtpBtn.addEventListener("click", submitOtpLogin);
+      els.loginSendCodeBtn.addEventListener("click", sendLoginOtpCode);
+      els.loginTabPwdBtn.addEventListener("click", () => setLoginMode("pwd"));
+      els.loginTabOtpBtn.addEventListener("click", () => setLoginMode("otp"));
       els.loginTogglePwdBtn.addEventListener("click", () => {
         const isPwd = els.loginPasswordInput.type === "password";
         els.loginPasswordInput.type = isPwd ? "text" : "password";
@@ -1140,13 +1319,22 @@
         els.loginTogglePwdBtn.setAttribute("title", isPwd ? "隐藏密码" : "显示密码");
       });
       els.loginPhoneInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") submitLogin();
+        if (event.key === "Enter") submitPasswordLogin();
       });
       els.loginPasswordInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") submitLogin();
+        if (event.key === "Enter") submitPasswordLogin();
       });
+      els.loginPhoneOtpInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") submitOtpLogin();
+      });
+      els.loginOtpCodeInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") submitOtpLogin();
+      });
+      setLoginMode("pwd");
       if (!localStorage.getItem(LOGIN_STORAGE_KEY)) {
         localStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify({ phone: "13800000000", ts: Date.now() }));
+        openLoginOverlay();
+        return;
       }
       closeLoginOverlay();
     }
