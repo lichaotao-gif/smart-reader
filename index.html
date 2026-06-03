@@ -87,15 +87,15 @@
       <div class="login-panes">
         <div class="login-pane" id="loginPanePwd" role="tabpanel" aria-labelledby="loginTabPwd">
           <label class="login-label" for="loginPhonePwd">手机号</label>
-          <input type="tel" class="login-input" id="loginPhonePwd" inputmode="numeric" autocomplete="username" maxlength="11" placeholder="11 位手机号">
+          <input type="tel" class="login-input" id="loginPhonePwd" inputmode="numeric" autocomplete="username" maxlength="11" placeholder="11 位手机号" value="13800138000">
           <label class="login-label" for="loginPassword">密码</label>
-          <input type="password" class="login-input" id="loginPassword" autocomplete="current-password" placeholder="不少于 6 位">
+          <input type="password" class="login-input" id="loginPassword" autocomplete="current-password" placeholder="不少于 6 位" value="demo123456">
           <p class="login-err" id="loginErrPwd" role="alert"></p>
           <button type="button" class="login-submit" onclick="submitLoginPassword()">登录</button>
         </div>
         <div class="login-pane login-pane--hidden" id="loginPaneOtp" role="tabpanel" aria-labelledby="loginTabOtp" aria-hidden="true">
           <label class="login-label" for="loginPhoneOtp">手机号</label>
-          <input type="tel" class="login-input" id="loginPhoneOtp" inputmode="numeric" autocomplete="tel" maxlength="11" placeholder="11 位手机号">
+          <input type="tel" class="login-input" id="loginPhoneOtp" inputmode="numeric" autocomplete="tel" maxlength="11" placeholder="11 位手机号" value="13800138000">
           <label class="login-label" for="loginSmsCode">短信验证码</label>
           <div class="login-otp-row">
             <input type="text" class="login-input login-input--code" id="loginSmsCode" inputmode="numeric" maxlength="6" placeholder="6 位验证码" autocomplete="one-time-code">

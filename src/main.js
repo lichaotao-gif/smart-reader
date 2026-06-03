@@ -419,8 +419,8 @@ const DEFAULT_USER_PROFILE = {
   avatarDataUrl: '',
 };
 
-/** 仅 `npm run dev`：登录层预填密码（演示无真实校验，满足≥6位即可） */
-const DEV_DEMO_LOGIN_PASSWORD = 'demo123456';
+/** 演示登录层默认预填信息（演示无真实校验，密码满足≥6位即可） */
+const DEMO_LOGIN_PASSWORD = 'demo123456';
 
 function getUserProfile() {
   try {
@@ -560,15 +560,9 @@ function initLoginForm() {
   const e1 = document.getElementById('loginErrPwd');
   const e2 = document.getElementById('loginErrOtp');
   const demoPhone = DEFAULT_USER_PROFILE.phone;
-  if (import.meta.env.DEV) {
-    if (p1) p1.value = demoPhone;
-    if (p2) p2.value = demoPhone;
-    if (pw) pw.value = DEV_DEMO_LOGIN_PASSWORD;
-  } else {
-    if (p1) p1.value = '';
-    if (p2) p2.value = '';
-    if (pw) pw.value = '';
-  }
+  if (p1) p1.value = demoPhone;
+  if (p2) p2.value = demoPhone;
+  if (pw) pw.value = DEMO_LOGIN_PASSWORD;
   if (c) c.value = '';
   if (e1) e1.textContent = '';
   if (e2) e2.textContent = '';
