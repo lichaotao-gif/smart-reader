@@ -182,7 +182,7 @@
 
     <div class="sidebar-promo" aria-label="平台推广">
       <div class="sidebar-promo__copy">
-        <p class="sidebar-promo__title">探索知识<br>无限可能</p>
+        <p class="sidebar-promo__title">探索知识 无限可能</p>
         <p class="sidebar-promo__desc">开启你的数字阅读之旅</p>
       </div>
       <div class="sidebar-promo__scene" aria-hidden="true">
@@ -871,6 +871,93 @@
         <div class="task-mode__timeline" id="taskModeTimeline"></div>
       </main>
     </div>
+  </div>
+</div>
+
+<!-- 题库首页：试卷任务、我的题库、配套题库、错题集 -->
+<div class="question-bank-page" id="questionBankPage" aria-hidden="true">
+  <header class="question-bank__head">
+    <button type="button" class="question-bank__back" onclick="closeQuestionBankMode()" title="返回我的书架" aria-label="返回我的书架">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>返回</span>
+    </button>
+    <div class="question-bank__brand">
+      <div class="question-bank__kicker"><span class="question-bank__kicker-dot"></span>题库</div>
+      <h1 class="question-bank__title" id="questionBankBookLine">教材</h1>
+    </div>
+  </header>
+  <main class="question-bank__body" id="questionBankBody"></main>
+  <div class="qb-panel-host" id="questionBankPanel" aria-hidden="true"></div>
+  <div class="qb-paper-editor" id="questionBankPaperEditor" aria-hidden="true"></div>
+  <div class="qb-publish-modal" id="questionBankPublishModal" aria-hidden="true"></div>
+  <div class="qb-ai-modal" id="questionBankAiModal" aria-hidden="true">
+    <div class="qb-ai-modal__bg" onclick="closeQuestionBankAiModal()"></div>
+    <section class="qb-ai-modal__panel" role="dialog" aria-modal="true" aria-labelledby="qbAiTitle">
+      <header class="qb-ai-modal__head">
+        <div>
+          <h2 id="qbAiTitle">AI 生成习题集</h2>
+          <p>按要求生成题目草稿，生成后可继续编辑并发布为试卷任务。</p>
+        </div>
+        <button type="button" class="qb-ai-close" onclick="closeQuestionBankAiModal()" aria-label="关闭">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </header>
+      <div class="qb-ai-modal__body">
+        <section class="qb-ai-card">
+          <h3>基础信息</h3>
+          <label class="qb-ai-field">
+            <span>习题集名称</span>
+            <input type="text" id="qbAiSetName" placeholder="习题集">
+          </label>
+          <label class="qb-ai-field">
+            <span>出题要求</span>
+            <textarea id="qbAiRequirement" maxlength="1000" rows="4" placeholder="请输入出题要求" oninput="updateQuestionBankAiReqCount()"></textarea>
+            <em id="qbAiReqCount">0/1000</em>
+          </label>
+          <div class="qb-ai-field">
+            <span>参考资料</span>
+            <button type="button" class="qb-ai-upload">
+              <strong>点击或拖拽上传文件</strong>
+              <small>支持 Word、PDF、PPT、Excel、TXT，最多 10 个文件</small>
+            </button>
+          </div>
+          <label class="qb-ai-check">
+            <input type="checkbox">
+            <span>参考题库资料（本地题库、教材配套题库）</span>
+          </label>
+          <label class="qb-ai-field qb-ai-field--short">
+            <span>参考章节</span>
+            <select id="qbAiChapter">
+              <option>请选择</option>
+            </select>
+          </label>
+        </section>
+        <section class="qb-ai-card">
+          <h3>题型与数量配置</h3>
+          <div class="qb-ai-type-grid">
+            <label class="qb-ai-count"><span>选择题</span><button type="button" onclick="stepQuestionBankAiCount('qbAiChoice',-1)">-</button><input id="qbAiChoice" value="1" inputmode="numeric"><button type="button" onclick="stepQuestionBankAiCount('qbAiChoice',1)">+</button></label>
+            <label class="qb-ai-count"><span>填空题</span><button type="button" onclick="stepQuestionBankAiCount('qbAiFill',-1)">-</button><input id="qbAiFill" value="1" inputmode="numeric"><button type="button" onclick="stepQuestionBankAiCount('qbAiFill',1)">+</button></label>
+            <label class="qb-ai-count"><span>判断题</span><button type="button" onclick="stepQuestionBankAiCount('qbAiJudge',-1)">-</button><input id="qbAiJudge" value="1" inputmode="numeric"><button type="button" onclick="stepQuestionBankAiCount('qbAiJudge',1)">+</button></label>
+            <label class="qb-ai-count"><span>简答题</span><button type="button" onclick="stepQuestionBankAiCount('qbAiShort',-1)">-</button><input id="qbAiShort" value="1" inputmode="numeric"><button type="button" onclick="stepQuestionBankAiCount('qbAiShort',1)">+</button></label>
+          </div>
+          <div class="qb-ai-difficulty">
+            <label class="qb-ai-field qb-ai-field--short">
+              <span>难度</span>
+              <select>
+                <option>简单</option>
+                <option>中等</option>
+                <option>困难</option>
+              </select>
+            </label>
+            <p>将以此难度为基准，并形成一定的难度梯度。</p>
+          </div>
+        </section>
+      </div>
+      <footer class="qb-ai-modal__foot">
+        <button type="button" class="qb-ai-secondary" onclick="closeQuestionBankAiModal()">取消</button>
+        <button type="button" class="qb-ai-primary" onclick="generateQuestionBankAiSet()">立即生成</button>
+      </footer>
+    </section>
   </div>
 </div>
 

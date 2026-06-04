@@ -5,7 +5,7 @@ const FEATURE_SCHOOL_UI = false;
 
 // Pastel palette for covers — soft, airy
 const PAL=[
-  ['#4aaa85','#78c8a8'],  // mint
+  ['#4a8ec8','#7ab4de'],  // mint
   ['#4a8ec8','#7ab4de'],  // sky
   ['#d48548','#e8a870'],  // peach
   ['#8a60b8','#aa88d0'],  // lavender
@@ -146,6 +146,7 @@ const myB=[
   {t:'数据结构与算法',s:'C语言版',g:'中职 二年级',p:'清华大学出版社',tp:'o',sub:'算法与结构',cat:'程序与开发',pr:30,editor:'王硕 等',actionKeys:['read','resourceLib']},
   {t:'MySQL数据库应用',s:'基础与查询',g:'中职 二年级',p:'人民邮电出版社',tp:'o',sub:'数据库',cat:'数据与平台',pr:15,editor:'刘洋 等'},
   {t:'机器学习基础',s:'监督与评估',g:'中职 三年级',p:'人民邮电出版社',tp:'o',sub:'机器学习',cat:'人工智能',pr:60,paperDigital:true,editor:'陈晨 等',actionKeys:['read','cloudHandout','teach','task','questionBank','internship','resourceLib','learnStats']},
+  {t:'移动应用开发',s:'Android基础',g:'中职 三年级',p:'电子工业出版社',tp:'o',sub:'移动开发',cat:'程序与开发',pr:68,paperDigital:true,editor:'刘芳 等',actionKeys:['read','task','questionBank','learnStats']},
 ];
 
 function c(sub){return PAL[SM[sub]??0]}
@@ -1503,7 +1504,7 @@ function refreshMyPageIfActive() {
 }
 
 const AVATAR_COLORS=[
-  ['#4aaa85','#78c8a8'],['#4a8ec8','#7ab4de'],['#d48548','#e8a870'],
+  ['#4a8ec8','#7ab4de'],['#4a8ec8','#7ab4de'],['#d48548','#e8a870'],
   ['#8a60b8','#aa88d0'],['#c85a72','#e08898'],['#b8a030','#d0c060'],
   ['#4a98b0','#78bcd0'],['#98804a','#b8a878'],
 ];
@@ -2163,7 +2164,11 @@ const BOOK_MY_ACTIONS = [
 function resolveBookActionEntries(b) {
   const keys = b && Array.isArray(b.actionKeys) ? b.actionKeys : [];
   if (!keys.length) return [];
-  return keys.map((k) => BOOK_MY_ACTIONS.find((a) => a.key === k)).filter(Boolean);
+  const hasGroup = b ? getClassNamesForMyBook(b).length > 0 : false;
+  return keys
+    .filter((k) => k !== 'questionBank' || hasGroup)
+    .map((k) => BOOK_MY_ACTIONS.find((a) => a.key === k))
+    .filter(Boolean);
 }
 
 function bookShortcut(bookIdx, actionKey) {
@@ -2171,6 +2176,10 @@ function bookShortcut(bookIdx, actionKey) {
   if (!b) return;
   if (actionKey === 'read') {
     openReader(bookIdx, 'my');
+    return;
+  }
+  if (actionKey === 'questionBank') {
+    openQuestionBankMode(b);
     return;
   }
   const act = BOOK_MY_ACTIONS.find((a) => a.key === actionKey);
@@ -2426,6 +2435,20 @@ function setMyShelfTab(tabId){
   refreshMyPageIfActive();
 }
 
+function openMyGroupsView(){
+  myShelfView = 'groups';
+  myShelfClassFilter = 'all';
+  refreshMyPageIfActive();
+  document.querySelector('.scroll')?.scrollTo({top:0,behavior:'smooth'});
+}
+
+function backToMyShelf(){
+  myShelfView = 'mine';
+  myShelfClassFilter = 'all';
+  refreshMyPageIfActive();
+  document.querySelector('.scroll')?.scrollTo({top:0,behavior:'smooth'});
+}
+
 /** 组群书架无书时的空态（图标 + 文案 + 管理员可添加教材） */
 function mkMyGroupShelfEmptyState(className, classIdx, isClassAdmin) {
   const name = className || '该组群';
@@ -2573,7 +2596,11 @@ function renderMy(){
   const groupShelfEntries = myB
     .map((b, i) => ({ b, i, classNames: getClassNamesForMyBook(b) }))
     .filter((item) => item.classNames.length > 0);
-  const groupTabOptions = myClassEntries.map(({ cls }) => ({ id: cls.name, label: cls.name }));
+  const groupTabOptions = myClassEntries.map(({ cls }) => ({
+    id: cls.name,
+    label: cls.name,
+    isAdmin: cls.admin === getCurrentUserDisplayName(),
+  }));
   const groupTabIds = new Set(groupTabOptions.map((o) => o.id));
   if (myShelfView === 'group') {
     if (!groupTabOptions.length) {
@@ -2618,10 +2645,33 @@ function renderMy(){
         const active = opt.id === 'mine'
           ? myShelfView === 'mine'
           : (myShelfView === 'group' && myShelfClassFilter === opt.id);
-        return `<button type="button" class="my-shelf-tab ${active ? 'is-active' : ''}" onclick='setMyShelfTab(${JSON.stringify(opt.id)})'>${escAttr(opt.label)}</button>`;
+        const adminMark = opt.isAdmin ? '<span class="my-shelf-tab-admin">管理员</span>' : '';
+        return `<button type="button" class="my-shelf-tab ${active ? 'is-active' : ''}" onclick='setMyShelfTab(${JSON.stringify(opt.id)})'><span class="my-shelf-tab-label">${escAttr(opt.label)}</span>${adminMark}</button>`;
       }).join('')}
     </div>`;
   const activeClassName = myShelfClassFilter;
+  const groupsOnlyHtml = `
+    <div class="class-section class-section--standalone">
+      <div class="sec-head">
+        <div class="sec-title"><span class="dot"></span>我的群组</div>
+        <div class="sec-head-actions">
+          <span class="sec-extra">共 ${myClassEntries.length} 个群组</span>
+          <button type="button" class="my-shelf-back-btn" onclick="backToMyShelf()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            返回我的书架
+          </button>
+        </div>
+      </div>
+      <div class="class-grid">
+        ${classHtml}
+        <div class="class-card-create" onclick="openCreateClass()">
+          <div class="class-create-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+          <div class="class-create-text">创建组群</div>
+        </div>
+      </div>
+    </div>`;
 
   document.getElementById('page-my').innerHTML=`
     <div class="my-action-row">
@@ -2636,8 +2686,8 @@ function renderMy(){
         <svg class="join-class-entry-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div class="join-class-entry join-class-entry--duo" onclick="openJoinClass()" role="button" tabindex="0">
-        <div class="join-class-entry-ic join-class-entry-ic--mint">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="join-class-entry-ic join-class-entry-ic--peach">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/></svg>
         </div>
         <div class="join-class-entry-text">
           <div class="join-class-entry-title">加入组群</div>
@@ -2645,7 +2695,18 @@ function renderMy(){
         </div>
         <svg class="join-class-entry-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
+      <div class="join-class-entry join-class-entry--duo" onclick="openMyGroupsView()" role="button" tabindex="0">
+        <div class="join-class-entry-ic join-class-entry-ic--sky">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="join-class-entry-text">
+          <div class="join-class-entry-title">我的群组</div>
+          <div class="join-class-entry-desc">查看已创建或已加入的全部群组</div>
+        </div>
+        <svg class="join-class-entry-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
     </div>
+    ${myShelfView === 'groups' ? groupsOnlyHtml : `
     <div class="sec-head sec-head--my-shelf">
       <div class="sec-title"><span class="dot"></span>书架</div>
       <div class="sec-head-actions sec-head-actions--my-shelf">
@@ -2675,7 +2736,7 @@ function renderMy(){
           <div class="class-create-text">创建组群</div>
         </div>
       </div>
-    </div>`;
+    </div>`}`;
   bindMineShelfUiEvents();
   requestAnimationFrame(() => {
     mineShelfReflowAll();
@@ -3492,7 +3553,7 @@ function readerIcaseDrawLossCurve(canvas, ws, losses, wStar) {
     if (i === 0) ctx.moveTo(x, y);
     else ctx.lineTo(x, y);
   }
-  ctx.strokeStyle = '#0d9488';
+  ctx.strokeStyle = '#597ef7';
   ctx.lineWidth = 2.5;
   ctx.stroke();
   for (let i = 0; i < Math.min(60, losses.length); i += 1) {
@@ -3500,7 +3561,7 @@ function readerIcaseDrawLossCurve(canvas, ws, losses, wStar) {
     const y = yOf(losses[i]);
     ctx.beginPath();
     ctx.arc(x, y, 4, 0, Math.PI * 2);
-    ctx.fillStyle = i === 0 ? '#b45309' : i === losses.length - 1 ? '#0f766e' : 'rgba(13,148,136,0.85)';
+    ctx.fillStyle = i === 0 ? '#b45309' : i === losses.length - 1 ? '#1d39c4' : 'rgba(47,84,235,0.85)';
     ctx.fill();
   }
   if (ws.length > 0) {
@@ -3574,7 +3635,7 @@ function readerIcaseDrawLossByStep(canvas, losses) {
     if (i === 0) ctx.moveTo(x, y);
     else ctx.lineTo(x, y);
   }
-  ctx.strokeStyle = '#0e7490';
+  ctx.strokeStyle = '#1d39c4';
   ctx.lineWidth = 2;
   ctx.stroke();
   for (let i = 0; i < losses.length; i += 1) {
@@ -3582,7 +3643,7 @@ function readerIcaseDrawLossByStep(canvas, losses) {
     const y = yL(losses[i]);
     ctx.beginPath();
     ctx.arc(x, y, 2.2, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(14,116,144,0.9)';
+    ctx.fillStyle = 'rgba(47,84,235,0.9)';
     ctx.fill();
   }
   ctx.fillStyle = '#64748b';
@@ -4720,7 +4781,8 @@ function closeAvMode() {
     !document.getElementById('readerOverlay')?.classList.contains('open') &&
     !document.getElementById('teachModePage')?.classList.contains('open') &&
     !document.getElementById('avModePage')?.classList.contains('open') &&
-    !document.getElementById('taskModePage')?.classList.contains('open')
+    !document.getElementById('taskModePage')?.classList.contains('open') &&
+    !document.getElementById('questionBankPage')?.classList.contains('open')
   ) {
     document.body.style.overflow = '';
   }
@@ -5145,7 +5207,994 @@ function closeTaskMode() {
   if (
     !document.getElementById('readerOverlay')?.classList.contains('open') &&
     !document.getElementById('teachModePage')?.classList.contains('open') &&
-    !document.getElementById('avModePage')?.classList.contains('open')
+    !document.getElementById('avModePage')?.classList.contains('open') &&
+    !document.getElementById('questionBankPage')?.classList.contains('open')
+  ) {
+    document.body.style.overflow = '';
+  }
+}
+
+let questionBankContext = { book: null, classes: [], isAdmin: false };
+
+function getVisibleClassesForBook(book) {
+  if (!book) return [];
+  return classGroups
+    .map((cls, i) => ({ cls, i }))
+    .filter(({ cls }) => isClassVisibleForUser(cls) && cls.books.some((cb) => classBookMatchesMyBook(cb, book)));
+}
+
+function questionBankPaperRows(book, classes, isAdmin) {
+  const groupName = classes[0]?.cls.name || '关联组群';
+  const adminRows = [
+    { id: 'unit1', name: '第 1 单元基础检测', group: groupName, status: '已发布', type: '普通练习', publishedAt: '2026-06-01 09:30', meta: '20 题 · 100 分 · 自动批阅', done: '9/12 已提交', actions: [{ label: '查看', view: 'view', preview: true }, { label: '查看数据', view: 'data' }, { label: '撤回', view: 'withdraw', danger: true }] },
+    { id: 'project', name: '项目任务阶段测验', group: classes[1]?.cls.name || groupName, status: '草稿', type: '考试', publishedAt: '未发布', meta: '12 题 · 60 分 · 支持主观题', done: '待设置分数', actions: [{ label: '预览发布试卷', view: 'preview', preview: true }, { label: '设置分数', view: 'score' }] },
+    { id: 'final', name: `${book.t} 综合练习卷`, group: groupName, status: '已发布', type: '考试', publishedAt: '2026-06-03 14:00', meta: '30 题 · 100 分 · AI 辅助解析', done: '12/12 已提交', actions: [{ label: '查看', view: 'view', preview: true }, { label: '查看数据', view: 'data' }, { label: '撤回', view: 'withdraw', danger: true }] },
+  ];
+  const studentRows = [
+    { id: 'unit1', name: '第 1 单元基础检测', group: groupName, status: '待完成', meta: '20 题 · 100 分 · 自动批阅', done: '截止 06-12', actions: [{ label: '去作答', view: 'answer', primary: true }] },
+    { id: 'final', name: `${book.t} 综合练习卷`, group: groupName, status: '已完成', meta: '30 题 · 100 分 · AI 辅助解析', done: '得分 86', actions: [{ label: '查看已答', view: 'result' }, { label: '重做', view: 'answer', primary: true }] },
+    { id: 'project', name: '项目任务阶段测验', group: groupName, status: '已完成', meta: '12 题 · 60 分 · 支持主观题', done: '得分 78', actions: [{ label: '查看已答', view: 'result' }, { label: '重做', view: 'answer', primary: true }] },
+  ];
+  const base = isAdmin ? adminRows : studentRows;
+  return base.map((p) => `<div class="qb-paper-row">
+    <div class="qb-paper-main">
+      <div class="qb-paper-name">${escAttr(p.name)}</div>
+      <div class="qb-paper-meta">${escAttr(p.group)} · ${escAttr(p.meta)}</div>
+      ${isAdmin ? `<div class="qb-paper-submeta"><span>发布时间：${escAttr(p.publishedAt)}</span><span>类型：${escAttr(p.type)}</span></div>` : ''}
+    </div>
+    <span class="qb-paper-status">${escAttr(p.status)}</span>
+    <span class="qb-paper-done">${escAttr(p.done)}</span>
+    <div class="qb-paper-actions">
+      ${p.actions.map((action) => {
+        const handler = action.view === 'withdraw'
+          ? `withdrawQuestionBankPaper('${p.id}')`
+          : `openQuestionBankPaperPanel('${action.view}','${p.id}')`;
+        return `<button type="button" class="qb-paper-action ${action.preview ? 'qb-paper-action--preview' : ''} ${action.primary ? 'qb-paper-action--primary' : ''} ${action.danger ? 'qb-paper-action--danger' : ''}" onclick="${handler}">${escAttr(action.label)}</button>`;
+      }).join('')}
+    </div>
+  </div>`).join('');
+}
+
+function questionBankSectionCard(key, title, desc, stat, action) {
+  const icons = {
+    mine: '<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="7" width="25" height="34" rx="6" fill="#8b5cf6"/><rect x="15" y="13" width="15" height="3" rx="1.5" fill="#fff" opacity=".9"/><rect x="15" y="21" width="16" height="3" rx="1.5" fill="#fff" opacity=".72"/><rect x="15" y="29" width="11" height="3" rx="1.5" fill="#fff" opacity=".72"/><circle cx="35" cy="34" r="8" fill="#c4b5fd"/><path d="M31.5 34.2l2.2 2.2 4.5-5" fill="none" stroke="#5b21b6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    support: '<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="9" width="15" height="30" rx="5" fill="#3b82f6"/><rect x="25" y="9" width="15" height="30" rx="5" fill="#60a5fa"/><path d="M23 13v25" stroke="#dbeafe" stroke-width="2"/><rect x="12" y="16" width="7" height="3" rx="1.5" fill="#fff" opacity=".9"/><rect x="29" y="16" width="7" height="3" rx="1.5" fill="#fff" opacity=".9"/><rect x="29" y="24" width="6" height="3" rx="1.5" fill="#fff" opacity=".72"/></svg>',
+    wrong: '<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="8" width="30" height="32" rx="8" fill="#fb923c"/><circle cx="34" cy="14" r="7" fill="#fed7aa"/><path d="M31.5 11.5l5 5M36.5 11.5l-5 5" stroke="#c2410c" stroke-width="2.6" stroke-linecap="round"/><rect x="15" y="18" width="13" height="3" rx="1.5" fill="#fff" opacity=".9"/><rect x="15" y="26" width="18" height="3" rx="1.5" fill="#fff" opacity=".72"/></svg>',
+  };
+  const canOpenList = key === 'mine' || key === 'support';
+  const openAttr = canOpenList ? ` onclick="openQuestionBankLibraryList('${key}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQuestionBankLibraryList('${key}')}"` : '';
+  const btnAction = canOpenList ? `openQuestionBankLibraryList('${key}')` : `showProfileToast('${title}功能建设中。')`;
+  return `<section class="qb-section-card qb-section-card--${key}"${openAttr}>
+    <div class="qb-section-ic" aria-hidden="true">${icons[key] || icons.mine}</div>
+    <div class="qb-section-main">
+      <h3>${title}</h3>
+      <p>${desc}</p>
+      <span>${stat}</span>
+    </div>
+    <button type="button" class="qb-section-btn" onclick="event.stopPropagation();${btnAction}">${action}</button>
+  </section>`;
+}
+
+function questionBankLibraryItems(kind) {
+  const book = questionBankContext.book || myB[0];
+  if (kind === 'support') {
+    return [
+      { id: 'support-unit1', name: '第 1 单元 认识人工智能', createdAt: '2026-05-18 10:20', count: '2 套题 · 16 题', status: '配套', source: book.t },
+      { id: 'support-unit2', name: '第 2 单元 数据与算法基础', createdAt: '2026-05-20 14:35', count: '3 套题 · 24 题', status: '配套', source: book.t },
+      { id: 'support-project', name: `${book.t} 项目实践题库`, createdAt: '2026-05-26 09:10', count: '4 套题 · 30 题', status: '配套', source: book.t },
+      { id: 'support-final', name: `${book.t} 综合测试题库`, createdAt: '2026-05-30 16:00', count: '5 套题 · 42 题', status: '配套', source: book.t },
+    ];
+  }
+  return [
+    { id: 'mine-ai', name: `${book.t} 习题集`, createdAt: '2026-06-04 15:11', count: '8 题 · 40 分', status: '草稿', source: 'AI 出题' },
+    { id: 'mine-import', name: '课堂导入题库 · 智能技术与社会', createdAt: '2026-06-03 18:30', count: '18 题 · 76 分', status: '未发布', source: 'Word 导入' },
+    { id: 'mine-chapter', name: '第 1 单元随堂练习题库', createdAt: '2026-06-01 09:45', count: '20 题 · 100 分', status: '已发布', source: '手动出题' },
+    { id: 'mine-pick', name: `${book.t} 期末复习题库`, createdAt: '2026-05-29 11:20', count: '30 题 · 100 分', status: '已发布', source: '现有题库选题' },
+  ];
+}
+
+function openQuestionBankLibraryList(kind = 'mine') {
+  const host = document.getElementById('questionBankPanel');
+  if (!host) return;
+  const isSupport = kind === 'support';
+  const book = questionBankContext.book || myB[0];
+  const title = isSupport ? '配套题库列表' : '我的题库列表';
+  const desc = isSupport ? `来自《${book.t}》的章节测试题和综合练习。` : '管理我创建、导入和收藏沉淀的题库。';
+  const rows = questionBankLibraryItems(kind);
+  host.innerHTML = `<div class="qb-panel-page">
+    <header class="qb-panel-head">
+      <button type="button" class="qb-panel-back" onclick="closeQuestionBankPaperPanel()">返回</button>
+      <div><h2>${title}</h2><p>${escAttr(desc)}</p></div>
+      ${isSupport
+        ? '<button type="button" class="qb-panel-primary" onclick="openQuestionBankPaperEditor(\'project\')">从配套题库选题</button>'
+        : '<button type="button" class="qb-panel-primary" onclick="openQuestionBankAiModal()">创建题库</button>'}
+    </header>
+    <main class="qb-panel-body">
+      <section class="qb-library-card">
+        <div class="qb-library-head">
+          <span>题库名称</span>
+          <span>创建时间</span>
+          <span>题量</span>
+          <span>状态</span>
+          <span>操作</span>
+        </div>
+        <div class="qb-library-list">
+          ${rows.map((item) => `<article class="qb-library-row">
+            <button type="button" class="qb-library-title" onclick="openQuestionBankLibraryDetail('${kind}','${item.id}')">
+              <strong>${escAttr(item.name)}</strong>
+              <small>${escAttr(item.source)}</small>
+            </button>
+            <span class="qb-library-time">${escAttr(item.createdAt)}</span>
+            <span class="qb-library-count">${escAttr(item.count)}</span>
+            <span class="qb-library-status qb-library-status--${item.status === '已发布' ? 'published' : item.status === '草稿' ? 'draft' : 'support'}">${escAttr(item.status)}</span>
+            <div class="qb-library-actions">
+              ${isSupport
+                ? `<button type="button" onclick="openQuestionBankLibraryDetail('${kind}','${item.id}')">查看</button><button type="button" class="is-primary" onclick="openQuestionBankPaperEditor('project')">选题</button>`
+                : `<button type="button" class="is-primary" onclick="openQuestionBankPublishModal()">发布</button><button type="button" onclick="openQuestionBankLibraryDetail('${kind}','${item.id}')">查看</button><button type="button" class="is-danger" onclick="deleteQuestionBankLibraryItem('${item.id}')">删除</button>`}
+            </div>
+          </article>`).join('')}
+        </div>
+      </section>
+    </main>
+  </div>`;
+  host.classList.add('open');
+  host.setAttribute('aria-hidden', 'false');
+}
+
+function openQuestionBankLibraryDetail(kind, itemId) {
+  const item = questionBankLibraryItems(kind).find((entry) => entry.id === itemId);
+  showProfileToast(`${item?.name || '题库'}详情页建设中，当前先进入试卷预览。`);
+  openQuestionBankPaperPanel('preview', 'project');
+}
+
+function deleteQuestionBankLibraryItem(itemId) {
+  const item = questionBankLibraryItems('mine').find((entry) => entry.id === itemId);
+  showProfileToast(`${item?.name || '题库'} 已删除（演示）。`);
+}
+
+function questionBankPanelPaper(id) {
+  const book = questionBankContext.book || myB[0];
+  const map = {
+    unit1: { id: 'unit1', name: '第 1 单元基础检测', group: questionBankContext.classes[0]?.cls.name || '关联组群', total: '20 题 · 100 分', status: '已发布', type: '普通练习', publishedAt: '2026-06-01 09:30' },
+    project: { id: 'project', name: '项目任务阶段测验', group: questionBankContext.classes[1]?.cls.name || questionBankContext.classes[0]?.cls.name || '关联组群', total: '12 题 · 60 分', status: '草稿', type: '考试', publishedAt: '未发布' },
+    final: { id: 'final', name: `${book.t} 综合练习卷`, group: questionBankContext.classes[0]?.cls.name || '关联组群', total: '30 题 · 100 分', status: '已发布', type: '考试', publishedAt: '2026-06-03 14:00' },
+  };
+  return map[id] || map.unit1;
+}
+
+function questionBankSubmissionData(paperId) {
+  const cls = questionBankContext.classes[0]?.cls;
+  const students = cls?.students?.length ? cls.students : [
+    { name: '王思涵', id: '2024030101', last: '今天' },
+    { name: '张子墨', id: '2024030102', last: '今天' },
+    { name: '刘雨桐', id: '2024030103', last: '昨天' },
+  ];
+  const submitCount = paperId === 'final' ? students.length : Math.max(1, Math.min(students.length, Math.ceil(students.length * 0.75)));
+  const submitted = students.slice(0, submitCount).map((st, i) => ({
+    ...st,
+    score: Math.max(62, 94 - i * 4),
+    submittedAt: i < 2 ? '今天 10:2' + i : '昨天 18:1' + i,
+    duration: `${18 + i * 3} 分钟`,
+  }));
+  const pending = students.slice(submitCount).map((st, i) => ({
+    ...st,
+    status: i === 0 ? '已提醒' : '未提交',
+  }));
+  return { submitted, pending, total: students.length };
+}
+
+function questionBankSubmissionListHtml(paperId) {
+  const data = questionBankSubmissionData(paperId);
+  const submittedRows = data.submitted.map((st) => `<div class="qb-submit-row">
+    <div class="qb-submit-user">
+      <span>${escAttr(st.name.slice(-1))}</span>
+      <div><strong>${escAttr(st.name)}</strong><em>${escAttr(st.id)}</em></div>
+    </div>
+    <b>${st.score} 分</b>
+    <small>${escAttr(st.submittedAt)} · ${escAttr(st.duration)}</small>
+    <button type="button" class="qb-paper-action qb-paper-action--preview" onclick="openQuestionBankMemberReport('${paperId}','${escAttr(st.id)}')">查看报告</button>
+  </div>`).join('');
+  const pendingRows = data.pending.length
+    ? data.pending.map((st) => `<div class="qb-submit-row qb-submit-row--pending">
+        <div class="qb-submit-user">
+          <span>${escAttr(st.name.slice(-1))}</span>
+          <div><strong>${escAttr(st.name)}</strong><em>${escAttr(st.id)}</em></div>
+        </div>
+        <b>${escAttr(st.status)}</b>
+        <small>最后学习：${escAttr(st.last || '暂无')}</small>
+        <button type="button" class="qb-paper-action" onclick="showProfileToast('已发送提交提醒（演示）。')">提醒</button>
+      </div>`).join('')
+    : '<div class="qb-submit-empty">全部组员已提交。</div>';
+  return `<div class="qb-submission-grid">
+    <section class="qb-panel-card">
+      <div class="qb-panel-card-head"><h3>已提交组员</h3><span>${data.submitted.length}/${data.total}</span></div>
+      <div class="qb-submit-list">${submittedRows}</div>
+    </section>
+    <section class="qb-panel-card">
+      <div class="qb-panel-card-head"><h3>未提交组员</h3><span>${data.pending.length}/${data.total}</span></div>
+      <div class="qb-submit-list">${pendingRows}</div>
+    </section>
+  </div>`;
+}
+
+function questionBankStudentResultHtml(paper) {
+  const isMobile = String(questionBankContext.book?.t || '').includes('移动应用开发');
+  const summary = isMobile
+    ? '你对 Activity、Manifest 与移动端适配的基础概念掌握较好；建议继续巩固登录安全设计，尤其是 Token 存储、隐私授权和异常会话处理。'
+    : '你对人工智能的基础概念、机器感知和模型评估掌握较好；需要继续巩固 AI 伦理场景题，尤其是隐私授权、数据最小化和误识别风险的表述。';
+  return `<div class="qb-result-hero">
+      <div class="qb-result-score"><strong>86</strong><span>分</span></div>
+      <div>
+        <h3>AI 已完成自动批阅</h3>
+        <p>${escAttr(paper.name)} 提交成功。客观题已自动判分，简答题按关键词覆盖度与表达完整度给出智能评分建议。</p>
+      </div>
+    </div>
+    <div class="qb-panel-stats">
+      <div><strong>4/5</strong><span>已答对</span></div>
+      <div><strong>92%</strong><span>知识点覆盖</span></div>
+      <div><strong>1</strong><span>待巩固题</span></div>
+      <div><strong>2 分钟</strong><span>建议复习</span></div>
+    </div>
+    <div class="qb-panel-card">
+      <h3>AI 总结</h3>
+      <p class="qb-ai-summary">${summary}</p>
+    </div>
+    <div class="qb-panel-card">
+      <h3>逐题反馈</h3>
+      ${questionBankGeneratedQuestions().slice(0, 4).map((q, i) => `<div class="qb-result-row ${i === 3 ? 'is-weak' : 'is-ok'}">
+        <b>${i + 1}. ${escAttr(q.type)}</b>
+        <span>${i === 3 ? '需巩固' : '正确'} · ${q.score} 分 · ${escAttr(q.points.join('、'))}</span>
+      </div>`).join('')}
+    </div>`;
+}
+
+function questionBankAnswerInputHtml(q, i, prefix) {
+  const name = `${prefix}-${i}`;
+  if (q.options) {
+    return `<div class="qb-answer-options">${q.options.map((op, j) => `<label><input type="radio" name="${name}"><span>${String.fromCharCode(65 + j)}</span>${escAttr(op)}</label>`).join('')}</div>`;
+  }
+  if (q.type === '判断题') {
+    return `<div class="qb-answer-options qb-answer-options--inline"><label><input type="radio" name="${name}"><span>对</span>正确</label><label><input type="radio" name="${name}"><span>错</span>错误</label></div>`;
+  }
+  return `<textarea class="qb-answer-textarea" rows="${q.type === '简答题' ? 4 : 2}" placeholder="请输入答案"></textarea>`;
+}
+
+function questionBankAnswerPaperHtml(prefix = 'qb-answer') {
+  const typeOrder = ['选择题', '填空题', '判断题', '简答题'];
+  let no = 0;
+  return `<div class="qb-panel-card qb-answer-card qb-answer-card--paper">
+    ${typeOrder.map((type) => {
+      const list = questionBankGeneratedQuestions().filter((q) => q.type === type).slice(0, 2);
+      if (!list.length) return '';
+      const score = list.reduce((sum, q) => sum + (q.score || 0), 0);
+      return `<section class="qb-answer-type-section">
+        <div class="qb-answer-type-head"><h3>${escAttr(type)}</h3><span>共 ${list.length} 题 · ${score} 分</span></div>
+        ${list.map((q) => {
+          no += 1;
+          return `<section class="qb-answer-item">
+            <div class="qb-answer-stem"><b>${no}</b><strong>${escAttr(q.stem)}</strong><em>${escAttr(q.type)} · ${q.score} 分</em></div>
+            ${questionBankAnswerInputHtml(q, no, prefix)}
+          </section>`;
+        }).join('')}
+      </section>`;
+    }).join('')}
+  </div>`;
+}
+
+function openQuestionBankPaperPanel(mode, paperId) {
+  const host = document.getElementById('questionBankPanel');
+  if (!host) return;
+  const paper = questionBankPanelPaper(paperId);
+  const submissions = questionBankSubmissionData(paperId);
+  const isDraftPreview = mode === 'preview' && paper.status === '草稿';
+  const title = mode === 'data' ? '试卷数据' : mode === 'score' ? '设置分数' : mode === 'answer' ? '试卷作答' : mode === 'result' ? 'AI 批阅报告' : mode === 'view' ? '查看试卷' : '预览发布试卷';
+  const body = mode === 'data'
+    ? `<div class="qb-panel-stats">
+        <div><strong>${submissions.total}</strong><span>应交人数</span></div>
+        <div><strong>${submissions.submitted.length}</strong><span>已提交</span></div>
+        <div><strong>${submissions.pending.length}</strong><span>未提交</span></div>
+        <div><strong>88.5</strong><span>平均分</span></div>
+      </div>
+      ${questionBankSubmissionListHtml(paperId)}
+      <div class="qb-panel-card">
+        <h3>题目表现</h3>
+        <div class="qb-panel-bars">
+          <p><span>选择题</span><b style="width:86%"></b><em>86%</em></p>
+          <p><span>填空题</span><b style="width:72%"></b><em>72%</em></p>
+          <p><span>判断题</span><b style="width:91%"></b><em>91%</em></p>
+          <p><span>简答题</span><b style="width:64%"></b><em>64%</em></p>
+        </div>
+      </div>
+      <div class="qb-panel-card">
+        <h3>高频薄弱点</h3>
+        <div class="qb-panel-tags"><span>机器感知</span><span>模型评估</span><span>AI伦理</span></div>
+      </div>`
+    : mode === 'score'
+      ? `<div class="qb-panel-card">
+          <div class="qb-panel-score-head">
+            <h3>按题型批量设置</h3>
+            <div class="qb-panel-total-score"><span>当前总分</span><strong id="questionBankScoreTotal">40</strong><em>分</em></div>
+          </div>
+          <div class="qb-panel-score-grid">
+            <label><span>选择题</span><input type="number" min="0" value="5" data-count="2" oninput="updateQuestionBankScoreTotal()"><em>分/题 · 2题</em></label>
+            <label><span>填空题</span><input type="number" min="0" value="4" data-count="2" oninput="updateQuestionBankScoreTotal()"><em>分/题 · 2题</em></label>
+            <label><span>判断题</span><input type="number" min="0" value="3" data-count="2" oninput="updateQuestionBankScoreTotal()"><em>分/题 · 2题</em></label>
+            <label><span>简答题</span><input type="number" min="0" value="8" data-count="2" oninput="updateQuestionBankScoreTotal()"><em>分/题 · 2题</em></label>
+          </div>
+        </div>
+        <div class="qb-panel-card">
+          <h3>发布规则</h3>
+          <div class="qb-panel-form">
+            <label><span>发布组群</span><select><option>${escAttr(paper.group)}</option></select></label>
+            <label><span>截止时间</span><input value="2026-06-12 18:00"></label>
+            <label><span>批阅方式</span><select><option>客观题自动批阅，主观题教师复核</option></select></label>
+          </div>
+        </div>`
+      : mode === 'answer'
+        ? questionBankAnswerPaperHtml('qb-answer')
+        : mode === 'result'
+          ? questionBankStudentResultHtml(paper)
+      : `<div class="qb-panel-card">
+          <h3>试卷概览</h3>
+          <div class="qb-panel-preview">
+            <p><strong>发布对象</strong><span>${escAttr(paper.group)}</span></p>
+            <p><strong>题量分值</strong><span>${escAttr(paper.total)}</span></p>
+            <p><strong>状态</strong><span>${escAttr(paper.status)}</span></p>
+            <p><strong>发布时间</strong><span>${escAttr(paper.publishedAt)}</span></p>
+            <p><strong>试卷类型</strong><span>${escAttr(paper.type)}</span></p>
+            <p><strong>批阅</strong><span>客观题自动批阅，主观题可复核</span></p>
+          </div>
+        </div>
+        ${questionBankAnswerPaperHtml(`qb-preview-${paperId}`)}`;
+  const primaryText = isDraftPreview ? '编辑试卷' : mode === 'preview' ? '确认发布' : mode === 'view' ? '关闭' : mode === 'score' ? '保存设置' : mode === 'data' ? '刷新数据' : mode === 'answer' ? '提交并 AI 批阅' : '重新练习';
+  const primaryAction = isDraftPreview
+    ? `openQuestionBankPaperEditor('${paperId}')`
+    : mode === 'preview'
+    ? 'openQuestionBankPublishModal()'
+    : mode === 'view'
+    ? 'closeQuestionBankPaperPanel()'
+    : mode === 'answer'
+    ? `openQuestionBankPaperPanel('result','${paperId}')`
+    : mode === 'result'
+      ? `openQuestionBankPaperPanel('answer','${paperId}')`
+      : `showProfileToast('${mode === 'preview' ? '试卷已发布（演示）。' : mode === 'score' ? '分数设置已保存。' : '数据已刷新。'}')`;
+  host.innerHTML = `<div class="qb-panel-page">
+    <header class="qb-panel-head">
+      <button type="button" class="qb-panel-back" onclick="closeQuestionBankPaperPanel()">返回</button>
+      <div><h2>${title}</h2><p>${escAttr(paper.name)} · ${escAttr(paper.group)}</p></div>
+      <button type="button" class="qb-panel-primary" onclick="${primaryAction}">${primaryText}</button>
+    </header>
+    <main class="qb-panel-body">${body}</main>
+  </div>`;
+  host.classList.add('open');
+  host.setAttribute('aria-hidden', 'false');
+}
+
+function openQuestionBankMemberReport(paperId, studentId) {
+  const host = document.getElementById('questionBankPanel');
+  if (!host) return;
+  const paper = questionBankPanelPaper(paperId);
+  const data = questionBankSubmissionData(paperId);
+  const student = data.submitted.find((st) => String(st.id) === String(studentId)) || data.submitted[0];
+  if (!student) return;
+  const questions = questionBankGeneratedQuestions().slice(0, 4);
+  host.innerHTML = `<div class="qb-panel-page">
+    <header class="qb-panel-head">
+      <button type="button" class="qb-panel-back" onclick="openQuestionBankPaperPanel('data','${paperId}')">返回数据</button>
+      <div><h2>组员答题报告</h2><p>${escAttr(student.name)} · ${escAttr(paper.name)}</p></div>
+      <button type="button" class="qb-panel-primary" onclick="showProfileToast('报告已导出（演示）。')">导出报告</button>
+    </header>
+    <main class="qb-panel-body">
+      <div class="qb-member-report-hero">
+        <div class="qb-result-score"><strong>${student.score}</strong><span>分</span></div>
+        <div>
+          <h3>${escAttr(student.name)} 的 AI 批阅结果</h3>
+          <p>提交时间：${escAttr(student.submittedAt)} · 用时：${escAttr(student.duration)}。客观题已自动判分，主观题给出智能评分建议。</p>
+        </div>
+      </div>
+      <div class="qb-panel-stats">
+        <div><strong>${student.score >= 85 ? '优秀' : '良好'}</strong><span>等级</span></div>
+        <div><strong>${Math.max(1, Math.round(student.score / 20))}/5</strong><span>答对题</span></div>
+        <div><strong>${Math.min(96, student.score + 6)}%</strong><span>知识点覆盖</span></div>
+        <div><strong>${student.score < 80 ? 2 : 1}</strong><span>待巩固点</span></div>
+      </div>
+      <div class="qb-panel-card">
+        <h3>AI 总结</h3>
+        <p class="qb-ai-summary">${escAttr(student.name)} 对基础概念掌握较稳定，选择题和判断题完成质量较高；建议继续复习简答题中的场景分析表达，答题时补充“原因、风险、改进建议”三个层次。</p>
+      </div>
+      <div class="qb-panel-card">
+        <h3>逐题报告</h3>
+        ${questions.map((q, i) => `<div class="qb-result-row ${i === 3 && student.score < 90 ? 'is-weak' : 'is-ok'}">
+          <b>${i + 1}. ${escAttr(q.type)}</b>
+          <span>${i === 3 && student.score < 90 ? '需巩固' : '正确'} · ${q.score} 分 · 答案：${escAttr(q.answer)}</span>
+        </div>`).join('')}
+      </div>
+    </main>
+  </div>`;
+  host.classList.add('open');
+  host.setAttribute('aria-hidden', 'false');
+}
+
+function withdrawQuestionBankPaper(paperId) {
+  const paper = questionBankPanelPaper(paperId);
+  showProfileToast(`${paper.name} 已撤回（演示）。`);
+}
+
+function closeQuestionBankPaperPanel() {
+  const host = document.getElementById('questionBankPanel');
+  if (!host) return;
+  host.classList.remove('open');
+  host.setAttribute('aria-hidden', 'true');
+  host.innerHTML = '';
+}
+
+function openQuestionBankPublishModal() {
+  const modal = document.getElementById('questionBankPublishModal');
+  if (!modal) return;
+  const book = questionBankContext.book || myB[0];
+  const groups = questionBankContext.classes.length
+    ? questionBankContext.classes.map(({ cls }) => cls.name)
+    : ['关联组群'];
+  modal.innerHTML = `<div class="qb-publish-bg" onclick="closeQuestionBankPublishModal()"></div>
+    <section class="qb-publish-panel" role="dialog" aria-modal="true" aria-labelledby="qbPublishTitle">
+      <button type="button" class="qb-publish-close" onclick="closeQuestionBankPublishModal()" aria-label="关闭">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="qb-publish-card">
+        <h2 id="qbPublishTitle">发布信息</h2>
+        <label class="qb-publish-field is-required">
+          <span>试卷名称</span>
+          <div class="qb-publish-input-wrap">
+            <input type="text" value="${escAttr(book.t)} 习题集" maxlength="30">
+            <em>${String(`${book.t} 习题集`).length}/30</em>
+          </div>
+        </label>
+        <label class="qb-publish-field is-required">
+          <span>组群名称</span>
+          <div class="qb-publish-select-wrap">
+            <div class="qb-publish-chip">${escAttr(groups[0])}<button type="button" aria-label="移除组群">×</button></div>
+            <select aria-label="选择组群">${groups.map((g) => `<option>${escAttr(g)}</option>`).join('')}</select>
+          </div>
+        </label>
+        <div class="qb-publish-field">
+          <span>试卷类型</span>
+          <div class="qb-publish-radios">
+            <label><input type="radio" name="qbPublishType" checked><span>普通练习</span></label>
+            <label><input type="radio" name="qbPublishType"><span>考试</span></label>
+          </div>
+        </div>
+        <label class="qb-publish-field qb-publish-field--short">
+          <span>是否可以重做</span>
+          <select>
+            <option>是</option>
+            <option>否</option>
+          </select>
+        </label>
+      </div>
+      <button type="button" class="qb-publish-submit" onclick="submitQuestionBankPublish()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2 21l20-9L2 3v7l12 2-12 2v7z"/></svg>
+        发布
+      </button>
+    </section>`;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeQuestionBankPublishModal() {
+  const modal = document.getElementById('questionBankPublishModal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  modal.innerHTML = '';
+}
+
+function submitQuestionBankPublish() {
+  closeQuestionBankPublishModal();
+  showProfileToast('试卷已发布到组群。');
+}
+
+function renderQuestionBankHome() {
+  const book = questionBankContext.book;
+  if (!book) return;
+  const classes = questionBankContext.classes;
+  const isAdmin = questionBankContext.isAdmin;
+  const body = document.getElementById('questionBankBody');
+  const line = document.getElementById('questionBankBookLine');
+  if (line) line.textContent = `${book.t} · ${book.s}`;
+  if (!body) return;
+  const classNames = classes.map(({ cls }) => cls.name);
+  const publishTools = isAdmin
+    ? `<div class="qb-compose-panel">
+        <div class="qb-compose-head">
+          <h2>发布试卷任务</h2>
+        </div>
+        <div class="qb-tool-grid">
+          <button type="button" class="qb-tool qb-tool--ai" onclick="openQuestionBankAiModal()"><span class="qb-tool-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="8" y="10" width="32" height="28" rx="10" fill="#597ef7"/><path d="M24 15l2.2 4.4 4.8.7-3.5 3.4.8 4.8L24 26l-4.3 2.3.8-4.8-3.5-3.4 4.8-.7L24 15z" fill="#fff"/><circle cx="37" cy="12" r="5" fill="#adc6ff"/></svg></span><strong>AI 出题</strong><span>按章节、难度、题型生成</span></button>
+          <button type="button" class="qb-tool qb-tool--manual"><span class="qb-tool-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="9" y="9" width="30" height="30" rx="9" fill="#fb923c"/><path d="M18 31l2.2-7.2L30.8 13.2a3.2 3.2 0 0 1 4.5 4.5L24.8 28.2 18 31z" fill="#fff"/><path d="M29 15l4 4" stroke="#fed7aa" stroke-width="3" stroke-linecap="round"/></svg></span><strong>手动出题</strong><span>单选、多选、判断、填空、简答</span></button>
+          <button type="button" class="qb-tool qb-tool--import"><span class="qb-tool-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="12" y="7" width="24" height="34" rx="7" fill="#10b981"/><path d="M28 7v9h8" fill="#a7f3d0"/><path d="M24 19v12M19 26l5 5 5-5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><strong>导入题目</strong><span>支持 Word、Excel、PDF</span></button>
+          <button type="button" class="qb-tool qb-tool--pick"><span class="qb-tool-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="8" y="9" width="32" height="30" rx="9" fill="#8b5cf6"/><rect x="15" y="16" width="18" height="3" rx="1.5" fill="#fff"/><rect x="15" y="23" width="14" height="3" rx="1.5" fill="#fff" opacity=".75"/><circle cx="34" cy="33" r="7" fill="#ddd6fe"/><path d="M31 33h6M34 30v6" stroke="#6d28d9" stroke-width="2.6" stroke-linecap="round"/></svg></span><strong>现有题库选题</strong><span>从我的题库和配套题库组卷</span></button>
+        </div>
+      </div>`
+    : `<div class="qb-compose-panel">
+        <div class="qb-compose-head">
+          <h2>完成老师发布的试卷任务</h2>
+          <button type="button" class="qb-primary-btn">开始待完成试卷</button>
+        </div>
+        <div class="qb-student-note">提交后可自动批阅客观题，生成得分、错题和解析；主观题等待老师复核。</div>
+      </div>`;
+  body.innerHTML = `
+    <div class="qb-hero">
+      <div>
+        <h1>题库</h1>
+        <p>${escAttr(classNames.join('、')) || '暂无组群'} · 围绕本教材进行组卷、发布、作答与自动批阅。</p>
+      </div>
+      <div class="qb-hero-stats">
+        <div><strong>${classes.length}</strong><span>关联组群</span></div>
+        <div><strong>${isAdmin ? '5' : '2'}</strong><span>${isAdmin ? '待处理试卷' : '待完成任务'}</span></div>
+        <div><strong>128</strong><span>题目资源</span></div>
+      </div>
+    </div>
+    ${publishTools}
+    <div class="qb-layout">
+      <section class="qb-paper-list">
+        <div class="qb-block-head">
+          <h2>${isAdmin ? '我发布的试卷任务' : '老师发布的试卷任务'}</h2>
+          <button type="button" class="qb-ghost-btn">查看全部</button>
+        </div>
+        ${questionBankPaperRows(book, classes, isAdmin)}
+      </section>
+      <div class="qb-section-grid">
+        ${questionBankSectionCard('mine', '我的题库', isAdmin ? '沉淀个人创建、导入和收藏的题目。' : '查看已收藏题目和个人练习记录。', isAdmin ? '8 套题 · 46 题' : '3 套题 · 12 题', '进入')}
+        ${questionBankSectionCard('support', '配套题库', '书中自带测试题与章节练习，可直接组卷。', '12 套题 · 82 题', '选题')}
+        ${questionBankSectionCard('wrong', '错题集', isAdmin ? '按组群查看高频错题与薄弱知识点。' : '自动汇总我的错题，支持重做。', isAdmin ? '18 个高频错点' : '7 道待巩固', '查看')}
+      </div>
+    </div>`;
+}
+
+function openQuestionBankMode(book) {
+  if (!book) return;
+  const classes = getVisibleClassesForBook(book);
+  if (!classes.length) {
+    showProfileToast('这本教材暂未关联组群，加入或创建组群后可使用题库。');
+    return;
+  }
+  closeReader();
+  closeDetail();
+  questionBankContext = {
+    book,
+    classes,
+    isAdmin: classes.some(({ cls }) => cls.admin === getCurrentUserDisplayName()),
+  };
+  renderQuestionBankHome();
+  const page = document.getElementById('questionBankPage');
+  if (page) {
+    page.classList.add('open');
+    page.setAttribute('aria-hidden', 'false');
+  }
+  document.body.style.overflow = 'hidden';
+}
+
+function openQuestionBankAiModal() {
+  const modal = document.getElementById('questionBankAiModal');
+  if (!modal) return;
+  const book = questionBankContext.book;
+  const nameInput = document.getElementById('qbAiSetName');
+  if (nameInput && book) nameInput.value = `${book.t} 习题集`;
+  const chapter = document.getElementById('qbAiChapter');
+  if (chapter && book) {
+    chapter.innerHTML = `<option>${book.t} · 全书</option><option>第 1 单元 基础知识</option><option>第 2 单元 项目实践</option><option>第 3 单元 综合应用</option>`;
+  }
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  updateQuestionBankAiReqCount();
+}
+
+function closeQuestionBankAiModal() {
+  const modal = document.getElementById('questionBankAiModal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+function updateQuestionBankAiReqCount() {
+  const ta = document.getElementById('qbAiRequirement');
+  const out = document.getElementById('qbAiReqCount');
+  if (!ta || !out) return;
+  out.textContent = `${String(ta.value || '').length}/1000`;
+}
+
+function stepQuestionBankAiCount(id, delta) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const next = Math.max(0, Math.min(99, (parseInt(el.value, 10) || 0) + delta));
+  el.value = String(next);
+}
+
+function questionBankGeneratedQuestions() {
+  if (String(questionBankContext.book?.t || '').includes('移动应用开发')) {
+    return [
+      {
+        type: '选择题',
+        score: 5,
+        stem: 'Android 应用中用于展示一个界面并承载交互逻辑的核心组件通常是？',
+        options: ['Activity', 'Manifest 权限', 'Gradle 仓库', 'Drawable 图片'],
+        answer: 'A',
+        analysis: 'Activity 是 Android 应用中承载界面和交互流程的重要组件。',
+        points: ['Activity', 'Android组件'],
+      },
+      {
+        type: '选择题',
+        score: 5,
+        stem: '下列哪项最适合用于在 Android 页面之间传递少量基础数据？',
+        options: ['Intent extra', 'APK 签名文件', '图片资源目录', 'Gradle 缓存'],
+        answer: 'A',
+        analysis: 'Intent extra 常用于 Activity 之间传递字符串、数字等少量数据。',
+        points: ['Intent', '页面跳转'],
+      },
+      {
+        type: '填空题',
+        score: 4,
+        stem: 'Android 项目中声明应用权限、组件和启动入口的文件通常是 ______。',
+        answer: 'AndroidManifest.xml',
+        analysis: 'Manifest 文件用于描述应用的基础配置、权限与组件注册。',
+        points: ['Manifest', '应用配置'],
+      },
+      {
+        type: '填空题',
+        score: 4,
+        stem: 'Android 中用于表示设备无关像素、便于适配不同屏幕密度的单位是 ______。',
+        answer: 'dp',
+        analysis: 'dp 可降低不同屏幕密度下控件显示尺寸差异。',
+        points: ['屏幕适配', 'dp单位'],
+      },
+      {
+        type: '判断题',
+        score: 3,
+        stem: '移动应用适配不同屏幕尺寸时，只需要固定一个像素尺寸即可。',
+        answer: '错误',
+        analysis: '移动端需要考虑不同屏幕尺寸、密度和方向，通常使用 dp、约束布局和资源适配。',
+        points: ['屏幕适配', '响应式布局'],
+      },
+      {
+        type: '判断题',
+        score: 3,
+        stem: '在移动应用中申请相机、定位等敏感权限时，应向用户说明使用目的。',
+        answer: '正确',
+        analysis: '敏感权限涉及隐私，应遵循最小必要和明确告知原则。',
+        points: ['权限管理', '隐私保护'],
+      },
+      {
+        type: '简答题',
+        score: 8,
+        stem: '请简述移动应用登录功能设计时需要关注的安全要点。',
+        answer: '应关注密码加密传输、Token 安全存储、登录失败限制、隐私授权和异常会话处理。',
+        analysis: '登录功能涉及身份认证与敏感信息，应兼顾安全、隐私与用户体验。',
+        points: ['登录安全', '隐私保护'],
+      },
+      {
+        type: '简答题',
+        score: 8,
+        stem: '请说明 Android 应用做列表页面时，为什么常使用 RecyclerView。',
+        answer: 'RecyclerView 适合展示大量列表数据，支持视图复用、滚动性能优化和灵活布局。',
+        analysis: '该题关注列表控件选择及其性能优势。',
+        points: ['RecyclerView', '列表性能'],
+      },
+    ];
+  }
+  return [
+    {
+      type: '选择题',
+      score: 5,
+      stem: '以下哪项最能体现人工智能系统“感知”的能力？',
+      options: ['根据传感器采集图像并识别物体', '人工手动录入全部结论', '仅保存历史文件', '关闭网络连接'],
+      answer: 'A',
+      analysis: '感知能力强调从图像、语音、文本等数据中提取信息并形成可计算的表示。',
+      points: ['机器感知', '图像识别'],
+    },
+    {
+      type: '填空题',
+      score: 4,
+      stem: '人工智能三要素通常包括数据、算法和______。',
+      answer: '算力',
+      analysis: '数据提供样本，算法提供方法，算力支撑模型训练和推理。',
+      points: ['人工智能基础'],
+    },
+    {
+      type: '填空题',
+      score: 4,
+      stem: '为了评估模型在新样本上的表现，训练过程中通常会划分训练集和______集。',
+      answer: '验证',
+      analysis: '验证集用于调参与观察模型泛化效果。',
+      points: ['模型评估', '数据划分'],
+    },
+    {
+      type: '判断题',
+      score: 3,
+      stem: '机器学习模型训练完成后，在所有新场景中都不需要继续评估和优化。',
+      answer: '错误',
+      analysis: '模型上线后仍需持续评估数据漂移、准确率和业务效果。',
+      points: ['模型评估'],
+    },
+    {
+      type: '判断题',
+      score: 3,
+      stem: '使用 AI 生成内容时，仍需要核查事实准确性与版权来源。',
+      answer: '正确',
+      analysis: 'AI 生成内容可能存在事实错误和版权风险，需要人工核查。',
+      points: ['AI伦理', '内容审核'],
+    },
+    {
+      type: '简答题',
+      score: 8,
+      stem: '请简述在校园场景中使用人脸识别系统时需要关注的伦理与安全问题。',
+      answer: '应关注个人信息授权、数据最小化采集、存储安全、误识别风险、公平性以及使用边界。',
+      analysis: '该题关注技术应用中的隐私保护、算法公平和治理规范。',
+      points: ['AI伦理', '数据安全'],
+    },
+    {
+      type: '简答题',
+      score: 8,
+      stem: '请简述机器学习模型出现过拟合时，通常可以采取哪些改进方法。',
+      answer: '可增加数据、进行数据增强、简化模型、加入正则化、交叉验证或早停等方法。',
+      analysis: '该题考查对过拟合现象及常见缓解策略的理解。',
+      points: ['过拟合', '模型优化'],
+    },
+    {
+      type: '选择题',
+      score: 5,
+      stem: '在训练图像分类模型时，划分验证集的主要目的是什么？',
+      options: ['评估模型在未参与训练数据上的表现', '减少图片文件大小', '替代所有训练数据', '隐藏模型参数'],
+      answer: 'A',
+      analysis: '验证集用于观察泛化能力，帮助调参并发现过拟合。',
+      points: ['模型训练', '泛化能力'],
+    },
+  ];
+}
+
+function questionBankRenderQuestion(q, idx) {
+  const optionHtml = q.options
+    ? `<div class="qb-edit-options">${q.options.map((op, i) => `<div class="qb-edit-option"><span>${String.fromCharCode(65 + i)}</span>${escAttr(op)}</div>`).join('')}</div>`
+    : '';
+  const points = q.points.map((p) => `<span>${escAttr(p)}</span>`).join('');
+  return `<article class="qb-edit-question" draggable="true" data-type="${escAttr(q.type)}" data-stem="${escAttr(q.stem)}" data-answer="${escAttr(q.answer)}" data-analysis="${escAttr(q.analysis)}" ondragstart="questionBankDragStart(event)" ondragover="questionBankDragOver(event)" ondrop="questionBankDrop(event)" ondragend="questionBankDragEnd(event)">
+    <div class="qb-edit-q-head">
+      <div class="qb-edit-q-title"><button type="button" class="qb-edit-drag" title="拖拽排序" aria-label="拖拽排序">⋮⋮</button><span>${idx + 1}</span>${escAttr(q.stem)}</div>
+      <div class="qb-edit-q-actions">
+        <button type="button" class="qb-edit-mini-btn" onclick="openQuestionEditModal(this)">编辑</button>
+        <button type="button" class="qb-edit-mini-btn">删除</button>
+        <input type="number" value="${q.score}" min="0" max="100" aria-label="题目分数">
+        <em>分</em>
+      </div>
+    </div>
+    ${optionHtml}
+    <div class="qb-edit-answer">
+      <div class="qb-edit-answer-row qb-edit-answer-row--answer"><strong>题目答案</strong><span>${escAttr(q.answer)}</span></div>
+      <div class="qb-edit-answer-row qb-edit-answer-row--analysis"><strong>题目解析</strong><span>${escAttr(q.analysis)}</span></div>
+      <div class="qb-edit-answer-row qb-edit-answer-row--points"><strong>知识点</strong><span class="qb-edit-points">${points}</span></div>
+    </div>
+  </article>`;
+}
+
+function questionBankEditActionHtml(kind, label, onclick) {
+  const icons = {
+    back: '<svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>',
+    draft: '<svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v6h8"/><path d="M8 17h8"/></svg>',
+    word: '<svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v5h5"/><path d="M8.5 11l1.2 6 1.6-4 1.6 4 1.2-6"/></svg>',
+    score: '<svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/><circle cx="18" cy="18" r="3"/></svg>',
+    preview: '<svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+    add: '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+    next: '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>',
+  };
+  return `<button type="button" class="qb-edit-action qb-edit-action--${kind}" onclick="${onclick}"><span class="qb-edit-action-ic">${icons[kind] || icons.add}</span>${label}</button>`;
+}
+
+function questionBankRenderTypeGroup(type, list) {
+  const total = list.reduce((sum, q) => sum + (q.score || 0), 0);
+  return `<section class="qb-edit-type-group" data-type="${escAttr(type)}">
+    <div class="qb-edit-type-head">
+      <h3>${escAttr(type)}</h3>
+      <span>${list.length} 题 · ${total} 分 · 同题型内可拖拽排序</span>
+    </div>
+    <div class="qb-edit-type-list">
+      ${list.map(questionBankRenderQuestion).join('')}
+    </div>
+  </section>`;
+}
+
+function openQuestionBankPaperEditor(paperId = 'project') {
+  closeQuestionBankAiModal();
+  closeQuestionBankPaperPanel();
+  const editor = document.getElementById('questionBankPaperEditor');
+  if (!editor) return;
+  editor.innerHTML = '';
+  editor.dataset.paperId = paperId;
+  const book = questionBankContext.book || myB[0];
+  const questions = questionBankGeneratedQuestions();
+  const grouped = questions.reduce((acc, q) => {
+    acc[q.type] = (acc[q.type] || 0) + 1;
+    return acc;
+  }, {});
+  const typeOrder = ['选择题', '填空题', '判断题', '简答题'];
+  const groupsHtml = typeOrder
+    .map((type) => {
+      const list = questions.filter((q) => q.type === type);
+      return list.length ? questionBankRenderTypeGroup(type, list) : '';
+    })
+    .join('');
+  editor.innerHTML = `<div class="qb-edit-page">
+    <header class="qb-edit-hero">
+      <div class="qb-edit-topbar">
+        ${questionBankEditActionHtml('back', '返回', 'closeQuestionBankPaperEditor()')}
+        <div class="qb-edit-actions">
+          ${questionBankEditActionHtml('preview', '预览试卷', 'previewQuestionBankPaperFromEditor()')}
+          ${questionBankEditActionHtml('word', '导出为 Word', 'exportQuestionBankPaperWord()')}
+          ${questionBankEditActionHtml('score', '批量设置分数', 'batchSetQuestionBankScores()')}
+        </div>
+      </div>
+      <div class="qb-edit-title-wrap">
+        <h2>${escAttr(book.t)} 习题集</h2>
+        <p>AI 已生成题目草稿，可调整题目顺序、修改内容并导出使用。</p>
+        <div class="qb-edit-summary">
+          <span>共 ${questions.length} 题</span>
+          <span>${Object.entries(grouped).map(([k, v]) => `${k} ${v}`).join(' · ')}</span>
+        </div>
+      </div>
+    </header>
+    <main class="qb-edit-body">
+      <div class="qb-edit-section-head">
+        <h3>题目列表</h3>
+        ${questionBankEditActionHtml('add', '添加题目', 'addQuestionBankPaperQuestion()')}
+      </div>
+      ${groupsHtml}
+    </main>
+    <footer class="qb-edit-foot">
+      ${questionBankEditActionHtml('draft', '保存草稿', 'saveQuestionBankPaperDraft()')}
+      ${questionBankEditActionHtml('next', '下一步', 'nextQuestionBankPaperStep()')}
+    </footer>
+    <div class="qb-edit-modal" id="questionEditModal" aria-hidden="true">
+      <div class="qb-edit-modal__bg" onclick="closeQuestionEditModal()"></div>
+      <section class="qb-edit-modal__panel" role="dialog" aria-modal="true">
+        <div class="qb-edit-modal__head">
+          <h3>编辑题目</h3>
+          <button type="button" onclick="closeQuestionEditModal()">关闭</button>
+        </div>
+        <label><span>题干</span><textarea id="questionEditStem" rows="4"></textarea></label>
+        <label><span>题目答案</span><input id="questionEditAnswer" type="text"></label>
+        <label><span>题目解析</span><textarea id="questionEditAnalysis" rows="3"></textarea></label>
+        <div class="qb-edit-modal__foot">
+          <button type="button" class="qb-ai-secondary" onclick="closeQuestionEditModal()">取消</button>
+          <button type="button" class="qb-ai-primary" onclick="saveQuestionEditModal()">保存</button>
+        </div>
+      </section>
+    </div>
+  </div>`;
+  editor.classList.add('open');
+  editor.setAttribute('aria-hidden', 'false');
+}
+
+function questionBankDragStart(ev) {
+  const card = ev.currentTarget;
+  card.classList.add('is-dragging');
+  ev.dataTransfer.effectAllowed = 'move';
+  ev.dataTransfer.setData('text/plain', card.dataset.type || '');
+}
+
+function questionBankDragOver(ev) {
+  ev.preventDefault();
+  const target = ev.currentTarget;
+  const dragging = document.querySelector('.qb-edit-question.is-dragging');
+  if (!dragging || dragging === target || dragging.dataset.type !== target.dataset.type) return;
+  const list = target.closest('.qb-edit-type-list');
+  const box = target.getBoundingClientRect();
+  if (!list) return;
+  if (ev.clientY > box.top + box.height / 2) list.insertBefore(dragging, target.nextSibling);
+  else list.insertBefore(dragging, target);
+}
+
+function questionBankDrop(ev) {
+  ev.preventDefault();
+  showProfileToast('已调整当前题型内的题目顺序。');
+}
+
+function questionBankDragEnd(ev) {
+  ev.currentTarget.classList.remove('is-dragging');
+}
+
+function openQuestionEditModal(btn) {
+  const card = btn.closest('.qb-edit-question');
+  const modal = document.getElementById('questionEditModal');
+  if (!card || !modal) return;
+  modal.dataset.targetType = card.dataset.type || '';
+  modal.dataset.targetIndex = [...card.parentElement.children].indexOf(card);
+  document.getElementById('questionEditStem').value = card.dataset.stem || '';
+  document.getElementById('questionEditAnswer').value = card.dataset.answer || '';
+  document.getElementById('questionEditAnalysis').value = card.dataset.analysis || '';
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeQuestionEditModal() {
+  const modal = document.getElementById('questionEditModal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+function saveQuestionEditModal() {
+  closeQuestionEditModal();
+  showProfileToast('题目修改已保存。');
+}
+
+function closeQuestionBankPaperEditor() {
+  const editor = document.getElementById('questionBankPaperEditor');
+  if (!editor) return;
+  editor.classList.remove('open');
+  editor.setAttribute('aria-hidden', 'true');
+  editor.innerHTML = '';
+  delete editor.dataset.paperId;
+}
+
+function previewQuestionBankPaperFromEditor() {
+  const editor = document.getElementById('questionBankPaperEditor');
+  const paperId = editor?.dataset.paperId || 'project';
+  closeQuestionBankPaperEditor();
+  openQuestionBankPaperPanel('preview', paperId);
+}
+
+function saveQuestionBankPaperDraft() {
+  showProfileToast('试卷草稿已保存。');
+}
+
+function exportQuestionBankPaperWord() {
+  showProfileToast('正在导出为 Word（演示）。');
+}
+
+function updateQuestionBankScoreTotal() {
+  const total = Array.from(document.querySelectorAll('.qb-panel-score-grid input')).reduce((sum, input) => {
+    const score = Number.parseFloat(input.value) || 0;
+    const count = Number.parseInt(input.dataset.count || '1', 10);
+    return sum + score * count;
+  }, 0);
+  const target = document.getElementById('questionBankScoreTotal');
+  if (target) target.textContent = Number.isInteger(total) ? String(total) : total.toFixed(1);
+}
+
+function batchSetQuestionBankScores() {
+  document.querySelectorAll('#questionBankPaperEditor .qb-edit-question input[type="number"]').forEach((inp) => {
+    const type = inp.closest('.qb-edit-question')?.dataset.type;
+    inp.value = type === '简答题' ? '8' : type === '判断题' ? '3' : type === '填空题' ? '4' : '5';
+  });
+  showProfileToast('已按题型批量设置分数。');
+}
+
+function nextQuestionBankPaperStep() {
+  openQuestionBankPublishModal();
+}
+
+function addQuestionBankPaperQuestion() {
+  showProfileToast('进入新增题目（演示）。');
+}
+
+function generateQuestionBankAiSet() {
+  openQuestionBankPaperEditor();
+}
+
+function closeQuestionBankMode() {
+  closeQuestionBankAiModal();
+  closeQuestionBankPaperEditor();
+  closeQuestionBankPaperPanel();
+  closeQuestionBankPublishModal();
+  const page = document.getElementById('questionBankPage');
+  if (page) {
+    page.classList.remove('open');
+    page.setAttribute('aria-hidden', 'true');
+  }
+  questionBankContext = { book: null, classes: [], isAdmin: false };
+  if (
+    !document.getElementById('readerOverlay')?.classList.contains('open') &&
+    !document.getElementById('teachModePage')?.classList.contains('open') &&
+    !document.getElementById('avModePage')?.classList.contains('open') &&
+    !document.getElementById('taskModePage')?.classList.contains('open')
   ) {
     document.body.style.overflow = '';
   }
@@ -5165,7 +6214,11 @@ function readerShowLearningModeNavExternal(modeKey, book) {
     openTaskMode(book);
     return;
   }
-  const labels = { read: '阅读模式', av: '视听模式', task: '任务模式', kg: '知识图谱', teach: '教学模式' };
+  if (modeKey === 'questionBank' && book) {
+    openQuestionBankMode(book);
+    return;
+  }
+  const labels = { read: '阅读模式', av: '视听模式', task: '任务模式', kg: '知识图谱', teach: '教学模式', questionBank: '题库' };
   const name = labels[modeKey] || modeKey;
   const bookLine = book && book.t ? `《${book.t} · ${book.s}》` : '';
   showProfileToast(
@@ -5176,7 +6229,7 @@ function readerShowLearningModeNavExternal(modeKey, book) {
 /** 阅读顶栏模式 pill 前的彩色小图标（与模式 key 对应；阅读页内仅展示非 read 的入口） */
 function readerModePillIconHtml(modeKey) {
   const ic = {
-    read: `<span class="reader-mode-pill-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#15803d" d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path fill="#22c55e" d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path fill="#4ade80" d="M6.5 2H18v18H6.5A2.5 2.5 0 0 1 4 17.5v-13A2.5 2.5 0 0 1 6.5 2z" opacity=".4"/></svg></span>`,
+    read: `<span class="reader-mode-pill-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#1d39c4" d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path fill="#597ef7" d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path fill="#85a5ff" d="M6.5 2H18v18H6.5A2.5 2.5 0 0 1 4 17.5v-13A2.5 2.5 0 0 1 6.5 2z" opacity=".4"/></svg></span>`,
     av: `<span class="reader-mode-pill-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#8b5cf6"/><path fill="#fff" d="M10 8.5l5.5 3.5-5.5 3.5v-7z"/></svg></span>`,
     task: `<span class="reader-mode-pill-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="3" width="14" height="18" rx="2" fill="#f97316"/><path fill="#fff" fill-opacity=".9" d="M8 7h8v1.8H8V7zm0 3.2h5v1.8H8v-1.8z"/><path stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M8.3 16.2l2.2 2.2 4.2-5"/></svg></span>`,
     kg: `<span class="reader-mode-pill-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="8" r="3" fill="#0ea5e9"/><circle cx="18.5" cy="8" r="3" fill="#6366f1"/><circle cx="12" cy="17" r="3" fill="#ec4899"/><path stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round" d="M7.8 10.2l4.4 5M16.2 10.2l-4.4 5"/></svg></span>`,
@@ -5829,7 +6882,8 @@ function closeTeachMode() {
   if (
     !document.getElementById('readerOverlay')?.classList.contains('open') &&
     !document.getElementById('avModePage')?.classList.contains('open') &&
-    !document.getElementById('taskModePage')?.classList.contains('open')
+    !document.getElementById('taskModePage')?.classList.contains('open') &&
+    !document.getElementById('questionBankPage')?.classList.contains('open')
   ) {
     document.body.style.overflow = '';
   }
@@ -6034,7 +7088,7 @@ Object.assign(window, {
   openRedeem, closeRedeem, doRedeem, openCreateClass, closeCreateClass, doCreateClass,
   openJoinClass, closeJoinClass, doJoinClass,
   openClassDetail, closeClassDetail, copyCode, openBookPicker, closeBookPicker, dissolveClass, leaveClass,
-  addBookToClass, removeClassBook, setGradeFilter, setSubjectFilter, setMyShelfTab,
+  addBookToClass, removeClassBook, setGradeFilter, setSubjectFilter, setMyShelfTab, openMyGroupsView, backToMyShelf,
   openSchoolModal, closeSchoolModal, confirmSchoolBind, clearSchoolBind,
   bookShortcut,
   toggleMineShelfMore, closeAllMineShelfMore,
@@ -6045,6 +7099,12 @@ Object.assign(window, {
   readerQuickMode, teachGo, openTeachMode, closeTeachMode, teachPrevSlide, teachNextSlide,
   closeAvMode, setAvModeTab, selectAvLesson, toggleAvUnit, avOnAvMediaEnded,
   openTaskMode, closeTaskMode, taskSelectProject, taskSelectItem, taskStartTask, taskStartCurrent,
+  openQuestionBankMode, closeQuestionBankMode, openQuestionBankAiModal, closeQuestionBankAiModal, updateQuestionBankAiReqCount, stepQuestionBankAiCount, generateQuestionBankAiSet,
+  openQuestionBankPaperPanel, closeQuestionBankPaperPanel, openQuestionBankMemberReport, withdrawQuestionBankPaper,
+  openQuestionBankLibraryList, openQuestionBankLibraryDetail, deleteQuestionBankLibraryItem,
+  openQuestionBankPaperEditor, closeQuestionBankPaperEditor, previewQuestionBankPaperFromEditor, saveQuestionBankPaperDraft, exportQuestionBankPaperWord, updateQuestionBankScoreTotal, batchSetQuestionBankScores, nextQuestionBankPaperStep, addQuestionBankPaperQuestion,
+  questionBankDragStart, questionBankDragOver, questionBankDrop, questionBankDragEnd, openQuestionEditModal, closeQuestionEditModal, saveQuestionEditModal,
+  openQuestionBankPublishModal, closeQuestionBankPublishModal, submitQuestionBankPublish,
   teachToggleBookPanel, teachToolFloatToggle, teachToolToggle, teachCountdownStart, teachCountdownStop, teachPenClear, teachPickRun, teachAiSend,
   readerToggleAi, readerSendAi, readerToggleNotes, readerSaveNote, readerToggleSearch, readerOnSearchInput,
   readerSelectionActionAi, readerSelectionActionHighlight, readerSelectionActionNote, readerSelectionActionCopy,

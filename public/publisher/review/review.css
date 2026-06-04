@@ -8,9 +8,9 @@
   --slate:#6b7280;
   --ink:#374151;
   --deep:#1f2937;
-  --mint:#d2f0e2;
-  --mint-mid:#6dc4a0;
-  --mint-deep:#3a9e78;
+  --mint:#f0f5ff;
+  --mint-mid:#85a5ff;
+  --mint-deep:#2f54eb;
   --sky:#d6e8f8;
   --sky-mid:#6ea8d8;
   --sky-deep:#3d80b8;
@@ -326,7 +326,7 @@ body{
 }
 .pub-review-card.is-active{
   border-color:var(--mint-mid);
-  box-shadow:0 4px 16px rgba(58,158,120,0.12);
+  box-shadow:0 4px 16px rgba(47,84,235,0.12);
   background:var(--white);
 }
 .pub-review-card[hidden]{display:none!important}

@@ -15,9 +15,9 @@
       --slate: #6b7280;
       --ink: #374151;
       --deep: #1f2937;
-      --mint: #d2f0e2;
-      --mint-mid: #6dc4a0;
-      --mint-deep: #3a9e78;
+      --mint: #f0f5ff;
+      --mint-mid: #85a5ff;
+      --mint-deep: #2f54eb;
       --sky: #d6e8f8;
       --sky-mid: #6ea8d8;
       --sky-deep: #3d80b8;
@@ -32,7 +32,7 @@
     html, body { height: 100%; }
     body {
       font-family: "Noto Sans SC", "PingFang SC", system-ui, -apple-system, sans-serif;
-      background: linear-gradient(165deg, #ecfdf5 0%, #f9fafb 34%, #eff6ff 100%);
+      background: linear-gradient(165deg, #f0f5ff 0%, #f9fafb 34%, #eff6ff 100%);
       color: var(--ink);
       line-height: 1.5;
     }
@@ -113,7 +113,7 @@
     .pub-login-tab.is-active {
       color: var(--mint-deep);
       background: var(--mint);
-      border-color: rgba(58, 158, 120, 0.2);
+      border-color: rgba(47,84,235, 0.2);
     }
     .pub-login-pane--hidden { display: none; }
     .pub-login-pwd-row {
@@ -215,7 +215,7 @@
       place-items: center;
       font-weight: 700;
       letter-spacing: 1px;
-      box-shadow: 0 6px 18px rgba(58, 158, 120, 0.3);
+      box-shadow: 0 6px 18px rgba(47,84,235, 0.3);
       flex-shrink: 0;
     }
     .brand-text {
@@ -342,7 +342,7 @@
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16);
     }
     .book-cover.published {
-      background: linear-gradient(145deg, #4aaa85, #78c8a8);
+      background: linear-gradient(145deg, #4a8ec8, #7ab4de);
     }
     .book-cover.pending {
       background: linear-gradient(145deg, #4a8ec8, #7ab4de);
@@ -357,8 +357,8 @@
       flex: 1;
     }
     .panel.status-published .item:hover {
-      border-color: rgba(58, 158, 120, 0.52);
-      box-shadow: 0 0 0 3px rgba(58, 158, 120, 0.12);
+      border-color: rgba(47,84,235, 0.52);
+      box-shadow: 0 0 0 3px rgba(47,84,235, 0.12);
       background: rgba(210, 240, 226, 0.22);
     }
     .panel.status-pending .item:hover {
@@ -528,7 +528,7 @@
     }
     input:focus {
       border-color: var(--mint-mid);
-      box-shadow: 0 0 0 3px rgba(58, 158, 120, 0.1);
+      box-shadow: 0 0 0 3px rgba(47,84,235, 0.1);
     }
     .row {
       display: flex;
