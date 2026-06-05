@@ -573,9 +573,16 @@
             <div class="reader-pop-section">
               <div class="reader-popover-title">阅读背景</div>
               <div class="reader-bg-swatches">
-                <button type="button" class="reader-bg-swatch reader-bg-swatch--paper" data-bg="paper" onclick="readerSetBg('paper')" title="白纸"></button>
-                <button type="button" class="reader-bg-swatch reader-bg-swatch--sepia" data-bg="sepia" onclick="readerSetBg('sepia')" title="护眼米黄"></button>
-                <button type="button" class="reader-bg-swatch reader-bg-swatch--dark" data-bg="dark" onclick="readerSetBg('dark')" title="夜间"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--paper" data-bg="paper" onclick="readerSetBg('paper')" title="白纸" aria-label="白纸背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--ivory" data-bg="ivory" onclick="readerSetBg('ivory')" title="暖白" aria-label="暖白背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--sepia" data-bg="sepia" onclick="readerSetBg('sepia')" title="护眼米黄" aria-label="护眼米黄背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--green" data-bg="green" onclick="readerSetBg('green')" title="浅绿" aria-label="浅绿背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--mint" data-bg="mint" onclick="readerSetBg('mint')" title="薄荷青" aria-label="薄荷青背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--blue" data-bg="blue" onclick="readerSetBg('blue')" title="浅蓝" aria-label="浅蓝背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--lavender" data-bg="lavender" onclick="readerSetBg('lavender')" title="淡紫" aria-label="淡紫背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--rose" data-bg="rose" onclick="readerSetBg('rose')" title="浅粉" aria-label="浅粉背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--gray" data-bg="gray" onclick="readerSetBg('gray')" title="雾灰" aria-label="雾灰背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--dark" data-bg="dark" onclick="readerSetBg('dark')" title="夜间" aria-label="夜间背景"></button>
               </div>
             </div>
           </div>
@@ -956,6 +963,65 @@
       <footer class="qb-ai-modal__foot">
         <button type="button" class="qb-ai-secondary" onclick="closeQuestionBankAiModal()">取消</button>
         <button type="button" class="qb-ai-primary" onclick="generateQuestionBankAiSet()">立即生成</button>
+      </footer>
+    </section>
+  </div>
+</div>
+
+<!-- 资源库全屏：学校资源库 + 教材配套资源 -->
+<div class="resource-lib-page" id="resourceLibPage" aria-hidden="true">
+  <header class="resource-lib__head">
+    <button type="button" class="resource-lib__back" onclick="closeResourceLibrary()" title="返回我的书架" aria-label="返回我的书架">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>返回</span>
+    </button>
+    <div class="resource-lib__brand">
+      <div class="resource-lib__kicker"><span class="resource-lib__kicker-dot"></span>资源库</div>
+      <h1 class="resource-lib__title" id="resourceLibBookLine">教材</h1>
+    </div>
+    <div class="resource-lib__actions"></div>
+  </header>
+  <main class="resource-lib__body">
+    <aside class="resource-lib__side" aria-label="资源库类型与文件夹">
+      <div class="resource-lib__tabs" id="resourceLibTabs"></div>
+      <div class="resource-lib__folders" id="resourceLibFolders"></div>
+    </aside>
+    <section class="resource-lib__main" aria-label="资源列表">
+      <div class="resource-lib__toolbar">
+        <div>
+          <h2 id="resourceLibSectionTitle">资源文件</h2>
+          <p id="resourceLibSectionMeta">—</p>
+        </div>
+        <div class="resource-lib__tools">
+          <div class="resource-lib__list-actions" id="resourceLibListActions"></div>
+          <div class="resource-lib-view" id="resourceLibViewSwitch" role="group" aria-label="资源展示视图"></div>
+          <div class="resource-lib__search">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <input type="search" id="resourceLibSearch" placeholder="搜索资源名称、格式…" oninput="renderResourceLibraryFiles()">
+          </div>
+        </div>
+      </div>
+      <div class="resource-lib__grid" id="resourceLibGrid"></div>
+    </section>
+  </main>
+  <div class="resource-folder-modal" id="resourceFolderModal" aria-hidden="true">
+    <div class="resource-folder-modal__bg" onclick="closeResourceFolderModal()"></div>
+    <section class="resource-folder-modal__panel" role="dialog" aria-modal="true" aria-labelledby="resourceFolderModalTitle">
+      <header class="resource-folder-modal__head">
+        <div>
+          <h2 id="resourceFolderModalTitle">创建文件夹</h2>
+          <p>用于整理学校资源库中的课件、实训素材、案例资料等文件。</p>
+        </div>
+        <button type="button" class="resource-folder-modal__close" onclick="closeResourceFolderModal()" aria-label="关闭">×</button>
+      </header>
+      <label class="resource-folder-modal__field">
+        <span>文件夹标题</span>
+        <input type="text" id="resourceFolderNameInput" maxlength="24" placeholder="请输入文件夹标题">
+      </label>
+      <p class="resource-folder-modal__err" id="resourceFolderModalErr" role="alert"></p>
+      <footer class="resource-folder-modal__foot">
+        <button type="button" class="resource-folder-modal__secondary" onclick="closeResourceFolderModal()">取消</button>
+        <button type="button" class="resource-folder-modal__primary" onclick="confirmCreateResourceFolder()">确定</button>
       </footer>
     </section>
   </div>

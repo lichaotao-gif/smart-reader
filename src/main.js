@@ -2178,8 +2178,12 @@ function bookShortcut(bookIdx, actionKey) {
     openReader(bookIdx, 'my');
     return;
   }
-  if (actionKey === 'questionBank') {
-    openQuestionBankMode(b);
+  if (['teach', 'av', 'task', 'kg', 'questionBank'].includes(actionKey)) {
+    readerShowLearningModeNavExternal(actionKey, b);
+    return;
+  }
+  if (actionKey === 'resourceLib') {
+    openResourceLibrary(b);
     return;
   }
   const act = BOOK_MY_ACTIONS.find((a) => a.key === actionKey);
@@ -5043,6 +5047,10 @@ function taskFlatTasks(projects) {
   return out;
 }
 
+function taskDisplayTitle(title) {
+  return String(title || '').replace(/^\s*\d+(?:\.\d+)*\s*/, '').trim() || String(title || '');
+}
+
 function taskFindByTaskId(taskId) {
   const flat = taskFlatTasks(taskModeContext.projects);
   return flat.find((x) => x.task.id === taskId) || null;
@@ -5065,10 +5073,12 @@ function taskRenderSummary() {
   const doneCount = flat.reduce((n, x) => n + (done.has(x.task.id) ? 1 : 0), 0);
   const current = taskFindByTaskId(taskModeContext.selectedTaskId) || flat[0] || null;
   if (current) {
-    currentEl.textContent = `任务${current.pi + 1}.${current.ti + 1} ${current.task.title}（${current.task.type}）`;
+    currentEl.innerHTML = `<span>任务${current.pi + 1}.${current.ti + 1}</span>${escAttr(taskDisplayTitle(current.task.title))}<em>${escAttr(current.task.type)}</em>`;
   } else {
     currentEl.textContent = '暂无任务';
   }
+  const percent = total ? Math.round((doneCount / total) * 100) : 0;
+  const left = Math.max(total - doneCount, 0);
   box.innerHTML = `
     <div class="task-mode__metric">
       <small>已完成</small>
@@ -5077,16 +5087,36 @@ function taskRenderSummary() {
     <div class="task-mode__metric">
       <small>总任务</small>
       <strong>${total}</strong>
+    </div>
+    <div class="task-mode__metric task-mode__metric--accent">
+      <small>完成率</small>
+      <strong>${percent}%</strong>
+    </div>
+    <div class="task-mode__summary-bar" aria-label="任务完成进度">
+      <span style="width:${percent}%"></span>
+      <em>${left ? `剩余 ${left} 项` : '全部完成'}</em>
     </div>`;
 }
 
 function taskRenderProjects() {
   const root = document.getElementById('taskModeProjects');
   if (!root) return;
+  const done = taskLoadDoneSet(taskModeContext.book);
   root.innerHTML = (taskModeContext.projects || [])
-    .map(
-      (p) => `<button type="button" class="task-mode__project${p.id === taskModeContext.selectedProjectId ? ' is-active' : ''}" onclick="taskSelectProject('${p.id}')">${escAttr(p.title)}</button>`
-    )
+    .map((p, pi) => {
+      const tasks = p.tasks || [];
+      const total = tasks.length;
+      const doneCount = tasks.reduce((n, t) => n + (done.has(t.id) ? 1 : 0), 0);
+      const percent = total ? Math.round((doneCount / total) * 100) : 0;
+      return `<button type="button" class="task-mode__project${p.id === taskModeContext.selectedProjectId ? ' is-active' : ''}" onclick="taskSelectProject('${p.id}')">
+        <span class="task-mode__project-index">${String(pi + 1).padStart(2, '0')}</span>
+        <span class="task-mode__project-main">
+          <strong>${escAttr(p.title)}</strong>
+          <em>${doneCount}/${total} 已完成</em>
+          <i><b style="width:${percent}%"></b></i>
+        </span>
+      </button>`;
+    })
     .join('');
 }
 
@@ -5106,15 +5136,18 @@ function taskRenderTimeline() {
     .map((t, ti) => {
       const isDone = done.has(t.id);
       const isActive = t.id === taskModeContext.selectedTaskId;
+      const status = isDone ? '已完成' : isActive ? '进行中' : '待完成';
       return `
       <div class="task-mode__timeline-item${isDone ? ' is-done' : ''}${isActive ? ' is-active' : ''}" onclick="taskSelectItem('${t.id}')">
         <div class="task-mode__timeline-dot">${ti + 1}</div>
         <div class="task-mode__timeline-main">
           <div class="task-mode__timeline-title-row">
-            <div class="task-mode__timeline-title">任务${pIdx + 1}.${ti + 1} ${escAttr(t.title)}</div>
+            <div class="task-mode__timeline-title">任务${pIdx + 1}.${ti + 1} ${escAttr(taskDisplayTitle(t.title))}</div>
             <span class="task-mode__timeline-type">${t.type}</span>
+            <span class="task-mode__timeline-status">${status}</span>
           </div>
           <div class="task-mode__timeline-sub">${escAttr(proj.title)}</div>
+          <button type="button" class="task-mode__timeline-action" onclick="event.stopPropagation();taskStartTask('${t.id}')">${isDone ? '复习任务' : '完成任务'}</button>
         </div>
       </div>`;
     })
@@ -5213,6 +5246,449 @@ function closeTaskMode() {
     document.body.style.overflow = '';
   }
 }
+
+const RESOURCE_LIB_IMAGE_THUMB = '/reader/ai-painting-lab.jpg';
+let resourceLibContext = {
+  book: null,
+  activeType: 'school',
+  activeFolderId: 'all',
+  view: 'grid',
+  isAdmin: false,
+  libs: null,
+};
+
+function resourceLibBookKey(book) {
+  return encodeURIComponent(`${book?.t || 'book'}|${book?.s || ''}`);
+}
+
+function resourceLibSizeFromExt(ext, n) {
+  const map = { pptx: 18.6, docx: 2.8, xlsx: 1.6, pdf: 8.4, jpg: 3.2, png: 2.4, mp4: 128, zip: 46, psd: 34, html: 0.8 };
+  return `${(map[ext] || 4.2 + n).toFixed(1)} MB`;
+}
+
+function resourceLibMakeItem(name, ext, folderId, i, source) {
+  const typeMap = {
+    jpg: 'image', png: 'image', jpeg: 'image', gif: 'image', webp: 'image',
+    doc: 'office', docx: 'office', ppt: 'office', pptx: 'office', xls: 'office', xlsx: 'office',
+    pdf: 'pdf', mp4: 'video', mov: 'video', mp3: 'audio', zip: 'archive', rar: 'archive',
+  };
+  return {
+    id: `${source}-${folderId}-${i}-${ext}`,
+    title: name,
+    ext,
+    size: resourceLibSizeFromExt(ext, i),
+    folderId,
+    source,
+    type: typeMap[ext] || 'file',
+    updatedAt: `2026-06-${String(1 + i).padStart(2, '0')}`,
+  };
+}
+
+function resourceLibBuildForBook(book) {
+  const bookName = book?.t || '教材';
+  return {
+    school: {
+      label: '学校资源库',
+      desc: '管理员维护的校本资源，支持上传任意格式、创建文件夹与删除资源。',
+      folders: [
+        { id: 'all', name: '全部资源', locked: true },
+        { id: 'courseware', name: '课堂课件' },
+        { id: 'practice', name: '实训素材' },
+        { id: 'case', name: '案例资料' },
+      ],
+      items: [
+        resourceLibMakeItem(`${bookName} 教学设计`, 'docx', 'courseware', 1, 'school'),
+        resourceLibMakeItem(`${bookName} 第1单元课件`, 'pptx', 'courseware', 2, 'school'),
+        resourceLibMakeItem('课堂数据记录模板', 'xlsx', 'practice', 3, 'school'),
+        resourceLibMakeItem('实训环境配置包', 'zip', 'practice', 4, 'school'),
+        resourceLibMakeItem('项目案例截图', 'jpg', 'case', 5, 'school'),
+      ],
+    },
+    textbook: {
+      label: '教材配套资源',
+      desc: '作者按目录上传的书配套资源，只提供预览、下载与举报。',
+      folders: [
+        { id: 'all', name: '全部资源', locked: true },
+        { id: 'chapter1', name: '第1章配套' },
+        { id: 'chapter2', name: '第2章配套' },
+        { id: 'appendix', name: '附录资源' },
+      ],
+      items: [
+        resourceLibMakeItem(`${bookName} 导读手册`, 'pdf', 'chapter1', 1, 'textbook'),
+        resourceLibMakeItem('知识点结构图', 'png', 'chapter1', 2, 'textbook'),
+        resourceLibMakeItem('案例演示视频', 'mp4', 'chapter2', 3, 'textbook'),
+        resourceLibMakeItem('配套练习素材', 'zip', 'chapter2', 4, 'textbook'),
+        resourceLibMakeItem('拓展阅读网页包', 'html', 'appendix', 5, 'textbook'),
+      ],
+    },
+  };
+}
+
+function resourceLibCurrentLib() {
+  return resourceLibContext.libs?.[resourceLibContext.activeType] || null;
+}
+
+function resourceLibFileIcon(item) {
+  if (item.type === 'image') {
+    const src = item.objectUrl || RESOURCE_LIB_IMAGE_THUMB;
+    return `<img src="${escAttr(src)}" alt="" loading="lazy">`;
+  }
+  const ext = String(item.ext || '').toLowerCase();
+  const cls = item.type === 'office' ? `office office--${ext}` : item.type;
+  const label = ext.toUpperCase();
+  const icons = {
+    pdf: '<path d="M13 3H7a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V10z" fill="#fee2e2"/><path d="M13 3v6h6" fill="#fecaca"/><path d="M8 15h8M8 18h5" stroke="#dc2626" stroke-width="1.7" stroke-linecap="round"/>',
+    video: '<rect x="4" y="6" width="16" height="12" rx="4" fill="#ede9fe"/><path d="M10 9l5 3-5 3z" fill="#7c3aed"/>',
+    audio: '<rect x="5" y="5" width="14" height="14" rx="5" fill="#dcfce7"/><path d="M10 14V9l5-1v7" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="15" r="2" fill="#16a34a"/><circle cx="15" cy="16" r="2" fill="#16a34a"/>',
+    archive: '<rect x="5" y="4" width="14" height="16" rx="4" fill="#ffedd5"/><path d="M10 4v5h4V4M9 13h6M10 16h4" stroke="#ea580c" stroke-width="1.6" stroke-linecap="round"/>',
+    file: '<path d="M13 3H7a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V10z" fill="#e2e8f0"/><path d="M13 3v6h6" fill="#cbd5e1"/><path d="M8 15h8M8 18h5" stroke="#475569" stroke-width="1.7" stroke-linecap="round"/>',
+  };
+  const svg = icons[item.type] || icons.file;
+  return `<div class="resource-file-ic resource-file-ic--${escAttr(cls)}"><svg viewBox="0 0 24 24" aria-hidden="true">${svg}</svg><span>${escAttr(label)}</span></div>`;
+}
+
+function renderResourceLibrary() {
+  renderResourceLibraryTabs();
+  renderResourceLibraryFolders();
+  renderResourceLibraryFiles();
+  renderResourceLibraryAdminActions();
+}
+
+function renderResourceLibraryTabs() {
+  const root = document.getElementById('resourceLibTabs');
+  if (!root) return;
+  root.innerHTML = ['school', 'textbook'].map((type) => {
+    const lib = resourceLibContext.libs[type];
+    const count = lib.items.length;
+    const active = type === resourceLibContext.activeType ? ' is-active' : '';
+    return `<button type="button" class="resource-lib-tab${active}" onclick="setResourceLibraryType('${type}')">
+      <strong>${escAttr(lib.label)}</strong>
+      <span>${count} 个资源</span>
+    </button>`;
+  }).join('');
+}
+
+function renderResourceLibraryFolders() {
+  const root = document.getElementById('resourceLibFolders');
+  const lib = resourceLibCurrentLib();
+  if (!root || !lib) return;
+  const canCreateFolder = resourceLibContext.isAdmin && resourceLibContext.activeType === 'school';
+  root.innerHTML = `
+    <div class="resource-folder-title">
+      <span>文件夹</span>
+      ${canCreateFolder ? `<button type="button" class="resource-folder-create" onclick="createResourceFolder()" title="创建文件夹" aria-label="创建文件夹">+</button>` : ''}
+    </div>
+    ${lib.folders.map((f) => {
+      const count = f.id === 'all' ? lib.items.length : lib.items.filter((x) => x.folderId === f.id).length;
+      const active = f.id === resourceLibContext.activeFolderId ? ' is-active' : '';
+      const more = resourceLibContext.isAdmin && resourceLibContext.activeType === 'school' && !f.locked
+        ? `<div class="resource-folder-more-wrap">
+            <button type="button" class="resource-folder-more" title="更多操作" aria-label="${escAttr(f.name)}更多操作" onclick="toggleResourceFolderMore(event,'${f.id}')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="12" cy="5" r="1.8"/>
+                <circle cx="12" cy="12" r="1.8"/>
+                <circle cx="12" cy="19" r="1.8"/>
+              </svg>
+            </button>
+            <div class="resource-folder-menu" id="resourceFolderMore_${f.id}" hidden>
+              <button type="button" onclick="renameResourceFolder('${f.id}')">重命名</button>
+              <button type="button" class="is-danger" onclick="deleteResourceFolder('${f.id}')">删除</button>
+            </div>
+          </div>`
+        : '';
+      return `<div class="resource-folder-row${active}">
+        <button type="button" class="resource-folder" onclick="setResourceLibraryFolder('${f.id}')">
+          <span class="resource-folder-ic" aria-hidden="true"></span>
+          <span class="resource-folder-name">${escAttr(f.name)}</span>
+          <em>${count}</em>
+        </button>
+        ${more}
+      </div>`;
+    }).join('')}`;
+}
+
+function renderResourceLibraryAdminActions() {
+  const root = document.getElementById('resourceLibListActions');
+  if (!root) return;
+  const canEdit = resourceLibContext.isAdmin && resourceLibContext.activeType === 'school';
+  root.innerHTML = canEdit ? `
+    <button type="button" class="resource-lib__primary" onclick="uploadResourceFile()">上传资源</button>
+  ` : '';
+}
+
+function renderResourceLibraryFiles() {
+  const grid = document.getElementById('resourceLibGrid');
+  const title = document.getElementById('resourceLibSectionTitle');
+  const meta = document.getElementById('resourceLibSectionMeta');
+  const lib = resourceLibCurrentLib();
+  if (!grid || !lib) return;
+  grid.classList.toggle('is-list', resourceLibContext.view === 'list');
+  const q = (document.getElementById('resourceLibSearch')?.value || '').trim().toLowerCase();
+  const folder = lib.folders.find((f) => f.id === resourceLibContext.activeFolderId) || lib.folders[0];
+  let items = lib.items.filter((item) => folder.id === 'all' || item.folderId === folder.id);
+  if (q) items = items.filter((item) => `${item.title}.${item.ext}`.toLowerCase().includes(q));
+  if (title) title.textContent = folder.name;
+  if (meta) meta.textContent = `${lib.label} · ${items.length} 个文件 · ${lib.desc}`;
+  renderResourceLibraryViewSwitch();
+  if (!items.length) {
+    grid.innerHTML = `<div class="resource-empty">暂无匹配资源</div>`;
+    return;
+  }
+  const canDelete = resourceLibContext.isAdmin && resourceLibContext.activeType === 'school';
+  grid.innerHTML = items.map((item) => `
+    <article class="resource-file-card">
+      <div class="resource-file-thumb">${resourceLibFileIcon(item)}</div>
+      <div class="resource-file-main">
+        <h3>${escAttr(item.title)}<span>.${escAttr(item.ext)}</span></h3>
+        <p>${escAttr(item.size)} · ${escAttr(item.updatedAt)}</p>
+      </div>
+      <div class="resource-file-actions">
+        <button type="button" onclick="previewResourceFile('${item.id}')">预览</button>
+        <button type="button" onclick="downloadResourceFile('${item.id}')">下载</button>
+        <div class="resource-more-wrap">
+          <button type="button" onclick="toggleResourceMore(event,'${item.id}')">更多</button>
+          <div class="resource-more-menu" id="resourceMore_${item.id}" hidden>
+            <button type="button" onclick="reportResourceFile('${item.id}')">举报</button>
+            ${canDelete ? `<button type="button" class="is-danger" onclick="deleteResourceFile('${item.id}')">删除资源</button>` : ''}
+          </div>
+        </div>
+      </div>
+    </article>`).join('');
+}
+
+function renderResourceLibraryViewSwitch() {
+  const root = document.getElementById('resourceLibViewSwitch');
+  if (!root) return;
+  root.innerHTML = `
+    <button type="button" class="${resourceLibContext.view === 'grid' ? 'is-active' : ''}" onclick="setResourceLibraryView('grid')" title="图标视图" aria-label="图标视图">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    </button>
+    <button type="button" class="${resourceLibContext.view === 'list' ? 'is-active' : ''}" onclick="setResourceLibraryView('list')" title="列表视图" aria-label="列表视图">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>
+    </button>`;
+}
+
+function setResourceLibraryView(view) {
+  resourceLibContext.view = view === 'list' ? 'list' : 'grid';
+  closeResourceMoreMenus();
+  renderResourceLibraryFiles();
+}
+
+function setResourceLibraryType(type) {
+  if (!resourceLibContext.libs?.[type]) return;
+  resourceLibContext.activeType = type;
+  resourceLibContext.activeFolderId = 'all';
+  document.getElementById('resourceLibSearch') && (document.getElementById('resourceLibSearch').value = '');
+  closeResourceMoreMenus();
+  renderResourceLibrary();
+}
+
+function setResourceLibraryFolder(folderId) {
+  resourceLibContext.activeFolderId = folderId;
+  closeResourceMoreMenus();
+  renderResourceLibraryFolders();
+  renderResourceLibraryFiles();
+}
+
+function findResourceFile(id) {
+  const lib = resourceLibCurrentLib();
+  return lib ? lib.items.find((x) => x.id === id) : null;
+}
+
+function previewResourceFile(id) {
+  const item = findResourceFile(id);
+  if (!item) return;
+  showProfileToast(`正在预览：${item.title}.${item.ext}（演示）`);
+}
+
+function downloadResourceFile(id) {
+  const item = findResourceFile(id);
+  if (!item) return;
+  showProfileToast(`已开始下载：${item.title}.${item.ext}（演示）`);
+}
+
+function closeResourceMoreMenus() {
+  document.querySelectorAll('.resource-more-menu').forEach((m) => { m.hidden = true; });
+  document.querySelectorAll('.resource-folder-menu').forEach((m) => { m.hidden = true; });
+}
+
+function toggleResourceMore(event, id) {
+  event.stopPropagation();
+  const menu = document.getElementById(`resourceMore_${id}`);
+  if (!menu) return;
+  const open = menu.hidden;
+  closeResourceMoreMenus();
+  menu.hidden = !open;
+}
+
+function toggleResourceFolderMore(event, folderId) {
+  event.stopPropagation();
+  const menu = document.getElementById(`resourceFolderMore_${folderId}`);
+  if (!menu) return;
+  const open = menu.hidden;
+  closeResourceMoreMenus();
+  menu.hidden = !open;
+}
+
+function reportResourceFile(id) {
+  const item = findResourceFile(id);
+  closeResourceMoreMenus();
+  showProfileToast(`${item?.title || '资源'} 已提交举报（演示）`);
+}
+
+function deleteResourceFile(id) {
+  if (!(resourceLibContext.isAdmin && resourceLibContext.activeType === 'school')) return;
+  const lib = resourceLibCurrentLib();
+  if (!lib) return;
+  const item = lib.items.find((x) => x.id === id);
+  lib.items = lib.items.filter((x) => x.id !== id);
+  closeResourceMoreMenus();
+  renderResourceLibrary();
+  showProfileToast(`${item?.title || '资源'} 已删除（演示）`);
+}
+
+function createResourceFolder() {
+  if (!(resourceLibContext.isAdmin && resourceLibContext.activeType === 'school')) return;
+  const modal = document.getElementById('resourceFolderModal');
+  const input = document.getElementById('resourceFolderNameInput');
+  const err = document.getElementById('resourceFolderModalErr');
+  if (!modal || !input) return;
+  input.value = '';
+  if (err) err.textContent = '';
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  setTimeout(() => input.focus(), 0);
+}
+
+function closeResourceFolderModal() {
+  const modal = document.getElementById('resourceFolderModal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+function confirmCreateResourceFolder() {
+  if (!(resourceLibContext.isAdmin && resourceLibContext.activeType === 'school')) return;
+  const lib = resourceLibCurrentLib();
+  const input = document.getElementById('resourceFolderNameInput');
+  const err = document.getElementById('resourceFolderModalErr');
+  const name = (input?.value || '').trim();
+  if (!name) {
+    if (err) err.textContent = '请输入文件夹标题';
+    input?.focus();
+    return;
+  }
+  if (!lib) return;
+  const id = `custom-${Date.now()}`;
+  lib.folders.push({ id, name });
+  resourceLibContext.activeFolderId = id;
+  closeResourceFolderModal();
+  renderResourceLibrary();
+  showProfileToast('文件夹已创建（演示）');
+}
+
+function renameResourceFolder(folderId) {
+  if (!(resourceLibContext.isAdmin && resourceLibContext.activeType === 'school')) return;
+  const lib = resourceLibCurrentLib();
+  const folder = lib?.folders.find((f) => f.id === folderId && !f.locked);
+  if (!folder) return;
+  const raw = window.prompt('请输入新的文件夹名称', folder.name);
+  const name = raw && raw.trim();
+  if (!name) return;
+  folder.name = name;
+  closeResourceMoreMenus();
+  renderResourceLibraryFolders();
+  renderResourceLibraryFiles();
+  showProfileToast('文件夹已重命名（演示）');
+}
+
+function deleteResourceFolder(folderId) {
+  if (!(resourceLibContext.isAdmin && resourceLibContext.activeType === 'school')) return;
+  const lib = resourceLibCurrentLib();
+  if (!lib) return;
+  lib.folders = lib.folders.filter((f) => f.id !== folderId || f.locked);
+  lib.items = lib.items.map((item) => item.folderId === folderId ? { ...item, folderId: 'all' } : item);
+  resourceLibContext.activeFolderId = 'all';
+  renderResourceLibrary();
+  showProfileToast('文件夹已删除，资源已移到全部资源（演示）');
+}
+
+function uploadResourceFile() {
+  if (!(resourceLibContext.isAdmin && resourceLibContext.activeType === 'school')) return;
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.multiple = true;
+  input.onchange = () => {
+    const lib = resourceLibCurrentLib();
+    if (!lib || !input.files?.length) return;
+    const folderId = resourceLibContext.activeFolderId === 'all' ? (lib.folders.find((f) => !f.locked)?.id || 'all') : resourceLibContext.activeFolderId;
+    Array.from(input.files).forEach((file, i) => {
+      const parts = file.name.split('.');
+      const ext = parts.length > 1 ? parts.pop().toLowerCase() : 'file';
+      const title = parts.join('.') || file.name;
+      const item = resourceLibMakeItem(title, ext, folderId, Date.now() + i, 'school');
+      item.id = `upload-${Date.now()}-${i}`;
+      item.size = file.size >= 1024 * 1024 ? `${(file.size / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(file.size / 1024))} KB`;
+      item.updatedAt = '刚刚';
+      if (item.type === 'image') item.objectUrl = URL.createObjectURL(file);
+      lib.items.unshift(item);
+    });
+    renderResourceLibrary();
+    showProfileToast(`已上传 ${input.files.length} 个资源（演示）`);
+  };
+  input.click();
+}
+
+function openResourceLibrary(book) {
+  if (!book) return;
+  closeReader();
+  closeDetail();
+  resourceLibContext = {
+    book,
+    activeType: 'school',
+    activeFolderId: 'all',
+    view: 'grid',
+    isAdmin: isCurrentUserClassGroupAdmin(),
+    libs: resourceLibBuildForBook(book),
+  };
+  const line = document.getElementById('resourceLibBookLine');
+  if (line) line.textContent = `${book.t} · ${book.s}`;
+  const search = document.getElementById('resourceLibSearch');
+  if (search) search.value = '';
+  renderResourceLibrary();
+  const page = document.getElementById('resourceLibPage');
+  if (page) {
+    page.classList.add('open');
+    page.setAttribute('aria-hidden', 'false');
+  }
+  document.body.style.overflow = 'hidden';
+}
+
+function closeResourceLibrary() {
+  closeResourceMoreMenus();
+  const page = document.getElementById('resourceLibPage');
+  if (page) {
+    page.classList.remove('open');
+    page.setAttribute('aria-hidden', 'true');
+  }
+  resourceLibContext = { book: null, activeType: 'school', activeFolderId: 'all', view: 'grid', isAdmin: false, libs: null };
+  if (
+    !document.getElementById('readerOverlay')?.classList.contains('open') &&
+    !document.getElementById('teachModePage')?.classList.contains('open') &&
+    !document.getElementById('avModePage')?.classList.contains('open') &&
+    !document.getElementById('taskModePage')?.classList.contains('open') &&
+    !document.getElementById('questionBankPage')?.classList.contains('open')
+  ) {
+    document.body.style.overflow = '';
+  }
+}
+
+document.getElementById('resourceFolderNameInput')?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    confirmCreateResourceFolder();
+  }
+});
 
 let questionBankContext = { book: null, classes: [], isAdmin: false };
 
@@ -6234,6 +6710,7 @@ function readerModePillIconHtml(modeKey) {
     task: `<span class="reader-mode-pill-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="3" width="14" height="18" rx="2" fill="#f97316"/><path fill="#fff" fill-opacity=".9" d="M8 7h8v1.8H8V7zm0 3.2h5v1.8H8v-1.8z"/><path stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M8.3 16.2l2.2 2.2 4.2-5"/></svg></span>`,
     kg: `<span class="reader-mode-pill-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="8" r="3" fill="#0ea5e9"/><circle cx="18.5" cy="8" r="3" fill="#6366f1"/><circle cx="12" cy="17" r="3" fill="#ec4899"/><path stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round" d="M7.8 10.2l4.4 5M16.2 10.2l-4.4 5"/></svg></span>`,
     teach: `<span class="reader-mode-pill-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="11" rx="1" fill="none" stroke="#f59e0b"/><line x1="3" y1="10" x2="21" y2="10" stroke="#f59e0b"/></svg></span>`,
+    questionBank: `<span class="reader-mode-pill-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4.5" y="3" width="15" height="18" rx="3" fill="#10b981"/><path d="M8 7.4h8M8 11h8M8 14.6h4.6" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/><circle cx="16.5" cy="16.5" r="3.5" fill="#d1fae5"/><path d="M15.1 16.6l.9.9 1.8-2" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
   };
   return ic[modeKey] || '';
 }
@@ -7092,6 +7569,10 @@ Object.assign(window, {
   openSchoolModal, closeSchoolModal, confirmSchoolBind, clearSchoolBind,
   bookShortcut,
   toggleMineShelfMore, closeAllMineShelfMore,
+  openResourceLibrary, closeResourceLibrary, setResourceLibraryType, setResourceLibraryFolder,
+  setResourceLibraryView, renderResourceLibraryFiles, previewResourceFile, downloadResourceFile, toggleResourceMore,
+  toggleResourceFolderMore, reportResourceFile, deleteResourceFile, createResourceFolder,
+  closeResourceFolderModal, confirmCreateResourceFolder, renameResourceFolder, deleteResourceFolder, uploadResourceFile,
   openReader, closeReader, openReaderFromDetail, openReaderFromDetailMode, tryOpenPendingBookDetail, tryOpenPendingReader, readerGo, readerToggleTocGroup,
   readerOpenQuizModal, readerCloseQuizModal, readerSubmitQuizModal, readerQuizPickChoice, readerQuizPickTf,
   readerOpenLab, readerCloseLab, readerOpenICase, readerCloseICase,
