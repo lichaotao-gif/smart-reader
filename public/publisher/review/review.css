@@ -8,9 +8,15 @@
   --slate:#6b7280;
   --ink:#374151;
   --deep:#1f2937;
+<<<<<<< HEAD
   --mint:#f0f5ff;
   --mint-mid:#85a5ff;
   --mint-deep:#2f54eb;
+=======
+  --mint:#eff6ff;
+  --mint-mid:#93c5fd;
+  --mint-deep:#2563eb;
+>>>>>>> 5ee6ac7 (first commit)
   --sky:#d6e8f8;
   --sky-mid:#6ea8d8;
   --sky-deep:#3d80b8;
@@ -326,7 +332,11 @@ body{
 }
 .pub-review-card.is-active{
   border-color:var(--mint-mid);
+<<<<<<< HEAD
   box-shadow:0 4px 16px rgba(47,84,235,0.12);
+=======
+  box-shadow:0 4px 16px rgba(37,99,235,0.12);
+>>>>>>> 5ee6ac7 (first commit)
   background:var(--white);
 }
 .pub-review-card[hidden]{display:none!important}

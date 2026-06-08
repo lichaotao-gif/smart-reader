@@ -297,7 +297,7 @@
               <button type="button" class="cr-write-tool-btn" title="图集"><svg class="cr-w-svg"><use href="#cr-ic-layers"/></svg>图集</button>
               <button type="button" class="cr-write-tool-btn" title="视频卡"><svg class="cr-w-svg"><use href="#cr-ic-clapper"/></svg>视频卡</button>
               <button type="button" class="cr-write-tool-btn" title="附件"><svg class="cr-w-svg"><use href="#cr-ic-paperclip"/></svg>附件</button>
-              <button type="button" class="cr-write-tool-btn" title="习题"><svg class="cr-w-svg"><use href="#cr-ic-help"/></svg>习题</button>
+              <button type="button" class="cr-write-tool-btn" title="习题" data-write-tool="exercise"><svg class="cr-w-svg"><use href="#cr-ic-help"/></svg>习题</button>
               <button type="button" class="cr-write-tool-btn" title="网页"><svg class="cr-w-svg"><use href="#cr-ic-globe"/></svg>网页</button>
               <button type="button" class="cr-write-tool-btn" title="实训"><svg class="cr-w-svg"><use href="#cr-ic-wrench"/></svg>实训</button>
               <button type="button" class="cr-write-tool-btn" title="矩形"><svg class="cr-w-svg"><use href="#cr-ic-square"/></svg>矩形</button>
@@ -306,7 +306,10 @@
             </div>
           </div>
           <div class="cr-write-editor-pad">
-            <div class="cr-write-editor" id="writeEditor" contenteditable="true" spellcheck="false" data-placeholder="在此撰写正文…（演示占位，可接入富文本引擎）"></div>
+            <div class="cr-write-digital-page" id="writeDigitalPage">
+              <div class="cr-write-editor" id="writeEditor" contenteditable="true" spellcheck="false" data-placeholder="在此撰写正文…（演示占位，可接入富文本引擎）"></div>
+              <section class="cr-write-answer-block" id="writeExerciseAnswerBlock" hidden aria-label="拓展练习"></section>
+            </div>
           </div>
         </section>
 
@@ -468,6 +471,220 @@
         </aside>
       </div>
     </div>
+  </div>
+
+  <section class="cr-exam-page" id="writeExercisePage" aria-hidden="true" aria-label="习题出题页面">
+    <div class="cr-qb-edit-page">
+      <div class="cr-qb-edit-hero">
+        <div class="cr-qb-edit-topbar">
+          <button type="button" class="cr-qb-edit-action cr-qb-edit-action--back" id="exerciseBackBtn" title="返回编辑页">
+            <span class="cr-qb-edit-action-ic"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></span>
+            返回
+          </button>
+          <div class="cr-qb-edit-actions">
+            <button type="button" class="cr-qb-edit-action cr-qb-edit-action--ai" id="exerciseAiBtn">
+              <span class="cr-qb-edit-action-ic"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/><circle cx="12" cy="12" r="3.5"/></svg></span>
+              AI 出题
+            </button>
+            <label class="cr-qb-edit-action cr-qb-edit-action--import" for="exerciseImportInput">
+              <span class="cr-qb-edit-action-ic"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v5h5"/><path d="M12 11v8M8.5 15.5 12 19l3.5-3.5"/></svg></span>
+              导入题目
+            </label>
+            <input type="file" id="exerciseImportInput" class="cr-exam-file" accept=".txt,.doc,.docx,.json">
+            <button type="button" class="cr-qb-edit-action cr-qb-edit-action--word" id="exerciseExportBtn">
+              <span class="cr-qb-edit-action-ic"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v5h5"/><path d="M8.5 11l1.2 6 1.6-4 1.6 4 1.2-6"/></svg></span>
+              导出为 Word
+            </button>
+            <button type="button" class="cr-qb-edit-action cr-qb-edit-action--score" id="exerciseBatchScoreBtn">
+              <span class="cr-qb-edit-action-ic"><svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/><circle cx="18" cy="18" r="3"/></svg></span>
+              批量设置分数
+            </button>
+            <button type="button" class="cr-qb-edit-action cr-qb-edit-action--preview" id="exercisePreviewBtn">
+              <span class="cr-qb-edit-action-ic"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span>
+              预览试卷
+            </button>
+          </div>
+        </div>
+        <div class="cr-qb-edit-title-wrap">
+          <div class="cr-qb-edit-title-line">
+            <h2 id="exercisePaperTitle">本节综合测评</h2>
+            <button type="button" class="cr-qb-title-edit" id="exerciseTitleEditBtn" aria-label="编辑试题标题">
+              <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-pencil"/></svg>
+              编辑标题
+            </button>
+          </div>
+          <div class="cr-qb-title-form" id="exerciseTitleForm" hidden>
+            <input type="text" id="exerciseTitleInput" maxlength="40" placeholder="请输入试题标题">
+            <button type="button" class="cr-qb-title-save" id="exerciseTitleSaveBtn">保存</button>
+            <button type="button" class="cr-qb-title-cancel" id="exerciseTitleCancelBtn">取消</button>
+          </div>
+          <p>参考题库出题模式：可用 AI 继续出题、导入题目、拖拽排序、编辑内容并保存为数字教材中的拓展练习。</p>
+          <div class="cr-qb-edit-summary" id="exerciseEditorSummary"></div>
+        </div>
+      </div>
+      <main class="cr-qb-edit-body">
+        <div class="cr-qb-edit-section-head">
+          <h3>题目列表</h3>
+          <div class="cr-exam-add-wrap" id="exerciseAddWrap">
+            <button type="button" class="cr-qb-edit-action cr-qb-edit-action--add" id="exerciseAddBtn" aria-haspopup="true" aria-expanded="false">
+              <span class="cr-qb-edit-action-ic"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+              添加题目
+            </button>
+            <div class="cr-exam-add-pop" role="menu" aria-label="选择新增题型">
+              <button type="button" role="menuitem" data-add-type="choice">选择题</button>
+              <button type="button" role="menuitem" data-add-type="fill">填空题</button>
+              <button type="button" role="menuitem" data-add-type="tf">判断题</button>
+              <button type="button" role="menuitem" data-add-type="short">简答题</button>
+            </div>
+          </div>
+        </div>
+        <div class="cr-qb-edit-content" id="exercisePaperContent"></div>
+      </main>
+      <footer class="cr-qb-edit-foot">
+        <button type="button" class="cr-qb-edit-action cr-qb-edit-action--draft" id="exerciseDraftBtn">
+          <span class="cr-qb-edit-action-ic"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v6h8"/><path d="M8 17h8"/></svg></span>
+          保存草稿
+        </button>
+        <button type="button" class="cr-qb-edit-action cr-qb-edit-action--next" id="exerciseSaveBtn">
+          <span class="cr-qb-edit-action-ic"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+          保存并返回
+        </button>
+      </footer>
+      <div class="cr-qb-edit-modal" id="exerciseEditModal" aria-hidden="true">
+        <div class="cr-qb-edit-modal__bg" data-exercise-edit-close></div>
+        <section class="cr-qb-edit-modal__panel" role="dialog" aria-modal="true" aria-labelledby="exerciseEditModalTitle">
+          <div class="cr-qb-edit-modal__head">
+            <h3 id="exerciseEditModalTitle">编辑题目</h3>
+            <button type="button" id="exerciseEditModalClose">关闭</button>
+          </div>
+          <label><span>题型</span>
+            <select id="exerciseModalType">
+              <option value="choice">选择题</option>
+              <option value="fill">填空题</option>
+              <option value="tf">判断题</option>
+              <option value="short">简答题</option>
+            </select>
+          </label>
+          <label><span>题干</span><textarea id="exerciseModalStem" rows="4"></textarea></label>
+          <div class="cr-qb-edit-modal-options" id="exerciseModalOptions"></div>
+          <label><span>题目答案</span><input id="exerciseModalAnswer" type="text"></label>
+          <label><span>题目解析</span><textarea id="exerciseModalExplain" rows="3"></textarea></label>
+          <div class="cr-qb-edit-modal__foot">
+            <button type="button" class="cr-exam-btn cr-exam-btn--ghost" id="exerciseEditModalCancel">取消</button>
+            <button type="button" class="cr-exam-btn cr-exam-btn--primary" id="exerciseEditModalSave">保存</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="cr-answer-page" id="writeExerciseAnswerPage" aria-hidden="true" aria-label="正式答题预览">
+    <header class="cr-answer-head">
+      <button type="button" class="cr-answer-back" id="answerPreviewBackBtn" title="返回编辑页" aria-label="返回编辑页">
+        <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-chevron-left"/></svg>
+        返回编辑
+      </button>
+      <div class="cr-answer-titles">
+        <div class="cr-answer-kicker">拓展练习</div>
+        <h2 class="cr-answer-title" id="answerPreviewTitle">本节综合测评</h2>
+        <p class="cr-answer-sub" id="answerPreviewSub"></p>
+      </div>
+    </header>
+    <div class="cr-answer-body" id="answerPreviewBody" tabindex="-1"></div>
+    <footer class="cr-answer-foot" id="answerPreviewFoot"></footer>
+  </section>
+
+  <div class="cr-ai-exam-modal" id="exerciseAiModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="exerciseAiModalTitle">
+    <div class="cr-ai-exam-mask" data-ai-modal-close></div>
+    <section class="cr-ai-exam-card">
+      <header class="cr-ai-exam-head">
+        <div>
+          <h2 id="exerciseAiModalTitle">AI生成习题集</h2>
+        </div>
+        <button type="button" class="cr-ai-exam-close" id="exerciseAiCloseBtn" aria-label="关闭 AI 出卷弹窗">
+          <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-chevron-left"/></svg>
+        </button>
+      </header>
+      <div class="cr-ai-exam-body">
+        <section class="cr-ai-exam-section">
+          <h3>基础信息</h3>
+          <label class="cr-ai-exam-field cr-ai-exam-field--wide">
+            <span>习题集名称</span>
+            <input type="text" id="exerciseAiSetName" maxlength="40" value="习题集" placeholder="习题集">
+          </label>
+          <label class="cr-ai-exam-field cr-ai-exam-field--wide cr-ai-exam-field--prompt">
+            <span>出题要求</span>
+            <textarea id="exerciseAiPrompt" rows="5" maxlength="1000" placeholder="请输入出题要求"></textarea>
+            <em id="exerciseAiPromptCount">0/1000</em>
+          </label>
+          <div class="cr-ai-exam-ref-title">
+            <span>参考资料</span>
+            <strong>知识点提纲、教材摘要、课堂笔记等（可选，会用于更准确的生题）</strong>
+          </div>
+          <label class="cr-ai-exam-dropzone" for="exerciseAiRefInput">
+            <strong id="exerciseAiRefName">点击或拖拽上传文件(支持上传10个文件)</strong>
+            <small>支持Word、PDF、PPT、EXCEL、TXT等格式，每个文件不超过150MB</small>
+          </label>
+          <input type="file" id="exerciseAiRefInput" class="cr-ai-exam-upload-input" accept=".txt,.doc,.docx,.pdf,.ppt,.pptx,.xls,.xlsx,.md" multiple>
+        </section>
+        <section class="cr-ai-exam-section">
+          <h3>题型与数量配置</h3>
+          <p class="cr-ai-exam-section-desc">可根据需要调整各题型数量，系统将按比例与覆盖度生成题目。</p>
+          <div class="cr-ai-type-grid">
+            <label class="cr-ai-count-field">
+              <span>选择题</span>
+              <div class="cr-ai-count-stepper">
+                <button type="button" data-ai-count-step="exerciseAiChoice" data-ai-count-delta="-1">−</button>
+                <input type="number" id="exerciseAiChoice" min="0" max="20" value="1" inputmode="numeric">
+                <button type="button" data-ai-count-step="exerciseAiChoice" data-ai-count-delta="1">+</button>
+              </div>
+            </label>
+            <label class="cr-ai-count-field">
+              <span>填空题</span>
+              <div class="cr-ai-count-stepper">
+                <button type="button" data-ai-count-step="exerciseAiFill" data-ai-count-delta="-1">−</button>
+                <input type="number" id="exerciseAiFill" min="0" max="20" value="1" inputmode="numeric">
+                <button type="button" data-ai-count-step="exerciseAiFill" data-ai-count-delta="1">+</button>
+              </div>
+            </label>
+            <label class="cr-ai-count-field">
+              <span>判断题</span>
+              <div class="cr-ai-count-stepper">
+                <button type="button" data-ai-count-step="exerciseAiTf" data-ai-count-delta="-1">−</button>
+                <input type="number" id="exerciseAiTf" min="0" max="20" value="1" inputmode="numeric">
+                <button type="button" data-ai-count-step="exerciseAiTf" data-ai-count-delta="1">+</button>
+              </div>
+            </label>
+            <label class="cr-ai-count-field">
+              <span>简答题</span>
+              <div class="cr-ai-count-stepper">
+                <button type="button" data-ai-count-step="exerciseAiShort" data-ai-count-delta="-1">−</button>
+                <input type="number" id="exerciseAiShort" min="0" max="20" value="1" inputmode="numeric">
+                <button type="button" data-ai-count-step="exerciseAiShort" data-ai-count-delta="1">+</button>
+              </div>
+            </label>
+          </div>
+          <div class="cr-ai-difficulty-row">
+            <label class="cr-ai-exam-field cr-ai-exam-field--difficulty">
+              <span>难度</span>
+              <select id="exerciseAiDifficulty">
+                <option value="简单" selected>简单</option>
+                <option value="中等">中等</option>
+                <option value="困难">困难</option>
+              </select>
+            </label>
+            <p>将以此难度为基准，并形成一定的难度梯度</p>
+          </div>
+        </section>
+      </div>
+      <footer class="cr-ai-exam-foot">
+        <button type="button" class="cr-exam-btn cr-exam-btn--ghost" id="exerciseAiCancelBtn">取消</button>
+        <button type="button" class="cr-exam-btn cr-exam-btn--primary cr-ai-generate-btn" id="exerciseAiGenerateBtn">
+          <svg class="cr-w-svg" aria-hidden="true"><use href="#cr-ic-sparkles"/></svg>
+          立即生成
+        </button>
+      </footer>
+    </section>
   </div>
   <script src="./write.js"></script>
 </body>

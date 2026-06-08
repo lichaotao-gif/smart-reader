@@ -1,0 +1,529 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e7]:
+        - generic [ref=e8]: 缤果数字教材
+        - generic [ref=e9]: BINGO DIGITAL TEXTBOOK
+      - navigation "主导航" [ref=e10]:
+        - generic [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - generic [ref=e15]: 图书商城
+        - generic [ref=e16] [cursor=pointer]:
+          - img [ref=e17]
+          - generic [ref=e20]: 我的书架
+        - generic [ref=e21] [cursor=pointer]:
+          - img [ref=e22]
+          - generic [ref=e25]: 设置
+      - generic "平台推广" [ref=e26]:
+        - generic [ref=e27]:
+          - paragraph [ref=e28]: 探索知识 无限可能
+          - paragraph [ref=e29]: 开启你的数字阅读之旅
+        - button "友情链接" [ref=e32] [cursor=pointer]
+      - button "帮助与反馈" [ref=e34] [cursor=pointer]:
+        - img [ref=e36]
+        - generic [ref=e39]: 帮助与反馈
+        - img [ref=e40]
+    - main [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e196]:
+          - heading "我的书架" [level=1] [ref=e197]
+          - generic [ref=e199]: 管理已添加的教材与学习进度
+        - generic [ref=e50]:
+          - button "兑换教材" [ref=e51] [cursor=pointer]:
+            - img [ref=e52]
+            - generic [ref=e56]: 兑换教材
+          - button "当前用户" [ref=e57] [cursor=pointer]:
+            - generic [ref=e58]: 李
+            - generic [ref=e59]: 李明远
+      - generic [ref=e200]:
+        - generic [ref=e201]:
+          - button "兑换教材 输入兑换码，将数字教材添加至书架" [ref=e202] [cursor=pointer]:
+            - img [ref=e204]
+            - generic [ref=e207]:
+              - generic [ref=e208]: 兑换教材
+              - generic [ref=e209]: 输入兑换码，将数字教材添加至书架
+            - img [ref=e210]
+          - button "加入组群 输入管理员提供的邀请码加入对应组群" [ref=e212] [cursor=pointer]:
+            - img [ref=e214]
+            - generic [ref=e217]:
+              - generic [ref=e218]: 加入组群
+              - generic [ref=e219]: 输入管理员提供的邀请码加入对应组群
+            - img [ref=e220]
+          - button "我的群组 查看已创建或已加入的全部群组" [ref=e222] [cursor=pointer]:
+            - img [ref=e224]
+            - generic [ref=e229]:
+              - generic [ref=e230]: 我的群组
+              - generic [ref=e231]: 查看已创建或已加入的全部群组
+            - img [ref=e232]
+        - generic [ref=e234]:
+          - generic [ref=e235]: 书架
+          - generic [ref=e237]:
+            - generic [ref=e238]: 共 7 本
+            - button "创建组群" [ref=e239] [cursor=pointer]:
+              - img [ref=e240]
+              - generic [ref=e241]: 创建组群
+        - navigation "书架与组群" [ref=e242]:
+          - button "我的书架" [ref=e243] [cursor=pointer]:
+            - generic [ref=e244]: 我的书架
+          - button "中职·人工智能研读组 管理员" [ref=e245] [cursor=pointer]:
+            - generic [ref=e246]: 中职·人工智能研读组
+            - generic [ref=e247]: 管理员
+          - button "数据结构与网络实训 管理员" [ref=e248] [cursor=pointer]:
+            - generic [ref=e249]: 数据结构与网络实训
+            - generic [ref=e250]: 管理员
+          - button "Web 与移动开发组" [ref=e251] [cursor=pointer]:
+            - generic [ref=e252]: Web 与移动开发组
+          - button "演示·04 计算机网络拓展 管理员" [ref=e253] [cursor=pointer]:
+            - generic [ref=e254]: 演示·04 计算机网络拓展
+            - generic [ref=e255]: 管理员
+          - button "演示·05 数据库与运维 管理员" [ref=e256] [cursor=pointer]:
+            - generic [ref=e257]: 演示·05 数据库与运维
+            - generic [ref=e258]: 管理员
+          - button "演示·06 物联网基础班 管理员" [ref=e259] [cursor=pointer]:
+            - generic [ref=e260]: 演示·06 物联网基础班
+            - generic [ref=e261]: 管理员
+          - button "演示·07 数字媒体设计 管理员" [ref=e262] [cursor=pointer]:
+            - generic [ref=e263]: 演示·07 数字媒体设计
+            - generic [ref=e264]: 管理员
+          - button "演示·08 电子商务实务 管理员" [ref=e265] [cursor=pointer]:
+            - generic [ref=e266]: 演示·08 电子商务实务
+            - generic [ref=e267]: 管理员
+          - button "演示·09 会计信息化 管理员" [ref=e268] [cursor=pointer]:
+            - generic [ref=e269]: 演示·09 会计信息化
+            - generic [ref=e270]: 管理员
+          - button "演示·10 智能制造导论 管理员" [ref=e271] [cursor=pointer]:
+            - generic [ref=e272]: 演示·10 智能制造导论
+            - generic [ref=e273]: 管理员
+        - generic [ref=e274]:
+          - generic [ref=e275] [cursor=pointer]:
+            - generic "已在书架" [ref=e276]:
+              - img [ref=e277]
+            - generic [ref=e279]:
+              - generic "打开教材详情" [ref=e281]:
+                - generic [ref=e282]:
+                  - generic [ref=e283]: 中职 二年级
+                  - generic [ref=e284]: 人工智能导论
+                  - generic [ref=e285]: 通识与伦理
+              - generic [ref=e286]:
+                - generic [ref=e287]:
+                  - generic [ref=e288]: 人工智能导论 · 通识与伦理
+                  - generic [ref=e289]:
+                    - generic [ref=e290]: 高等教育出版社
+                    - generic [ref=e291]: 纸数融合
+                  - generic [ref=e295]: 78%
+                - toolbar "教材功能" [ref=e297]:
+                  - button "阅读" [ref=e298]
+                  - button "智能云讲义" [ref=e299]
+                  - button "教学" [ref=e300]
+                  - button "任务" [ref=e301]
+                  - button "题库" [ref=e302]
+                  - button "岗位实习" [ref=e303]
+                  - button "资源库" [ref=e304]
+                  - button "学习统计" [ref=e305]
+                  - button "更多操作..." [ref=e307]
+          - generic [ref=e308] [cursor=pointer]:
+            - generic "已在书架" [ref=e309]:
+              - img [ref=e310]
+            - generic [ref=e312]:
+              - generic "打开教材详情" [ref=e314]:
+                - generic [ref=e315]:
+                  - generic [ref=e316]: 中职 一年级
+                  - generic [ref=e317]: Python程序设计
+                  - generic [ref=e318]: 入门篇
+              - generic [ref=e320]:
+                - generic [ref=e321]: Python程序设计 · 入门篇
+                - generic [ref=e323]: 人民邮电出版社
+                - generic [ref=e327]: 45%
+          - generic [ref=e328] [cursor=pointer]:
+            - generic "已在书架" [ref=e329]:
+              - img [ref=e330]
+            - generic [ref=e332]:
+              - generic "打开教材详情" [ref=e334]:
+                - generic [ref=e335]:
+                  - generic [ref=e336]: 中职 一年级
+                  - generic [ref=e337]: 计算机网络技术
+                  - generic [ref=e338]: 基础与互联
+              - generic [ref=e339]:
+                - generic [ref=e340]:
+                  - generic [ref=e341]: 计算机网络技术 · 基础与互联
+                  - generic [ref=e342]:
+                    - generic [ref=e343]: 电子工业出版社
+                    - generic [ref=e344]: 纸数融合
+                  - generic [ref=e348]: 92%
+                - toolbar "教材功能" [ref=e350]:
+                  - button "阅读" [ref=e351]
+                  - button "任务" [ref=e352]
+                  - button "题库" [ref=e353]
+                  - button "学习统计" [ref=e354]
+          - generic [ref=e355] [cursor=pointer]:
+            - generic "已在书架" [ref=e356]:
+              - img [ref=e357]
+            - generic [ref=e359]:
+              - generic "打开教材详情" [ref=e361]:
+                - generic [ref=e362]:
+                  - generic [ref=e363]: 中职 二年级
+                  - generic [ref=e364]: 数据结构与算法
+                  - generic [ref=e365]: C语言版
+              - generic [ref=e366]:
+                - generic [ref=e367]:
+                  - generic [ref=e368]: 数据结构与算法 · C语言版
+                  - generic [ref=e370]: 清华大学出版社
+                  - generic [ref=e374]: 30%
+                - toolbar "教材功能" [ref=e376]:
+                  - button "阅读" [ref=e377]
+                  - button "资源库" [ref=e378]
+          - generic [ref=e379] [cursor=pointer]:
+            - generic "已在书架" [ref=e380]:
+              - img [ref=e381]
+            - generic [ref=e383]:
+              - generic "打开教材详情" [ref=e385]:
+                - generic [ref=e386]:
+                  - generic [ref=e387]: 中职 二年级
+                  - generic [ref=e388]: MySQL数据库应用
+                  - generic [ref=e389]: 基础与查询
+              - generic [ref=e391]:
+                - generic [ref=e392]: MySQL数据库应用 · 基础与查询
+                - generic [ref=e394]: 人民邮电出版社
+                - generic [ref=e398]: 15%
+          - generic [ref=e399] [cursor=pointer]:
+            - generic "已在书架" [ref=e400]:
+              - img [ref=e401]
+            - generic [ref=e403]:
+              - generic "打开教材详情" [ref=e405]:
+                - generic [ref=e406]:
+                  - generic [ref=e407]: 中职 三年级
+                  - generic [ref=e408]: 机器学习基础
+                  - generic [ref=e409]: 监督与评估
+              - generic [ref=e410]:
+                - generic [ref=e411]:
+                  - generic [ref=e412]: 机器学习基础 · 监督与评估
+                  - generic [ref=e413]:
+                    - generic [ref=e414]: 人民邮电出版社
+                    - generic [ref=e415]: 纸数融合
+                  - generic [ref=e419]: 60%
+                - toolbar "教材功能" [ref=e421]:
+                  - button "阅读" [ref=e422]
+                  - button "智能云讲义" [ref=e423]
+                  - button "教学" [ref=e424]
+                  - button "任务" [ref=e425]
+                  - button "题库" [ref=e426]
+                  - button "岗位实习" [ref=e427]
+                  - button "资源库" [ref=e428]
+                  - button "学习统计" [ref=e429]
+          - generic [ref=e430] [cursor=pointer]:
+            - generic "已在书架" [ref=e431]:
+              - img [ref=e432]
+            - generic [ref=e434]:
+              - generic "打开教材详情" [ref=e436]:
+                - generic [ref=e437]:
+                  - generic [ref=e438]: 中职 三年级
+                  - generic [ref=e439]: 移动应用开发
+                  - generic [ref=e440]: Android基础
+              - generic [ref=e441]:
+                - generic [ref=e442]:
+                  - generic [ref=e443]: 移动应用开发 · Android基础
+                  - generic [ref=e444]:
+                    - generic [ref=e445]: 电子工业出版社
+                    - generic [ref=e446]: 纸数融合
+                  - generic [ref=e450]: 68%
+                - toolbar "教材功能" [ref=e452]:
+                  - button "阅读" [ref=e453]
+                  - button "任务" [ref=e454]
+                  - button "题库" [active] [ref=e455]
+                  - button "学习统计" [ref=e456]
+        - generic [ref=e457]:
+          - generic [ref=e458]:
+            - generic [ref=e459]: 我的组群
+            - generic [ref=e462] [cursor=pointer]: 共 10 个组群
+          - generic [ref=e463]:
+            - generic [ref=e464] [cursor=pointer]:
+              - generic [ref=e465]:
+                - img [ref=e466]
+                - text: 管理员
+              - generic [ref=e468]:
+                - img [ref=e470]
+                - generic [ref=e475]:
+                  - generic [ref=e476]: 中职·人工智能研读组
+                  - generic [ref=e477]: 人工智能 · 3 本教材 · 12 人
+              - generic [ref=e478]:
+                - generic [ref=e479]:
+                  - generic [ref=e480]: "12"
+                  - generic [ref=e481]: 学生人数
+                - generic [ref=e482]:
+                  - generic [ref=e483]: "3"
+                  - generic [ref=e484]: 组群教材
+              - generic [ref=e485]:
+                - generic [ref=e486]: 创建于 2026-03-15
+                - img [ref=e487]
+            - generic [ref=e489] [cursor=pointer]:
+              - generic [ref=e490]:
+                - img [ref=e491]
+                - text: 管理员
+              - generic [ref=e493]:
+                - img [ref=e495]
+                - generic [ref=e500]:
+                  - generic [ref=e501]: 数据结构与网络实训
+                  - generic [ref=e502]: 计算机 · 2 本教材 · 8 人
+              - generic [ref=e503]:
+                - generic [ref=e504]:
+                  - generic [ref=e505]: "8"
+                  - generic [ref=e506]: 学生人数
+                - generic [ref=e507]:
+                  - generic [ref=e508]: "2"
+                  - generic [ref=e509]: 组群教材
+              - generic [ref=e510]:
+                - generic [ref=e511]: 创建于 2026-03-20
+                - img [ref=e512]
+            - generic [ref=e514] [cursor=pointer]:
+              - generic [ref=e515]:
+                - img [ref=e517]
+                - generic [ref=e522]:
+                  - generic [ref=e523]: Web 与移动开发组
+                  - generic [ref=e524]: 开发 · 2 本教材 · 3 人
+              - generic [ref=e525]:
+                - generic [ref=e526]:
+                  - generic [ref=e527]: "3"
+                  - generic [ref=e528]: 学生人数
+                - generic [ref=e529]:
+                  - generic [ref=e530]: "2"
+                  - generic [ref=e531]: 组群教材
+              - generic [ref=e532]:
+                - generic [ref=e533]: 创建于 2026-04-02
+                - img [ref=e534]
+            - generic [ref=e536] [cursor=pointer]:
+              - generic [ref=e537]:
+                - img [ref=e538]
+                - text: 管理员
+              - generic [ref=e540]:
+                - img [ref=e542]
+                - generic [ref=e547]:
+                  - generic [ref=e548]: 演示·04 计算机网络拓展
+                  - generic [ref=e549]: 计算机 · 0 本教材 · 0 人
+              - generic [ref=e550]:
+                - generic [ref=e551]:
+                  - generic [ref=e552]: "0"
+                  - generic [ref=e553]: 学生人数
+                - generic [ref=e554]:
+                  - generic [ref=e555]: "0"
+                  - generic [ref=e556]: 组群教材
+              - generic [ref=e557]:
+                - generic [ref=e558]: 创建于 2026-04-05
+                - img [ref=e559]
+            - generic [ref=e561] [cursor=pointer]:
+              - generic [ref=e562]:
+                - img [ref=e563]
+                - text: 管理员
+              - generic [ref=e565]:
+                - img [ref=e567]
+                - generic [ref=e572]:
+                  - generic [ref=e573]: 演示·05 数据库与运维
+                  - generic [ref=e574]: 计算机 · 0 本教材 · 0 人
+              - generic [ref=e575]:
+                - generic [ref=e576]:
+                  - generic [ref=e577]: "0"
+                  - generic [ref=e578]: 学生人数
+                - generic [ref=e579]:
+                  - generic [ref=e580]: "0"
+                  - generic [ref=e581]: 组群教材
+              - generic [ref=e582]:
+                - generic [ref=e583]: 创建于 2026-04-06
+                - img [ref=e584]
+            - generic [ref=e586] [cursor=pointer]:
+              - generic [ref=e587]:
+                - img [ref=e588]
+                - text: 管理员
+              - generic [ref=e590]:
+                - img [ref=e592]
+                - generic [ref=e597]:
+                  - generic [ref=e598]: 演示·06 物联网基础班
+                  - generic [ref=e599]: 计算机 · 0 本教材 · 0 人
+              - generic [ref=e600]:
+                - generic [ref=e601]:
+                  - generic [ref=e602]: "0"
+                  - generic [ref=e603]: 学生人数
+                - generic [ref=e604]:
+                  - generic [ref=e605]: "0"
+                  - generic [ref=e606]: 组群教材
+              - generic [ref=e607]:
+                - generic [ref=e608]: 创建于 2026-04-07
+                - img [ref=e609]
+            - generic [ref=e611] [cursor=pointer]:
+              - generic [ref=e612]:
+                - img [ref=e613]
+                - text: 管理员
+              - generic [ref=e615]:
+                - img [ref=e617]
+                - generic [ref=e622]:
+                  - generic [ref=e623]: 演示·07 数字媒体设计
+                  - generic [ref=e624]: 艺术 · 0 本教材 · 0 人
+              - generic [ref=e625]:
+                - generic [ref=e626]:
+                  - generic [ref=e627]: "0"
+                  - generic [ref=e628]: 学生人数
+                - generic [ref=e629]:
+                  - generic [ref=e630]: "0"
+                  - generic [ref=e631]: 组群教材
+              - generic [ref=e632]:
+                - generic [ref=e633]: 创建于 2026-04-08
+                - img [ref=e634]
+            - generic [ref=e636] [cursor=pointer]:
+              - generic [ref=e637]:
+                - img [ref=e638]
+                - text: 管理员
+              - generic [ref=e640]:
+                - img [ref=e642]
+                - generic [ref=e647]:
+                  - generic [ref=e648]: 演示·08 电子商务实务
+                  - generic [ref=e649]: 商贸 · 0 本教材 · 0 人
+              - generic [ref=e650]:
+                - generic [ref=e651]:
+                  - generic [ref=e652]: "0"
+                  - generic [ref=e653]: 学生人数
+                - generic [ref=e654]:
+                  - generic [ref=e655]: "0"
+                  - generic [ref=e656]: 组群教材
+              - generic [ref=e657]:
+                - generic [ref=e658]: 创建于 2026-04-09
+                - img [ref=e659]
+            - generic [ref=e661] [cursor=pointer]:
+              - generic [ref=e662]:
+                - img [ref=e663]
+                - text: 管理员
+              - generic [ref=e665]:
+                - img [ref=e667]
+                - generic [ref=e672]:
+                  - generic [ref=e673]: 演示·09 会计信息化
+                  - generic [ref=e674]: 财经 · 0 本教材 · 0 人
+              - generic [ref=e675]:
+                - generic [ref=e676]:
+                  - generic [ref=e677]: "0"
+                  - generic [ref=e678]: 学生人数
+                - generic [ref=e679]:
+                  - generic [ref=e680]: "0"
+                  - generic [ref=e681]: 组群教材
+              - generic [ref=e682]:
+                - generic [ref=e683]: 创建于 2026-04-10
+                - img [ref=e684]
+            - generic [ref=e686] [cursor=pointer]:
+              - generic [ref=e687]:
+                - img [ref=e688]
+                - text: 管理员
+              - generic [ref=e690]:
+                - img [ref=e692]
+                - generic [ref=e697]:
+                  - generic [ref=e698]: 演示·10 智能制造导论
+                  - generic [ref=e699]: 制造 · 0 本教材 · 0 人
+              - generic [ref=e700]:
+                - generic [ref=e701]:
+                  - generic [ref=e702]: "0"
+                  - generic [ref=e703]: 学生人数
+                - generic [ref=e704]:
+                  - generic [ref=e705]: "0"
+                  - generic [ref=e706]: 组群教材
+              - generic [ref=e707]:
+                - generic [ref=e708]: 创建于 2026-04-11
+                - img [ref=e709]
+            - generic [ref=e711] [cursor=pointer]:
+              - img [ref=e713]
+              - generic [ref=e714]: 创建组群
+  - generic:
+    - generic:
+      - button:
+        - img
+      - generic: 创建组群
+      - generic: 仅填写组群名称即可创建，创建后可用邀请码邀请成员加入
+      - generic:
+        - generic: 组群名称
+        - textbox "组群名称":
+          - /placeholder: 例如：AI 与大数据学习组、网络实训小组
+      - button "创建组群"
+  - generic:
+    - generic:
+      - button:
+        - img
+  - generic [ref=e715]:
+    - banner [ref=e716]:
+      - button "返回我的书架" [ref=e717] [cursor=pointer]:
+        - img [ref=e718]
+        - generic [ref=e720]: 返回
+      - generic [ref=e721]:
+        - generic [ref=e722]: 题库
+        - heading "移动应用开发 · Android基础" [level=1] [ref=e724]
+    - main [ref=e725]:
+      - generic [ref=e726]:
+        - generic [ref=e727]:
+          - heading "题库" [level=1] [ref=e728]
+          - paragraph [ref=e729]: Web 与移动开发组 · 围绕本教材进行组卷、发布、作答与自动批阅。
+        - generic [ref=e730]:
+          - generic [ref=e731]:
+            - strong [ref=e732]: "1"
+            - generic [ref=e733]: 关联组群
+          - generic [ref=e734]:
+            - strong [ref=e735]: "2"
+            - generic [ref=e736]: 待完成任务
+          - generic [ref=e737]:
+            - strong [ref=e738]: "128"
+            - generic [ref=e739]: 题目资源
+      - generic [ref=e740]:
+        - generic [ref=e741]:
+          - heading "完成老师发布的试卷任务" [level=2] [ref=e742]
+          - button "开始待完成试卷" [ref=e743] [cursor=pointer]
+        - generic [ref=e744]: 提交后可自动批阅客观题，生成得分、错题和解析；主观题等待老师复核。
+      - generic [ref=e745]:
+        - generic [ref=e746]:
+          - generic [ref=e747]:
+            - heading "老师发布的试卷任务" [level=2] [ref=e748]
+            - button "查看全部" [ref=e749] [cursor=pointer]
+          - generic [ref=e750]:
+            - generic [ref=e751]:
+              - generic [ref=e752]: 第 1 单元基础检测
+              - generic [ref=e753]: Web 与移动开发组 · 20 题 · 100 分 · 自动批阅
+            - generic [ref=e754]: 待完成
+            - generic [ref=e755]: 截止 06-12
+            - button "去作答" [ref=e757] [cursor=pointer]
+          - generic [ref=e758]:
+            - generic [ref=e759]:
+              - generic [ref=e760]: 移动应用开发 综合练习卷
+              - generic [ref=e761]: Web 与移动开发组 · 30 题 · 100 分 · AI 辅助解析
+            - generic [ref=e762]: 已完成
+            - generic [ref=e763]: 得分 86
+            - generic [ref=e764]:
+              - button "查看已答" [ref=e765] [cursor=pointer]
+              - button "重做" [ref=e766] [cursor=pointer]
+          - generic [ref=e767]:
+            - generic [ref=e768]:
+              - generic [ref=e769]: 项目任务阶段测验
+              - generic [ref=e770]: Web 与移动开发组 · 12 题 · 60 分 · 支持主观题
+            - generic [ref=e771]: 已完成
+            - generic [ref=e772]: 得分 78
+            - generic [ref=e773]:
+              - button "查看已答" [ref=e774] [cursor=pointer]
+              - button "重做" [ref=e775] [cursor=pointer]
+        - generic [ref=e776]:
+          - generic [ref=e777]:
+            - img [ref=e779]
+            - generic [ref=e786]:
+              - heading "我的题库" [level=3] [ref=e787]
+              - paragraph [ref=e788]: 查看已收藏题目和个人练习记录。
+              - text: 3 套题 · 12 题
+            - button "进入" [ref=e789] [cursor=pointer]
+          - generic [ref=e790]:
+            - img [ref=e792]
+            - generic [ref=e798]:
+              - heading "配套题库" [level=3] [ref=e799]
+              - paragraph [ref=e800]: 书中自带测试题与章节练习，可直接组卷。
+              - text: 12 套题 · 82 题
+            - button "选题" [ref=e801] [cursor=pointer]
+          - generic [ref=e802]:
+            - img [ref=e804]
+            - generic [ref=e810]:
+              - heading "错题集" [level=3] [ref=e811]
+              - paragraph [ref=e812]: 自动汇总我的错题，支持重做。
+              - text: 7 道待巩固
+            - button "查看" [ref=e813] [cursor=pointer]
+  - generic:
+    - generic:
+      - button:
+        - img
+      - generic: 添加教材到组群
+      - generic: 从「我的教材」中选择要添加到该组群的教材

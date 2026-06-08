@@ -1,0 +1,291 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e7]:
+        - generic [ref=e8]: 缤果数字教材
+        - generic [ref=e9]: BINGO DIGITAL TEXTBOOK
+      - navigation "主导航" [ref=e10]:
+        - generic [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - generic [ref=e15]: 图书商城
+        - generic [ref=e16] [cursor=pointer]:
+          - img [ref=e17]
+          - generic [ref=e20]: 我的书架
+        - generic [ref=e21] [cursor=pointer]:
+          - img [ref=e22]
+          - generic [ref=e25]: 设置
+      - generic "平台推广" [ref=e26]:
+        - generic [ref=e27]:
+          - paragraph [ref=e28]: 探索知识 无限可能
+          - paragraph [ref=e29]: 开启你的数字阅读之旅
+        - button "友情链接" [ref=e32] [cursor=pointer]
+      - button "帮助与反馈" [ref=e34] [cursor=pointer]:
+        - img [ref=e36]
+        - generic [ref=e39]: 帮助与反馈
+        - img [ref=e40]
+    - main [ref=e42]:
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - img [ref=e46]
+          - textbox "搜索教材名称、专业或出版社…" [ref=e49]
+        - generic [ref=e50]:
+          - button "兑换教材" [ref=e51] [cursor=pointer]:
+            - img [ref=e52]
+            - generic [ref=e56]: 兑换教材
+          - button "当前用户" [ref=e57] [cursor=pointer]:
+            - generic [ref=e58]: 李
+            - generic [ref=e59]: 李明远
+      - generic [ref=e62]:
+        - generic [ref=e64]:
+          - heading "发现优质数字教材" [level=2] [ref=e65]
+          - paragraph [ref=e66]: 海量优质资源，助力高效学习
+          - button "探索全部教材" [ref=e68] [cursor=pointer]: 探索全部教材 →
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]: 🔥
+            - text: 热门教材
+          - button "查看全部教材" [ref=e73] [cursor=pointer]: 查看全部教材 ›
+        - generic [ref=e75]:
+          - article [ref=e76] [cursor=pointer]:
+            - generic [ref=e78]:
+              - generic [ref=e79]: 运动营养学
+              - generic [ref=e80]: SPORTS NUTRITION
+              - generic [ref=e81]: 主编：赵建国
+            - generic [ref=e83]:
+              - heading "运动营养学" [level=3] [ref=e84]
+              - paragraph [ref=e85]: 四川电教馆电子音像出版社
+          - article [ref=e86] [cursor=pointer]:
+            - generic [ref=e88]:
+              - generic [ref=e89]: 中华优秀传统文化
+              - generic [ref=e90]: TRADITIONAL CULTURE
+              - generic [ref=e91]: 主编：刘文静
+            - generic [ref=e93]:
+              - heading "中华优秀传统文化" [level=3] [ref=e94]
+              - paragraph [ref=e95]: 四川电教馆电子音像出版社
+          - article [ref=e96] [cursor=pointer]:
+            - generic [ref=e98]:
+              - generic [ref=e99]: 新能源汽车概论
+              - generic [ref=e100]: NEW ENERGY VEHICLE
+              - generic [ref=e101]: 主编：李娟强
+            - generic [ref=e103]:
+              - heading "新能源汽车概论" [level=3] [ref=e104]
+              - paragraph [ref=e105]: 四川电教馆电子音像出版社
+          - article [ref=e106] [cursor=pointer]:
+            - generic [ref=e108]:
+              - generic [ref=e109]: 数据算法与结构
+              - generic [ref=e110]: DATA STRUCTURE
+              - generic [ref=e111]: 主编：姚晓明
+            - generic [ref=e113]:
+              - heading "数据算法与结构" [level=3] [ref=e114]
+              - paragraph [ref=e115]: 四川电教馆电子
+          - article [ref=e116] [cursor=pointer]:
+            - generic [ref=e118]:
+              - generic [ref=e119]: 新时代下的媒体资源
+              - generic [ref=e120]: MEDIA RESOURCE
+              - generic [ref=e121]: 主编：王晓晴
+            - generic [ref=e123]:
+              - heading "新时代下的媒体资源" [level=3] [ref=e124]
+              - paragraph [ref=e125]: 四川电教馆电子音像出版社
+          - article [ref=e126] [cursor=pointer]:
+            - generic [ref=e128]:
+              - generic [ref=e129]: 智能家居
+              - generic [ref=e130]: SMART HOME
+              - generic [ref=e131]: 主编：陈思远
+            - generic [ref=e133]:
+              - heading "智能家居" [level=3] [ref=e134]
+              - paragraph [ref=e135]: 四川电教馆电子音像出版社
+          - article [ref=e136] [cursor=pointer]:
+            - generic [ref=e138]:
+              - generic [ref=e139]: 半导体物理学
+              - generic [ref=e140]: SEMICONDUCTOR PHYSICS
+              - generic [ref=e141]: 主编：李国强
+            - generic [ref=e143]:
+              - heading "半导体物理学" [level=3] [ref=e144]
+              - paragraph [ref=e145]: 四川电教馆电子音像出版社
+          - article [ref=e146] [cursor=pointer]:
+            - generic [ref=e148]:
+              - generic [ref=e149]: 人工智能导论
+              - generic [ref=e150]: ARTIFICIAL INTELLIGENCE
+              - generic [ref=e151]: 主编：周明
+            - generic [ref=e153]:
+              - heading "人工智能导论" [level=3] [ref=e154]
+              - paragraph [ref=e155]: 四川电教馆电子音像出版社
+          - article [ref=e156] [cursor=pointer]:
+            - generic [ref=e158]:
+              - generic [ref=e159]: 数字化设计与3D打印
+              - generic [ref=e160]: DIGITAL DESIGN & 3D PRINTING
+              - generic [ref=e161]: 主编：陈明
+            - generic [ref=e163]:
+              - heading "数字化设计与3D打印" [level=3] [ref=e164]
+              - paragraph [ref=e165]: 四川电教馆电子音像出版社
+          - article [ref=e166] [cursor=pointer]:
+            - generic [ref=e168]:
+              - generic [ref=e169]: 田野书香
+              - generic [ref=e170]: FIELD READING
+              - generic [ref=e171]: 主编：余小梅
+            - generic [ref=e173]:
+              - heading "田野书香" [level=3] [ref=e174]
+              - paragraph [ref=e175]: 四川电教馆电子音像出版社
+          - article [ref=e176] [cursor=pointer]:
+            - generic [ref=e178]:
+              - generic [ref=e179]: 摄像技术
+              - generic [ref=e180]: CAMERA TECHNOLOGY
+              - generic [ref=e181]: 主编：李霖
+            - generic [ref=e183]:
+              - heading "摄像技术" [level=3] [ref=e184]
+              - paragraph [ref=e185]: 四川电教馆电子音像出版社
+          - article [ref=e186] [cursor=pointer]:
+            - generic [ref=e188]:
+              - generic [ref=e189]: 首饰组织
+              - generic [ref=e190]: JEWELRY DESIGN
+              - generic [ref=e191]: 主编：吴理珍
+            - generic [ref=e193]:
+              - heading "首饰组织" [level=3] [ref=e194]
+              - paragraph [ref=e195]: 四川电教馆电子音像出版社
+  - generic:
+    - generic:
+      - button:
+        - img
+      - generic: 创建组群
+      - generic: 仅填写组群名称即可创建，创建后可用邀请码邀请成员加入
+      - generic:
+        - generic: 组群名称
+        - textbox "组群名称":
+          - /placeholder: 例如：AI 与大数据学习组、网络实训小组
+      - button "创建组群"
+  - generic:
+    - generic:
+      - button:
+        - img
+  - generic [ref=e285]:
+    - generic [ref=e286]:
+      - banner [ref=e287]:
+        - generic [ref=e288]:
+          - button "返回" [ref=e289] [cursor=pointer]:
+            - img [ref=e290]
+          - heading "运动营养学 · 实践篇" [level=1] [ref=e292]
+        - button "打开 AI 阅读助手" [ref=e294] [cursor=pointer]:
+          - img [ref=e296]
+          - generic [ref=e300]: AI助手
+      - generic [ref=e301]:
+        - complementary [ref=e302]:
+          - generic [ref=e303]:
+            - generic [ref=e304]: 目录
+            - button "收起或展开目录" [ref=e305] [cursor=pointer]:
+              - img [ref=e306]
+          - generic [ref=e307]:
+            - generic [ref=e308]:
+              - button "▾ 第一模块 智能技术与社会" [ref=e309] [cursor=pointer]:
+                - generic [ref=e310]: ▾
+                - generic [ref=e311]: 第一模块 智能技术与社会
+              - generic [ref=e312]:
+                - generic [ref=e313]:
+                  - button "▾ 第1课 人工智能能做什么？" [ref=e314] [cursor=pointer]:
+                    - generic [ref=e315]: ▾
+                    - generic [ref=e316]: 第1课 人工智能能做什么？
+                  - generic [ref=e317]:
+                    - generic [ref=e319] [cursor=pointer]: 导读与关键概念
+                    - generic [ref=e321] [cursor=pointer]: 案例与拓展阅读
+                    - generic [ref=e322] [cursor=pointer]:
+                      - generic [ref=e323]: 实训与互动
+                      - generic [ref=e325]: 实训
+                    - generic [ref=e326] [cursor=pointer]:
+                      - generic [ref=e327]: 交互案例
+                      - generic [ref=e329]: 案例
+                - generic [ref=e330]:
+                  - button "▾ 第2课 数据、模型与风险" [ref=e331] [cursor=pointer]:
+                    - generic [ref=e332]: ▾
+                    - generic [ref=e333]: 第2课 数据、模型与风险
+                  - generic [ref=e336] [cursor=pointer]: 综合练习
+            - generic [ref=e337]:
+              - button "▾ 第二模块 项目式学习" [ref=e338] [cursor=pointer]:
+                - generic [ref=e339]: ▾
+                - generic [ref=e340]: 第二模块 项目式学习
+              - generic [ref=e342]:
+                - button "▾ 第3课 从分类到简单神经网络" [ref=e343] [cursor=pointer]:
+                  - generic [ref=e344]: ▾
+                  - generic [ref=e345]: 第3课 从分类到简单神经网络
+                - generic [ref=e348] [cursor=pointer]: 拓展阅读与练习
+        - main [ref=e349]:
+          - article [ref=e350]:
+            - generic [ref=e351]:
+              - generic [ref=e352]:
+                - heading "拓展阅读与练习" [level=2] [ref=e353]
+                - paragraph [ref=e354]: 阅读配套文章：从感知机到深度网络的技术脉络。思考：过拟合、数据偏差与提示攻击分别会在教学或实训中造成什么后果？可结合本组项目讨论缓解策略。
+                - paragraph [ref=e358]: 拓展素材 · 神经网络与实训安全（演示视频）
+              - generic "拓展阅读之下的测评区" [ref=e359]:
+                - region "拓展练习" [ref=e360]:
+                  - generic [ref=e361]:
+                    - generic [ref=e362]:
+                      - heading "拓展练习" [level=3] [ref=e364]
+                      - generic [ref=e365]: 已完成
+                    - generic [ref=e366]:
+                      - paragraph [ref=e367]: 你已完成本节测评。如需巩固可再次作答，成绩以最近一次提交为准。
+                      - list "本组题概况" [ref=e368]:
+                        - listitem [ref=e369]:
+                          - generic [ref=e370]: 题量
+                          - generic [ref=e371]: 4 题
+                        - listitem [ref=e372]:
+                          - generic [ref=e373]: 正确率
+                          - generic [ref=e374]: 75%
+                      - group "报告与重测" [ref=e375]:
+                        - button "查看报告" [ref=e376] [cursor=pointer]
+                        - button "再次测评" [ref=e377] [cursor=pointer]
+                - region "拓展练习" [ref=e378]:
+                  - generic [ref=e379]:
+                    - heading "拓展练习" [level=3] [ref=e382]
+                    - generic [ref=e383]:
+                      - paragraph [ref=e384]: 含选择题、填空、判断与简答；提交后自动判分，可查看每题解析与 AI 学习评价（演示，可对接 CMS）。
+                      - list "本组题概况" [ref=e385]:
+                        - listitem [ref=e386]:
+                          - generic [ref=e387]: 题量
+                          - generic [ref=e388]: 3 题
+                      - button "进入答题" [ref=e390] [cursor=pointer]
+              - generic "本课科学小实验" [ref=e391]:
+                - region "AI绘画" [ref=e392]:
+                  - generic [ref=e395]:
+                    - heading "AI绘画" [level=3] [ref=e398]
+                    - generic [ref=e399]:
+                      - paragraph [ref=e400]: 只要输入文字，我就能帮你画出心里的画面。实验标题、说明文案和跳转链接后期可在作者端配置。
+                      - link "立即进入实验" [ref=e402] [cursor=pointer]:
+                        - /url: https://scmeow.com/
+                        - generic [ref=e403]: 立即进入实验
+                        - generic [ref=e404]: →
+        - complementary "阅读工具栏" [ref=e405]:
+          - generic [ref=e406]:
+            - button "其他学习模式" [ref=e407] [cursor=pointer]:
+              - img [ref=e408]
+              - generic [ref=e413]: 模式
+            - text: ↗ ↗ ↗
+          - button "显示" [ref=e415] [cursor=pointer]:
+            - generic [ref=e416]: Aa
+            - generic [ref=e417]: 显示
+          - button "搜索" [ref=e419] [cursor=pointer]:
+            - img [ref=e420]
+            - generic [ref=e423]: 搜索
+          - button "笔记" [ref=e424] [cursor=pointer]:
+            - img [ref=e425]
+            - generic [ref=e428]: 笔记
+    - complementary [ref=e429]:
+      - generic [ref=e430]:
+        - generic [ref=e431]: AI 阅读助手
+        - button [ref=e432] [cursor=pointer]: ×
+      - generic [ref=e434]:
+        - textbox [ref=e435]:
+          - /placeholder: 提问本课知识点、生词…
+        - button [ref=e436] [cursor=pointer]: 发送
+    - complementary [ref=e437]:
+      - generic [ref=e438]:
+        - generic [ref=e439]: 我的笔记
+        - button [ref=e440] [cursor=pointer]: ×
+      - paragraph [ref=e442]: 暂无笔记
+      - generic [ref=e443]:
+        - textbox [ref=e444]:
+          - /placeholder: 记录本节要点…
+        - button [ref=e445] [cursor=pointer]: 保存笔记
+  - generic:
+    - generic:
+      - button:
+        - img
+      - generic: 添加教材到组群
+      - generic: 从「我的教材」中选择要添加到该组群的教材

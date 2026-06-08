@@ -1,0 +1,232 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e7]:
+        - generic [ref=e8]: 四川数字教材
+        - generic [ref=e9]: SICHUAN DIGITAL TEXTBOOK
+      - navigation "主导航" [ref=e10]:
+        - generic [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - generic [ref=e15]: 数字教材
+        - generic [ref=e16] [cursor=pointer]:
+          - img [ref=e17]
+          - generic [ref=e20]: 我的书架
+        - generic [ref=e21] [cursor=pointer]:
+          - img [ref=e22]
+          - generic [ref=e25]: 设置
+      - generic "平台推广" [ref=e26]:
+        - generic [ref=e27]:
+          - paragraph [ref=e28]:
+            - text: 探索知识
+            - text: 无限可能
+          - paragraph [ref=e29]: 开启你的数字阅读之旅
+        - button "友情链接" [ref=e32] [cursor=pointer]
+      - button "帮助与反馈" [ref=e34] [cursor=pointer]:
+        - img [ref=e36]
+        - generic [ref=e39]: 帮助与反馈
+        - img [ref=e40]
+    - main [ref=e42]:
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - img [ref=e46]
+          - textbox "搜索教材名称、专业或出版社…" [ref=e49]
+        - generic [ref=e50]:
+          - button "兑换教材" [ref=e51] [cursor=pointer]:
+            - img [ref=e52]
+            - generic [ref=e56]: 兑换教材
+          - button "当前用户" [ref=e57] [cursor=pointer]:
+            - generic [ref=e58]: 李
+            - generic [ref=e59]: 李明远
+      - generic [ref=e62]:
+        - generic [ref=e64]:
+          - heading "发现优质数字教材" [level=2] [ref=e65]
+          - paragraph [ref=e66]: 海量优质资源，助力高效学习
+          - button "探索全部教材" [ref=e68] [cursor=pointer]: 探索全部教材 →
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - generic [ref=e83]: 🔥
+            - text: 热门教材
+          - button "查看全部教材" [ref=e84] [cursor=pointer]: 查看全部教材 ›
+        - generic [ref=e86]:
+          - article [ref=e87] [cursor=pointer]:
+            - generic [ref=e89]:
+              - generic [ref=e90]: 运动营养学
+              - generic [ref=e91]: SPORTS NUTRITION
+              - generic [ref=e92]: 主编：赵建国
+            - generic [ref=e94]:
+              - heading "运动营养学" [level=3] [ref=e95]
+              - paragraph [ref=e96]: 四川电教馆电子音像出版社
+          - article [ref=e97] [cursor=pointer]:
+            - generic [ref=e99]:
+              - generic [ref=e100]: 中华优秀传统文化
+              - generic [ref=e101]: TRADITIONAL CULTURE
+              - generic [ref=e102]: 主编：刘文静
+            - generic [ref=e104]:
+              - heading "中华优秀传统文化" [level=3] [ref=e105]
+              - paragraph [ref=e106]: 四川电教馆电子音像出版社
+          - article [ref=e107] [cursor=pointer]:
+            - generic [ref=e109]:
+              - generic [ref=e110]: 新能源汽车概论
+              - generic [ref=e111]: NEW ENERGY VEHICLE
+              - generic [ref=e112]: 主编：李娟强
+            - generic [ref=e114]:
+              - heading "新能源汽车概论" [level=3] [ref=e115]
+              - paragraph [ref=e116]: 四川电教馆电子音像出版社
+          - article [ref=e117] [cursor=pointer]:
+            - generic [ref=e119]:
+              - generic [ref=e120]: 数据算法与结构
+              - generic [ref=e121]: DATA STRUCTURE
+              - generic [ref=e122]: 主编：姚晓明
+            - generic [ref=e124]:
+              - heading "数据算法与结构" [level=3] [ref=e125]
+              - paragraph [ref=e126]: 四川电教馆电子
+          - article [ref=e127] [cursor=pointer]:
+            - generic [ref=e129]:
+              - generic [ref=e130]: 新时代下的媒体资源
+              - generic [ref=e131]: MEDIA RESOURCE
+              - generic [ref=e132]: 主编：王晓晴
+            - generic [ref=e134]:
+              - heading "新时代下的媒体资源" [level=3] [ref=e135]
+              - paragraph [ref=e136]: 四川电教馆电子音像出版社
+          - article [ref=e137] [cursor=pointer]:
+            - generic [ref=e139]:
+              - generic [ref=e140]: 智能家居
+              - generic [ref=e141]: SMART HOME
+              - generic [ref=e142]: 主编：陈思远
+            - generic [ref=e144]:
+              - heading "智能家居" [level=3] [ref=e145]
+              - paragraph [ref=e146]: 四川电教馆电子音像出版社
+          - article [ref=e147] [cursor=pointer]:
+            - generic [ref=e149]:
+              - generic [ref=e150]: 半导体物理学
+              - generic [ref=e151]: SEMICONDUCTOR PHYSICS
+              - generic [ref=e152]: 主编：李国强
+            - generic [ref=e154]:
+              - heading "半导体物理学" [level=3] [ref=e155]
+              - paragraph [ref=e156]: 四川电教馆电子音像出版社
+          - article [ref=e157] [cursor=pointer]:
+            - generic [ref=e159]:
+              - generic [ref=e160]: 人工智能导论
+              - generic [ref=e161]: ARTIFICIAL INTELLIGENCE
+              - generic [ref=e162]: 主编：周明
+            - generic [ref=e164]:
+              - heading "人工智能导论" [level=3] [ref=e165]
+              - paragraph [ref=e166]: 四川电教馆电子音像出版社
+          - article [ref=e167] [cursor=pointer]:
+            - generic [ref=e169]:
+              - generic [ref=e170]: 数字化设计与3D打印
+              - generic [ref=e171]: DIGITAL DESIGN & 3D PRINTING
+              - generic [ref=e172]: 主编：陈明
+            - generic [ref=e174]:
+              - heading "数字化设计与3D打印" [level=3] [ref=e175]
+              - paragraph [ref=e176]: 四川电教馆电子音像出版社
+          - article [ref=e177] [cursor=pointer]:
+            - generic [ref=e179]:
+              - generic [ref=e180]: 田野书香
+              - generic [ref=e181]: FIELD READING
+              - generic [ref=e182]: 主编：余小梅
+            - generic [ref=e184]:
+              - heading "田野书香" [level=3] [ref=e185]
+              - paragraph [ref=e186]: 四川电教馆电子音像出版社
+          - article [ref=e187] [cursor=pointer]:
+            - generic [ref=e189]:
+              - generic [ref=e190]: 摄像技术
+              - generic [ref=e191]: CAMERA TECHNOLOGY
+              - generic [ref=e192]: 主编：李霖
+            - generic [ref=e194]:
+              - heading "摄像技术" [level=3] [ref=e195]
+              - paragraph [ref=e196]: 四川电教馆电子音像出版社
+          - article [ref=e197] [cursor=pointer]:
+            - generic [ref=e199]:
+              - generic [ref=e200]: 首饰组织
+              - generic [ref=e201]: JEWELRY DESIGN
+              - generic [ref=e202]: 主编：吴理珍
+            - generic [ref=e204]:
+              - heading "首饰组织" [level=3] [ref=e205]
+              - paragraph [ref=e206]: 四川电教馆电子音像出版社
+  - generic [ref=e209]:
+    - button [ref=e210] [cursor=pointer]:
+      - img [ref=e211]
+    - generic [ref=e214]:
+      - generic [ref=e216]:
+        - generic [ref=e217]: 运动营养学
+        - generic [ref=e218]: 实践篇
+      - generic [ref=e219]:
+        - generic [ref=e220]: 运动营养学 · 实践篇
+        - generic [ref=e221]:
+          - text: 中职 二年级 ·
+          - generic [ref=e222]: 纸数融合
+        - generic [ref=e223]:
+          - generic [ref=e224]:
+            - generic [ref=e225]: 出版社
+            - generic [ref=e226]: 四川电教馆电子音像出版社
+          - generic [ref=e227]:
+            - generic [ref=e228]: 主编
+            - generic [ref=e229]: 赵建国
+          - generic [ref=e230]:
+            - generic [ref=e231]: ISBN
+            - generic [ref=e232]: 978-7-8333-6844-9
+        - generic [ref=e233]:
+          - button "立即购买" [ref=e234] [cursor=pointer]
+          - button "兑换码" [ref=e235] [cursor=pointer]:
+            - img [ref=e236]
+            - text: 兑换码
+          - button "免费试读" [ref=e239] [cursor=pointer]
+          - generic [ref=e240]: ¥19.90
+          - generic [ref=e241]: ¥29.85
+    - generic [ref=e242]:
+      - generic [ref=e243]:
+        - generic [ref=e244] [cursor=pointer]: 简介
+        - generic [ref=e245] [cursor=pointer]: 目录
+      - generic [ref=e247]:
+        - generic [ref=e248]:
+          - generic [ref=e249]: 学习模式
+          - generic [ref=e251]:
+            - generic [ref=e252] [cursor=pointer]:
+              - img [ref=e254]
+              - generic [ref=e257]:
+                - generic [ref=e258]: 阅读模式
+                - generic [ref=e259]: 沉浸式阅读体验，支持批注、书签、笔记和划线标注
+              - img [ref=e260]
+            - generic [ref=e262] [cursor=pointer]:
+              - img [ref=e264]
+              - generic [ref=e268]:
+                - generic [ref=e269]: 教学模式
+                - generic [ref=e270]: 课堂演示与本书配套教学课件，支持类 PPT 换页，并可一键二分屏与教材原文对照，便于投屏讲练结合（演示，仅组群管理员可见入口）
+              - img [ref=e271]
+            - generic [ref=e273] [cursor=pointer]:
+              - img [ref=e275]
+              - generic [ref=e277]:
+                - generic [ref=e278]: 视听模式
+                - generic [ref=e279]: 配套微课视频、课文朗读、名师讲解音频资源
+              - img [ref=e280]
+            - generic [ref=e282] [cursor=pointer]:
+              - img [ref=e284]
+              - generic [ref=e287]:
+                - generic [ref=e288]: 任务模式
+                - generic [ref=e289]: 章节练习、课后作业、自测试卷，自动批改与错题收集
+              - img [ref=e290]
+        - generic [ref=e292]:
+          - generic [ref=e293]: 教材简介
+          - generic [ref=e295]: 本教材围绕运动前、中、后的能量供给、营养补给与身体恢复，结合校园运动、体能训练和职业健康场景展开。通过饮食记录、能量消耗估算与补水方案设计，帮助学习者理解营养素、运动强度和恢复节奏之间的关系。
+  - generic:
+    - generic:
+      - button:
+        - img
+      - generic: 创建组群
+      - generic: 仅填写组群名称即可创建，创建后可用邀请码邀请成员加入
+      - generic:
+        - generic: 组群名称
+        - textbox "组群名称":
+          - /placeholder: 例如：AI 与大数据学习组、网络实训小组
+      - button "创建组群"
+  - generic:
+    - generic:
+      - button:
+        - img
+  - generic:
+    - generic:
+      - button:
+        - img
+      - generic: 添加教材到组群
+      - generic: 从「我的教材」中选择要添加到该组群的教材

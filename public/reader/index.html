@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>缤果数字教材</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- 未登录时全屏展示；与侧栏同一品牌（缤果数字教材） -->
+<div class="login-overlay" id="loginOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="loginBrandName">
+  <div class="login-overlay__bg" aria-hidden="true">
+    <!-- 登录插画：克制扁平（低饱和、小编辑风，非童趣卡通） -->
+    <svg class="login-overlay__art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="loginIllu-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#e8edf2"/>
+          <stop offset="48%" stop-color="#eef2f0"/>
+          <stop offset="100%" stop-color="#e6f0ec"/>
+        </linearGradient>
+        <linearGradient id="loginIllu-hill1" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#c5d4ce"/>
+          <stop offset="100%" stop-color="#aabfbb"/>
+        </linearGradient>
+        <linearGradient id="loginIllu-hill2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#9db5b0"/>
+          <stop offset="100%" stop-color="#8aa39e"/>
+        </linearGradient>
+        <linearGradient id="loginIllu-building" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#8fb0a8"/>
+          <stop offset="100%" stop-color="#6d918a"/>
+        </linearGradient>
+        <linearGradient id="loginIllu-buildingBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#9eb8c9"/>
+          <stop offset="100%" stop-color="#7a9aad"/>
+        </linearGradient>
+        <linearGradient id="loginIllu-buildingDeep" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#5a8f86"/>
+          <stop offset="100%" stop-color="#4a7a72"/>
+        </linearGradient>
+      </defs>
+      <rect width="1440" height="900" fill="url(#loginIllu-sky)"/>
+      <ellipse cx="1080" cy="118" rx="220" ry="22" fill="#f8fafc" opacity="0.35"/>
+      <ellipse cx="280" cy="168" rx="280" ry="18" fill="#f1f5f4" opacity="0.28"/>
+      <path fill="#d4e3de" opacity="0.55" d="M0 900V660Q720 600 1440 640V900H0z"/>
+      <path fill="url(#loginIllu-hill1)" d="M0 900V700Q720 648 1440 688V900H0z"/>
+      <path fill="url(#loginIllu-hill2)" opacity="0.4" d="M0 900V780Q720 720 1440 752V900H0z"/>
+      <g class="login-overlay__art-illu" fill="#f8fafc" fill-opacity="0.28">
+        <rect x="52" y="528" width="184" height="384" rx="8" fill="url(#loginIllu-building)"/>
+        <rect x="76" y="560" width="34" height="20" rx="2"/><rect x="118" y="560" width="34" height="20" rx="2"/><rect x="160" y="560" width="34" height="20" rx="2"/><rect x="202" y="560" width="34" height="20" rx="2"/>
+        <rect x="76" y="596" width="34" height="20" rx="2"/><rect x="118" y="596" width="34" height="20" rx="2"/><rect x="160" y="596" width="34" height="20" rx="2"/><rect x="202" y="596" width="34" height="20" rx="2"/>
+        <rect x="76" y="632" width="34" height="20" rx="2"/><rect x="118" y="632" width="34" height="20" rx="2"/><rect x="160" y="632" width="34" height="20" rx="2"/><rect x="202" y="632" width="34" height="20" rx="2"/>
+        <rect x="252" y="612" width="104" height="300" rx="6" fill="url(#loginIllu-buildingDeep)"/>
+        <rect x="268" y="636" width="24" height="16" rx="2"/><rect x="300" y="636" width="24" height="16" rx="2"/><rect x="332" y="636" width="24" height="16" rx="2"/>
+        <rect x="268" y="664" width="24" height="16" rx="2"/><rect x="300" y="664" width="24" height="16" rx="2"/><rect x="332" y="664" width="24" height="16" rx="2"/>
+        <rect x="372" y="488" width="88" height="420" rx="8" fill="url(#loginIllu-buildingBlue)"/>
+        <rect x="386" y="512" width="22" height="16" rx="2"/><rect x="414" y="512" width="22" height="16" rx="2"/><rect x="442" y="512" width="22" height="16" rx="2"/>
+        <rect x="386" y="540" width="22" height="16" rx="2"/><rect x="414" y="540" width="22" height="16" rx="2"/><rect x="442" y="540" width="22" height="16" rx="2"/>
+        <rect x="392" y="824" width="48" height="68" rx="4" fill="#dce8ee" fill-opacity="0.55"/>
+        <rect x="996" y="552" width="376" height="356" rx="10" fill="url(#loginIllu-building)"/>
+        <rect x="1016" y="580" width="36" height="18" rx="2"/><rect x="1062" y="580" width="36" height="18" rx="2"/><rect x="1108" y="580" width="36" height="18" rx="2"/><rect x="1154" y="580" width="36" height="18" rx="2"/><rect x="1200" y="580" width="36" height="18" rx="2"/><rect x="1246" y="580" width="36" height="18" rx="2"/><rect x="1292" y="580" width="36" height="18" rx="2"/><rect x="1338" y="580" width="36" height="18" rx="2"/>
+        <rect x="1016" y="612" width="36" height="18" rx="2"/><rect x="1062" y="612" width="36" height="18" rx="2"/><rect x="1108" y="612" width="36" height="18" rx="2"/><rect x="1154" y="612" width="36" height="18" rx="2"/><rect x="1200" y="612" width="36" height="18" rx="2"/><rect x="1246" y="612" width="36" height="18" rx="2"/><rect x="1292" y="612" width="36" height="18" rx="2"/><rect x="1338" y="612" width="36" height="18" rx="2"/>
+        <rect x="1140" y="712" width="120" height="204" rx="6" fill="url(#loginIllu-buildingDeep)"/>
+        <rect x="1154" y="732" width="28" height="16" rx="2"/><rect x="1188" y="732" width="28" height="16" rx="2"/><rect x="1222" y="732" width="28" height="16" rx="2"/>
+        <rect x="1154" y="760" width="28" height="16" rx="2"/><rect x="1188" y="760" width="28" height="16" rx="2"/><rect x="1222" y="760" width="28" height="16" rx="2"/>
+        <rect x="1284" y="636" width="100" height="272" rx="6" fill="#7a9e96" fill-opacity="0.85"/>
+        <rect x="1296" y="656" width="76" height="48" rx="3" fill="#f8fafc" fill-opacity="0.22"/>
+      </g>
+      <ellipse cx="720" cy="912" rx="820" ry="96" fill="#94a3a8" opacity="0.08"/>
+    </svg>
+  </div>
+  <div class="login-panel">
+    <div class="login-brand" id="loginBrand">
+      <div class="login-brand__icon" aria-hidden="true"></div>
+      <div class="login-brand__text">
+        <div class="login-brand__name" id="loginBrandName">缤果数字教材</div>
+        <div class="login-brand__en">BINGO DIGITAL TEXTBOOK</div>
+      </div>
+    </div>
+    <div id="loginMainBlock" class="login-main">
+      <div class="login-tabs" role="tablist" aria-label="登录方式">
+        <button type="button" class="login-tab is-active" id="loginTabPwd" role="tab" aria-selected="true" aria-controls="loginPanePwd" onclick="setLoginTab('pwd')">密码登录</button>
+        <button type="button" class="login-tab" id="loginTabOtp" role="tab" aria-selected="false" aria-controls="loginPaneOtp" onclick="setLoginTab('otp')">验证码登录</button>
+      </div>
+      <div class="login-panes">
+        <div class="login-pane" id="loginPanePwd" role="tabpanel" aria-labelledby="loginTabPwd">
+          <label class="login-label" for="loginPhonePwd">手机号</label>
+          <input type="tel" class="login-input" id="loginPhonePwd" inputmode="numeric" autocomplete="username" maxlength="11" placeholder="11 位手机号" value="13800138000">
+          <label class="login-label" for="loginPassword">密码</label>
+          <input type="password" class="login-input" id="loginPassword" autocomplete="current-password" placeholder="不少于 6 位" value="demo123456">
+          <p class="login-err" id="loginErrPwd" role="alert"></p>
+          <button type="button" class="login-submit" onclick="submitLoginPassword()">登录</button>
+        </div>
+        <div class="login-pane login-pane--hidden" id="loginPaneOtp" role="tabpanel" aria-labelledby="loginTabOtp" aria-hidden="true">
+          <label class="login-label" for="loginPhoneOtp">手机号</label>
+          <input type="tel" class="login-input" id="loginPhoneOtp" inputmode="numeric" autocomplete="tel" maxlength="11" placeholder="11 位手机号" value="13800138000">
+          <label class="login-label" for="loginSmsCode">短信验证码</label>
+          <div class="login-otp-row">
+            <input type="text" class="login-input login-input--code" id="loginSmsCode" inputmode="numeric" maxlength="6" placeholder="6 位验证码" autocomplete="one-time-code">
+            <button type="button" class="login-send-code" id="loginSendCodeBtn" onclick="sendLoginSmsCode()">获取验证码</button>
+          </div>
+          <p class="login-err" id="loginErrOtp" role="alert"></p>
+          <button type="button" class="login-submit" onclick="submitLoginOtp()">登录</button>
+        </div>
+      </div>
+      <div class="login-row-links">
+        <button type="button" class="login-text-link" onclick="showLoginForgot()">忘记密码</button>
+        <span class="login-row-links__sep" aria-hidden="true">·</span>
+        <button type="button" class="login-text-link" onclick="showLoginRegister()">注册账号</button>
+      </div>
+    </div>
+    <div class="login-subflow login-pane--hidden" id="loginPaneRegister" role="region" aria-label="注册账号">
+      <p class="login-subflow-title">注册账号</p>
+      <p class="login-subflow-hint">使用手机号与短信验证码完成注册，并设置登录密码。</p>
+      <label class="login-label" for="regPhone">手机号</label>
+      <input type="tel" class="login-input" id="regPhone" inputmode="numeric" autocomplete="tel" maxlength="11" placeholder="11 位手机号">
+      <label class="login-label" for="regSmsCode">短信验证码</label>
+      <div class="login-otp-row">
+        <input type="text" class="login-input login-input--code" id="regSmsCode" inputmode="numeric" maxlength="6" placeholder="6 位验证码" autocomplete="one-time-code">
+        <button type="button" class="login-send-code" id="regSendCodeBtn" onclick="sendRegisterSmsCode()">获取验证码</button>
+      </div>
+      <label class="login-label" for="regPassword">设置密码</label>
+      <input type="password" class="login-input" id="regPassword" autocomplete="new-password" placeholder="不少于 6 位">
+      <label class="login-label" for="regPassword2">确认密码</label>
+      <input type="password" class="login-input" id="regPassword2" autocomplete="new-password" placeholder="再次输入密码">
+      <p class="login-err" id="regErr" role="alert"></p>
+      <button type="button" class="login-submit" onclick="submitRegister()">注册并登录</button>
+      <button type="button" class="login-text-link login-text-link--block" onclick="showLoginMain()">返回登录</button>
+    </div>
+    <div class="login-subflow login-pane--hidden" id="loginPaneForgot" role="region" aria-label="忘记密码">
+      <p class="login-subflow-title">重置密码</p>
+      <p class="login-subflow-hint">通过手机短信验证码验证身份后，设置新密码并登录。</p>
+      <label class="login-label" for="fgPhone">手机号</label>
+      <input type="tel" class="login-input" id="fgPhone" inputmode="numeric" autocomplete="tel" maxlength="11" placeholder="11 位手机号">
+      <label class="login-label" for="fgSmsCode">短信验证码</label>
+      <div class="login-otp-row">
+        <input type="text" class="login-input login-input--code" id="fgSmsCode" inputmode="numeric" maxlength="6" placeholder="6 位验证码" autocomplete="one-time-code">
+        <button type="button" class="login-send-code" id="fgSendCodeBtn" onclick="sendForgotSmsCode()">获取验证码</button>
+      </div>
+      <label class="login-label" for="fgPassword">新密码</label>
+      <input type="password" class="login-input" id="fgPassword" autocomplete="new-password" placeholder="不少于 6 位">
+      <label class="login-label" for="fgPassword2">确认新密码</label>
+      <input type="password" class="login-input" id="fgPassword2" autocomplete="new-password" placeholder="再次输入新密码">
+      <p class="login-err" id="fgErr" role="alert"></p>
+      <button type="button" class="login-submit" onclick="submitForgotPassword()">重置密码并登录</button>
+      <button type="button" class="login-text-link login-text-link--block" onclick="showLoginMain()">返回登录</button>
+    </div>
+    <p class="login-footnote">演示环境：密码与验证码均为前端校验；短信验证码以 Toast 展示模拟发送。正式环境对接统一认证与短信网关。</p>
+  </div>
+</div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <div class="logo-row">
+        <div class="logo-icon" aria-hidden="true"></div>
+        <div class="logo-col">
+          <div class="logo-name">缤果数字教材</div>
+          <div class="logo-en">BINGO DIGITAL TEXTBOOK</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="主导航">
+      <div class="nav-item active" data-page="library" onclick="go('library')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>图书商城</span>
+      </div>
+      <div class="nav-item" data-page="my" onclick="go('my')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span>我的书架</span>
+      </div>
+
+      <div class="nav-item" data-page="settings" onclick="go('settings')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>设置</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-promo" aria-label="平台推广">
+      <div class="sidebar-promo__copy">
+        <p class="sidebar-promo__title">探索知识 无限可能</p>
+        <p class="sidebar-promo__desc">开启你的数字阅读之旅</p>
+      </div>
+      <div class="sidebar-promo__scene" aria-hidden="true">
+        <img class="sidebar-promo__img" src="/sidebar-promo.png" width="328" height="512" alt="">
+      </div>
+      <div class="sidebar-promo__links">
+        <button type="button" class="sidebar-promo__links-trigger" aria-haspopup="true">友情链接</button>
+        <div class="sidebar-promo__links-menu" role="menu">
+          <a class="sidebar-promo__links-item" role="menuitem" href="/creator/index.html">作者端</a>
+          <a class="sidebar-promo__links-item" role="menuitem" href="/publisher/index.html">出版社端</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-foot">
+      <button type="button" class="sidebar-help-btn" onclick="openFeedbackModal()">
+        <span class="sidebar-help-btn__icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-6h3v4zM3 19a2 2 0 0 0 2 2h1v-6H3v4z"/></svg>
+        </span>
+        <span class="sidebar-help-btn__text">帮助与反馈</span>
+        <svg class="sidebar-help-btn__arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button type="button" class="topbar-back" id="topbarBackBtn" onclick="closeLibraryCatalog()" aria-label="返回首页" hidden>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h1 class="topbar-title" id="pTitle">数字教材</h1>
+        <div class="topbar-sep"></div>
+        <span class="topbar-hint" id="pHint">浏览、选购全部上架数字教材</span>
+      </div>
+      <div class="topbar-right">
+        <div class="search-box" id="topbarSearchWrap">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="搜索教材名称、专业或出版社…" id="sInput" oninput="onLibrarySearchInput()">
+        </div>
+        <div class="topbar-actions">
+        <button type="button" class="tb-btn tb-btn--redeem tb-btn--redeem-txt" onclick="openRedeem()" title="兑换码激活教材" aria-label="兑换教材">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7"/><path d="M22 7h-5l-2-3H9L7 7H2"/><path d="M12 7v10"/><path d="M8.5 10.5 12 14l3.5-3.5"/></svg>
+          <span class="tb-redeem-lab">兑换教材</span>
+        </button>
+        <button type="button" class="tb-user" aria-label="当前用户">
+          <span class="tb-user-avatar" id="topbarAvatar">书</span>
+          <span class="tb-user-name" id="topbarUserName">书海漫游者</span>
+        </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="scroll">
+      <div class="page active" id="page-library"></div>
+      <div class="page" id="page-my"></div>
+      <div class="page" id="page-settings"></div>
+    </div>
+  </main>
+</div>
+
+<!-- Book Detail Overlay -->
+<div class="overlay" id="overlay">
+  <div class="overlay-bg" onclick="closeDetail()"></div>
+  <div class="detail-panel">
+    <button class="detail-close" onclick="closeDetail()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="detail-hero" id="detailHero"></div>
+    <div class="detail-body">
+      <div class="detail-tabs">
+        <div class="detail-tab active" data-tab="intro" onclick="switchTab('intro')">简介</div>
+        <div class="detail-tab" data-tab="toc" onclick="switchTab('toc')">目录</div>
+      </div>
+      <div class="detail-content">
+        <div class="tab-pane active" id="pane-intro"></div>
+        <div class="tab-pane" id="pane-toc"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Redeem Code Modal -->
+<div class="redeem-overlay" id="redeemOverlay">
+  <div class="redeem-bg" onclick="closeRedeem()"></div>
+  <div class="redeem-box">
+    <button class="redeem-close" onclick="closeRedeem()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="redeemForm">
+      <div class="redeem-title">兑换码激活</div>
+      <div class="redeem-desc">输入教材兑换码，免费获取数字教材使用权</div>
+      <div class="redeem-input-row">
+        <input class="redeem-input" id="redeemCode" type="text" placeholder="请输入16位兑换码" maxlength="19">
+        <button class="btn-redeem" onclick="doRedeem()">立即兑换</button>
+      </div>
+      <div class="redeem-hint">每个兑换码仅限使用一次，兑换后不可转让。</div>
+    </div>
+    <div class="redeem-success" id="redeemSuccess">
+      <div class="redeem-success-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="redeem-success-text">兑换成功</div>
+      <div class="redeem-success-sub">教材已添加至「我的教材」，可立即开始学习</div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Class Modal -->
+<div class="create-class-overlay" id="createClassOverlay">
+  <div class="create-class-bg" onclick="closeCreateClass()"></div>
+  <div class="create-class-box">
+    <button class="create-class-close" onclick="closeCreateClass()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="ccm-title">创建组群</div>
+    <div class="ccm-desc">仅填写组群名称即可创建，创建后可用邀请码邀请成员加入</div>
+    <div class="ccm-field">
+      <label class="ccm-label" for="ccmName">组群名称</label>
+      <input class="ccm-input" id="ccmName" type="text" placeholder="例如：AI 与大数据学习组、网络实训小组" maxlength="32" autocomplete="off">
+    </div>
+    <button class="ccm-btn" onclick="doCreateClass()">创建组群</button>
+  </div>
+</div>
+
+<!-- Join class by invite code -->
+<div class="join-class-overlay" id="joinClassOverlay">
+  <div class="join-class-bg" onclick="closeJoinClass()"></div>
+  <div class="join-class-box">
+    <button type="button" class="join-class-close" onclick="closeJoinClass()" aria-label="关闭">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="joinClassForm">
+      <div class="join-class-title">加入组群</div>
+      <div class="join-class-desc">管理员发出邀请后，请向对方索取<strong>组群邀请码</strong>，在此输入即可加入。</div>
+      <div class="join-class-input-row">
+        <input class="join-class-input" id="joinClassCode" type="text" placeholder="请输入邀请码" autocomplete="off">
+        <button type="button" class="btn-join-class" onclick="doJoinClass()">加入</button>
+      </div>
+      <p class="join-class-err" id="joinClassErr" role="alert"></p>
+      <div class="join-class-hint">邀请码区分大小写无关；若无法加入，请联系管理员确认邀请是否有效。</div>
+    </div>
+    <div class="join-class-success" id="joinClassSuccess">
+      <div class="join-class-success-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="join-class-success-text">加入成功</div>
+      <div class="join-class-success-sub">你已加入「<span id="joinSuccessName"></span>」</div>
+    </div>
+  </div>
+</div>
+
+<!-- Class Detail Overlay -->
+<div class="class-overlay" id="classOverlay">
+  <div class="class-overlay-bg" onclick="closeClassDetail()"></div>
+  <div class="class-panel">
+    <button class="class-detail-close" onclick="closeClassDetail()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="classDetailContent"></div>
+  </div>
+</div>
+
+<!-- 完善学校信息（绑定/更换） -->
+<div class="school-modal-overlay" id="schoolModalOverlay">
+  <div class="school-modal-bg" onclick="closeSchoolModal()"></div>
+  <div class="school-modal-box" role="dialog" aria-labelledby="schoolModalTitle" aria-modal="true">
+    <button type="button" class="school-modal-close" onclick="closeSchoolModal()" aria-label="关闭">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="school-modal-header">
+      <h2 class="school-modal-title" id="schoolModalTitle">完善学校信息</h2>
+    </div>
+    <div class="school-modal-body">
+      <input type="text" id="schoolActivationCode" class="school-modal-input" placeholder="请输入学校课程激活码" autocomplete="off">
+      <div class="school-modal-notes">
+        <span class="school-modal-notes-label">备注：</span>
+        <ul class="school-modal-notes-list">
+          <li>仅支持已合作的学校</li>
+          <li>如没有激活码，请联系学校管理员获取</li>
+        </ul>
+      </div>
+    </div>
+    <div class="school-modal-footer">
+      <button type="button" class="school-modal-btn" onclick="confirmSchoolBind()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 修改密码 -->
+<div class="pwd-modal-overlay" id="pwdModalOverlay">
+  <div class="pwd-modal-bg" onclick="closePasswordModal()"></div>
+  <div class="pwd-modal-box" role="dialog" aria-labelledby="pwdModalTitle">
+    <button type="button" class="pwd-modal-close" onclick="closePasswordModal()" aria-label="关闭">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <h2 class="pwd-modal-title" id="pwdModalTitle">修改密码</h2>
+    <p class="pwd-modal-desc">请填写当前密码与新密码。演示环境不校验原密码真实性。</p>
+    <div class="pwd-modal-fields">
+      <label class="pwd-modal-label" for="pwdOld">当前密码</label>
+      <input type="password" id="pwdOld" class="pwd-modal-input" placeholder="请输入当前密码" autocomplete="current-password">
+      <label class="pwd-modal-label" for="pwdNew">新密码</label>
+      <input type="password" id="pwdNew" class="pwd-modal-input" placeholder="至少 6 位" autocomplete="new-password" minlength="6">
+      <label class="pwd-modal-label" for="pwdNew2">确认新密码</label>
+      <input type="password" id="pwdNew2" class="pwd-modal-input" placeholder="再次输入新密码" autocomplete="new-password">
+    </div>
+    <p class="pwd-modal-err" id="pwdModalErr" role="alert"></p>
+    <button type="button" class="pwd-modal-submit" onclick="confirmPasswordChange()">确认修改</button>
+  </div>
+</div>
+
+<!-- 修改手机号 -->
+<div class="pwd-modal-overlay" id="phoneModalOverlay" aria-hidden="true">
+  <div class="pwd-modal-bg" onclick="closePhoneModal()"></div>
+  <div class="pwd-modal-box" role="dialog" aria-labelledby="phoneModalTitle">
+    <button type="button" class="pwd-modal-close" onclick="closePhoneModal()" aria-label="关闭">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <h2 class="pwd-modal-title" id="phoneModalTitle">修改手机号</h2>
+    <p class="pwd-modal-desc">当前号码：<span id="phoneModalCurrent" class="phone-modal-current"></span>。将更换为下方新号码，需先获取短信验证码，再点击保存。</p>
+    <div class="pwd-modal-fields">
+      <label class="pwd-modal-label" for="phoneNew">新手机号</label>
+      <input type="tel" id="phoneNew" class="pwd-modal-input" maxlength="11" placeholder="请输入 11 位新手机号" inputmode="numeric" autocomplete="tel" autocorrect="off">
+      <label class="pwd-modal-label" for="phoneCode">短信验证码</label>
+      <div class="phone-modal-code-row">
+        <input type="text" id="phoneCode" class="pwd-modal-input" maxlength="6" placeholder="6 位数字" inputmode="numeric" autocomplete="one-time-code" autocorrect="off">
+        <button type="button" class="btn-settings-ghost phone-modal-send" id="phoneSendCodeBtn" onclick="sendPhoneChangeCode()">获取验证码</button>
+      </div>
+    </div>
+    <p class="pwd-modal-err" id="phoneModalErr" role="alert"></p>
+    <button type="button" class="pwd-modal-submit" onclick="confirmPhoneChange()">保存</button>
+  </div>
+</div>
+
+<!-- 用户反馈 -->
+<div class="feedback-modal-overlay" id="feedbackModalOverlay">
+  <div class="feedback-modal-bg" onclick="closeFeedbackModal()"></div>
+  <div class="feedback-modal-box" role="dialog" aria-labelledby="feedbackModalTitle">
+    <button type="button" class="feedback-modal-close" onclick="closeFeedbackModal()" aria-label="关闭">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <h2 class="feedback-modal-title" id="feedbackModalTitle">用户反馈</h2>
+    <p class="feedback-modal-desc">请填写身份信息（带 * 为必填），并描述问题或建议；可附上截图。提交后将同步至后台处理（演示将输出到控制台）。</p>
+    <label class="feedback-modal-label" for="feedbackIdentity">身份 <span class="feedback-required" aria-hidden="true">*</span></label>
+    <select id="feedbackIdentity" class="settings-input feedback-modal-select">
+      <option value="">请选择身份</option>
+      <option value="教师">教师</option>
+      <option value="学生">学生</option>
+      <option value="家长">家长</option>
+      <option value="学校管理员">学校管理员</option>
+      <option value="出版社编辑">出版社编辑</option>
+      <option value="教研员">教研员</option>
+      <option value="其他">其他</option>
+    </select>
+    <label class="feedback-modal-label" for="feedbackSchool">学校名称 <span class="settings-optional">（选填）</span></label>
+    <input type="text" id="feedbackSchool" class="settings-input" maxlength="120" placeholder="选填，学校或单位全称" autocomplete="organization">
+    <label class="feedback-modal-label" for="feedbackDuty">职务 <span class="settings-optional">（选填）</span></label>
+    <input type="text" id="feedbackDuty" class="settings-input" maxlength="80" placeholder="选填，如：任课教师、教务主任" autocomplete="organization-title">
+    <label class="feedback-modal-label" for="feedbackSubject">学科专业 <span class="settings-optional">（选填）</span></label>
+    <input type="text" id="feedbackSubject" class="settings-input" maxlength="80" placeholder="选填，如：计算机应用、语文" autocomplete="off">
+    <label class="feedback-modal-label" for="feedbackEmail">邮箱 <span class="settings-optional">（选填）</span></label>
+    <input type="email" id="feedbackEmail" class="settings-input" maxlength="120" placeholder="选填，便于回复您" autocomplete="email">
+    <label class="feedback-modal-label" for="feedbackModalText">反馈内容</label>
+    <textarea id="feedbackModalText" class="feedback-modal-textarea" rows="5" maxlength="2000" placeholder="请输入反馈内容"></textarea>
+    <label class="feedback-modal-label">图片附件 <span class="settings-optional">（选填，最多 6 张）</span></label>
+    <div class="feedback-modal-toolbar">
+      <input type="file" id="feedbackModalFileInput" accept="image/jpeg,image/png,image/webp,image/gif" multiple style="display:none" onchange="onFeedbackFilesChange(event)">
+      <button type="button" class="btn-settings-ghost" onclick="document.getElementById('feedbackModalFileInput').click()">添加图片</button>
+      <span class="settings-hint" style="margin:0">单张不超过 4MB</span>
+    </div>
+    <div id="feedbackModalPreview" class="feedback-preview feedback-preview--modal" aria-live="polite"></div>
+    <button type="button" class="feedback-modal-submit" onclick="submitUserFeedback()">提交反馈</button>
+  </div>
+</div>
+
+<!-- 数字教材阅读页 -->
+<div class="reader-overlay" id="readerOverlay" aria-hidden="true">
+  <div class="reader-shell">
+    <header class="reader-top">
+      <div class="reader-top-left">
+        <button type="button" class="reader-icon-btn" onclick="closeReader()" title="返回" aria-label="返回">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h1 class="reader-doc-title" id="readerDocTitle">教材阅读</h1>
+      </div>
+      <div class="reader-top-right">
+        <button type="button" class="reader-ai-entry" onclick="readerToggleAi()" title="AI 阅读助手" aria-label="打开 AI 阅读助手">
+          <span class="reader-ai-entry-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="readerAiEntryGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#a855f7"/>
+                  <stop offset="0.45" stop-color="#ec4899"/>
+                  <stop offset="1" stop-color="#f97316"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#readerAiEntryGrad)" d="M12 2l1.2 4.2h4.3l-3.5 2.6 1.3 4.2L12 12.3 8.7 13l1.3-4.2L6.5 6.2h4.3L12 2z"/>
+              <path fill="url(#readerAiEntryGrad)" opacity="0.85" d="M19 14l.8 2.6h2.7l-2.2 1.6.8 2.6-2.1-1.5-2.1 1.5.8-2.6-2.2-1.6h2.7L19 14z"/>
+              <path fill="url(#readerAiEntryGrad)" opacity="0.7" d="M4 16l.6 1.8h2l-1.6 1.2.6 1.8-1.6-1.1L3.4 21l.6-1.8-1.6-1.2h2L4 16z"/>
+            </svg>
+          </span>
+          <span class="reader-ai-entry-text">AI助手</span>
+        </button>
+      </div>
+    </header>
+    <div class="reader-body">
+      <aside class="reader-sidebar" id="readerSidebar">
+        <div class="reader-sidebar-head">
+          <span class="reader-sidebar-title">目录</span>
+          <button type="button" class="reader-sidebar-toc-toggle" id="readerTocToggle" onclick="readerToggleTocCollapse()" title="收起/展开目录" aria-label="收起或展开目录">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="reader-toc-tree" id="readerTocTree"></div>
+      </aside>
+      <main class="reader-main" id="readerMain">
+        <article class="reader-article" id="readerArticle"></article>
+        <div class="reader-selection-bar" id="readerSelectionBar" role="menu" aria-label="选中文本操作" hidden>
+          <button type="button" class="reader-selection-bar__btn reader-selection-bar__btn--ai" role="menuitem" onmousedown="event.preventDefault()" onclick="readerSelectionActionAi()">
+            <span class="reader-selection-bar__ico reader-selection-bar__ico--ai" aria-hidden="true">
+              <svg class="reader-selection-bar__ai-svg" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="readerSelBarAiGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#a855f7"/>
+                    <stop offset="0.45" stop-color="#ec4899"/>
+                    <stop offset="1" stop-color="#f97316"/>
+                  </linearGradient>
+                  <filter id="readerSelBarAiGlow" x="-40%" y="-40%" width="180%" height="180%">
+                    <feGaussianBlur stdDeviation="1.2" result="b"/>
+                    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  </filter>
+                </defs>
+                <path fill="url(#readerSelBarAiGrad)" filter="url(#readerSelBarAiGlow)" d="M12 2l1.15 4.05h4.25l-3.45 2.5 1.25 4.05L12 11.85 8.8 12.6l1.25-4.05L6.6 6.05h4.25L12 2z"/>
+                <path fill="url(#readerSelBarAiGrad)" opacity="0.9" d="M19 13.5l.65 2.1h2.15l-1.75 1.25.65 2.1-1.65-1.2-1.65 1.2.65-2.1-1.75-1.25h2.15l.65-2.1z"/>
+                <path fill="url(#readerSelBarAiGrad)" opacity="0.75" d="M4.5 15.5l.45 1.45h1.5l-1.2.85.45 1.45-1.1-.8-1.1.8.45-1.45-1.2-.85h1.5l.45-1.45z"/>
+              </svg>
+            </span>
+            <span class="reader-selection-bar__ai-label">AI 解读</span>
+          </button>
+          <button type="button" class="reader-selection-bar__btn" role="menuitem" onmousedown="event.preventDefault()" onclick="readerSelectionActionHighlight()">
+            <span class="reader-selection-bar__ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l-6 6v3h3l6-6"/><path d="M15 5l4 4"/><path d="M12 8l5-5a2 2 0 0 1 3 3l-5 5"/><path d="M9 11l3 3"/></svg>
+            </span>
+            <span>高亮</span>
+          </button>
+          <button type="button" class="reader-selection-bar__btn" role="menuitem" onmousedown="event.preventDefault()" onclick="readerSelectionActionNote()">
+            <span class="reader-selection-bar__ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20l-3.5-3.5H6.5A2.5 2.5 0 0 1 4 16v-12A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </span>
+            <span>笔记</span>
+          </button>
+          <button type="button" class="reader-selection-bar__btn" role="menuitem" onmousedown="event.preventDefault()" onclick="readerSelectionActionCopy()">
+            <span class="reader-selection-bar__ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </span>
+            <span>复制</span>
+          </button>
+        </div>
+      </main>
+      <aside class="reader-toolbar" id="readerToolbar" aria-label="阅读工具栏">
+        <div class="reader-tool-slot" id="readerToolMode" style="display:none" hidden>
+          <button type="button" class="reader-tool-rail-btn" id="readerModeToolBtn" onclick="readerToggleModePanel()" title="其他学习模式（当前为阅读页，不重复列出阅读）" aria-label="其他学习模式" aria-haspopup="dialog" aria-controls="readerModePopover" aria-expanded="false">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="9" rx="1.2"/>
+              <rect x="14" y="3" width="7" height="5" rx="1.2"/>
+              <rect x="14" y="10" width="7" height="11" rx="1.2"/>
+              <rect x="3" y="14" width="7" height="7" rx="1.2"/>
+            </svg>
+            <span class="reader-tool-rail-lab">模式</span>
+          </button>
+          <div class="reader-toolbar-pop reader-toolbar-pop--mode" id="readerModePopover" role="dialog" aria-label="前往其他学习模式">
+            <div class="reader-popover-title">其他学习模式</div>
+            <nav class="reader-mode-rail" id="readerModeList" aria-label="本教材中前往视听、任务等学习模式的链接"></nav>
+          </div>
+        </div>
+        <div class="reader-tool-slot" id="readerToolDisplay">
+          <button type="button" class="reader-tool-rail-btn" onclick="readerToggleDisplayPanel()" title="显示设置（字号、背景）">
+            <span class="reader-tool-rail-icon" aria-hidden="true">Aa</span>
+            <span class="reader-tool-rail-lab">显示</span>
+          </button>
+          <div class="reader-toolbar-pop reader-toolbar-pop--display" id="readerDisplayPopover" role="dialog" aria-label="显示设置">
+            <div class="reader-pop-section">
+              <div class="reader-popover-title">字号</div>
+              <input type="range" class="reader-font-range" id="readerFontRange" min="14" max="22" step="1" value="17" oninput="readerApplyFontSize(this.value)">
+              <span class="reader-font-val" id="readerFontVal">17px</span>
+            </div>
+            <div class="reader-pop-section">
+              <div class="reader-popover-title">阅读背景</div>
+              <div class="reader-bg-swatches">
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--paper" data-bg="paper" onclick="readerSetBg('paper')" title="白纸" aria-label="白纸背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--ivory" data-bg="ivory" onclick="readerSetBg('ivory')" title="暖白" aria-label="暖白背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--sepia" data-bg="sepia" onclick="readerSetBg('sepia')" title="护眼米黄" aria-label="护眼米黄背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--green" data-bg="green" onclick="readerSetBg('green')" title="浅绿" aria-label="浅绿背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--mint" data-bg="mint" onclick="readerSetBg('mint')" title="薄荷青" aria-label="薄荷青背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--blue" data-bg="blue" onclick="readerSetBg('blue')" title="浅蓝" aria-label="浅蓝背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--lavender" data-bg="lavender" onclick="readerSetBg('lavender')" title="淡紫" aria-label="淡紫背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--rose" data-bg="rose" onclick="readerSetBg('rose')" title="浅粉" aria-label="浅粉背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--gray" data-bg="gray" onclick="readerSetBg('gray')" title="雾灰" aria-label="雾灰背景"></button>
+                <button type="button" class="reader-bg-swatch reader-bg-swatch--dark" data-bg="dark" onclick="readerSetBg('dark')" title="夜间" aria-label="夜间背景"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reader-tool-slot" id="readerToolSearch">
+          <button type="button" class="reader-tool-rail-btn" onclick="readerToggleSearch()" title="搜索">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="reader-tool-rail-lab">搜索</span>
+          </button>
+          <div class="reader-toolbar-pop reader-toolbar-pop--search" id="readerSearchPopover">
+            <input type="search" class="reader-search-input" id="readerSearchInput" placeholder="搜索目录关键词…" autocomplete="off" oninput="readerOnSearchInput()">
+          </div>
+        </div>
+        <button type="button" class="reader-tool-rail-btn" onclick="readerToggleNotes()" title="笔记">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          <span class="reader-tool-rail-lab">笔记</span>
+        </button>
+      </aside>
+    </div>
+  </div>
+  <aside class="reader-drawer reader-ai-drawer" id="readerAiDrawer" aria-hidden="true">
+    <div class="reader-drawer-head">
+      <span>AI 阅读助手</span>
+      <button type="button" class="reader-drawer-close" onclick="readerToggleAi()" aria-label="关闭">×</button>
+    </div>
+    <div class="reader-ai-messages" id="readerAiMessages"></div>
+    <div class="reader-ai-input-row">
+      <input type="text" class="reader-ai-input" id="readerAiInput" placeholder="提问本课知识点、生词…" onkeydown="if(event.key==='Enter')readerSendAi()">
+      <button type="button" class="reader-ai-send" onclick="readerSendAi()">发送</button>
+    </div>
+  </aside>
+  <aside class="reader-drawer reader-notes-drawer" id="readerNotesDrawer" aria-hidden="true">
+    <div class="reader-drawer-head">
+      <span>我的笔记</span>
+      <button type="button" class="reader-drawer-close" onclick="readerToggleNotes()" aria-label="关闭">×</button>
+    </div>
+    <div class="reader-notes-list" id="readerNotesList"></div>
+    <div class="reader-notes-add">
+      <textarea class="reader-notes-textarea" id="readerNotesTextarea" placeholder="记录本节要点…" rows="3"></textarea>
+      <button type="button" class="reader-notes-save" onclick="readerSaveNote()">保存笔记</button>
+    </div>
+  </aside>
+  <!-- 阅读页：综合测评全屏页（选择题 / 填空 / 判断 / 简答 + 报告，与在线实训同为独立页） -->
+  <div class="reader-quiz-page" id="readerQuizPage" aria-hidden="true" role="document">
+    <header class="reader-quiz-page__head">
+      <button type="button" class="reader-quiz-page__back" onclick="readerCloseQuizModal()" title="返回阅读" aria-label="返回阅读">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>返回阅读</span>
+      </button>
+      <div class="reader-quiz-page__titles">
+        <div class="reader-quiz-kicker" id="readerQuizKicker">测试 · 练习</div>
+        <h2 class="reader-quiz-title" id="readerQuizTitle">本节综合测评</h2>
+        <p class="reader-quiz-sub" id="readerQuizSub"></p>
+      </div>
+    </header>
+    <div class="reader-quiz-page__body" id="readerQuizBody" tabindex="-1"></div>
+    <footer class="reader-quiz-foot" id="readerQuizFoot"></footer>
+  </div>
+  <!-- 阅读页：在线实训全屏（独立新页体验，可返回继续阅读） -->
+  <div class="reader-lab-page" id="readerLabPage" aria-hidden="true" role="document">
+    <div class="reader-lab-page__head">
+      <button type="button" class="reader-lab-page__back" onclick="readerCloseLab()" title="返回阅读" aria-label="返回阅读">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>返回阅读</span>
+      </button>
+      <div class="reader-lab-page__titles">
+        <div class="reader-lab-page__kicker" id="readerLabPageKicker">在线实训</div>
+        <h2 class="reader-lab-page__title" id="readerLabPageTitle">实训</h2>
+      </div>
+    </div>
+    <div class="reader-lab-page__body" id="readerLabPageRoot" tabindex="-1"></div>
+  </div>
+  <!-- 阅读页：交互案例全屏（滑块、可视化等，可返回继续阅读） -->
+  <div class="reader-icase-page" id="readerIcasePage" aria-hidden="true" role="document">
+    <div class="reader-icase-page__head">
+      <button type="button" class="reader-icase-page__back" onclick="readerCloseICase()" title="返回阅读" aria-label="返回阅读">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>返回阅读</span>
+      </button>
+      <div class="reader-icase-page__titles">
+        <div class="reader-icase-page__kicker" id="readerIcasePageKicker">交互案例</div>
+        <h2 class="reader-icase-page__title" id="readerIcasePageTitle">交互案例</h2>
+      </div>
+    </div>
+    <div class="reader-icase-page__body" id="readerIcasePageRoot" tabindex="-1"></div>
+  </div>
+</div>
+<!-- 教学模式全屏层：与 #readerOverlay 平级，避免未打开阅读时父级 display:none 导致不可见 -->
+<div class="teach-mode-page" id="teachModePage" aria-hidden="true" role="application">
+  <header class="teach-mode__head">
+    <button type="button" class="teach-mode__back" onclick="closeTeachMode()" title="退出教学模式" aria-label="退出教学模式">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>返回</span>
+    </button>
+    <div class="teach-mode__brand">
+      <div class="teach-mode__kicker" id="teachModeKicker">教学模式</div>
+      <h1 class="teach-mode__title" id="teachModeBookTitle">教材</h1>
+      <p class="teach-mode__sub" id="teachModeBookSub">课堂演示</p>
+    </div>
+    <button type="button" class="teach-mode__book-toggle" id="teachToggleBookBtn" onclick="teachToggleBookPanel()" aria-pressed="false" title="展开时与教材二分屏，再点收起" aria-label="课件与教材分屏，默认仅课件">课件 / 教材</button>
+  </header>
+  <div class="teach-mode__toolbar" role="toolbar" aria-label="换页与提示">
+    <div class="teach-mode__pager">
+      <button type="button" class="teach-mode__pbtn" id="teachBtnPrev" onclick="teachPrevSlide()" title="上一张" aria-label="上一张">上一张</button>
+      <span class="teach-mode__pmeta" id="teachSlideMeta" aria-live="polite">1 / 1</span>
+      <button type="button" class="teach-mode__pbtn" id="teachBtnNext" onclick="teachNextSlide()" title="下一张" aria-label="下一张">下一张</button>
+    </div>
+    <p class="teach-mode__hint" id="teachKeyHint">小提示：键盘 ← → 换页</p>
+  </div>
+  <div class="teach-mode__body" id="teachModeBody" data-book-open="false">
+    <section class="teach-deck" id="teachDeckFocus" tabindex="-1" aria-label="本课教学课件（演示，可接 PPT/PDF）">
+      <div class="teach-deck__inner" id="teachSlideView"></div>
+    </section>
+    <section class="teach-book" id="teachBookPanel" aria-label="与教材同屏照合" hidden>
+      <div class="teach-book__head">
+        <span>教材照合</span>
+      </div>
+      <div class="teach-book__split">
+        <aside class="teach-toc" id="teachTocWrap" aria-label="本教材章节目录">
+          <div class="teach-toc__tree reader-toc-tree" id="teachTocTree"></div>
+        </aside>
+        <div class="teach-book__main" id="teachBookMain">
+          <article class="teach-article reader-article" id="teachArticle"></article>
+        </div>
+      </div>
+    </section>
+  </div>
+  <canvas class="teach-pen-canvas" id="teachPenCanvas" width="1" height="1" hidden aria-hidden="true"></canvas>
+  <div class="teach-timer-huge" id="teachTimerHuge" hidden aria-live="off">
+    <span class="teach-timer-huge__val" id="teachTimerHugeVal">00:00</span>
+  </div>
+  <div class="teach-tool-pop teach-tool-pop--timer" id="teachToolPopTimer" role="dialog" aria-modal="true" aria-label="课堂倒计时" hidden>
+    <div class="teach-tool-pop__glow" aria-hidden="true"></div>
+    <div class="teach-tool-pop__head teach-tool-pop__head--timer">
+      <span class="teach-tool-pop__head-txt"><span class="teach-tool-pop__kicker">Focus</span>课堂倒计时</span>
+      <button type="button" class="teach-tool-pop__x" onclick="teachToolToggle('timer')" aria-label="关闭">×</button>
+    </div>
+    <div class="teach-tool-pop__body">
+      <div class="teach-timer-face" aria-hidden="true">
+        <div class="teach-timer-face__ring"></div>
+      </div>
+      <label class="teach-timer-lab">分钟 <input type="number" id="teachTimerMin" class="teach-timer-inp" min="0" max="120" value="5" step="1"></label>
+      <label class="teach-timer-lab">秒 <input type="number" id="teachTimerSec" class="teach-timer-inp" min="0" max="59" value="0" step="1"></label>
+    </div>
+    <div class="teach-tool-pop__actions">
+      <button type="button" class="teach-tool-pop__btn" onclick="teachCountdownStop()">停</button>
+      <button type="button" class="teach-tool-pop__btn teach-tool-pop__btn--pri teach-tool-pop__btn--glow" onclick="teachCountdownStart()">开始</button>
+    </div>
+  </div>
+  <div class="teach-tool-pop teach-tool-pop--pick" id="teachToolPopPick" role="dialog" aria-modal="true" aria-label="随机抽问" hidden>
+    <div class="teach-tool-pop__glow teach-tool-pop__glow--violet" aria-hidden="true"></div>
+    <div class="teach-tool-pop__head teach-tool-pop__head--pick">
+      <span class="teach-tool-pop__head-txt"><span class="teach-tool-pop__kicker">Lucky</span>随机抽问</span>
+      <button type="button" class="teach-tool-pop__x" onclick="teachToolToggle('pick')" aria-label="关闭">×</button>
+    </div>
+    <div class="teach-tool-pop__body">
+      <p class="teach-tool-hint">每行一名学生（演示有默认名）：</p>
+      <textarea id="teachPickNames" class="teach-pick-ta" rows="6" placeholder="每行一个姓名"></textarea>
+    </div>
+    <div class="teach-tool-pop__pickout" id="teachPickResult" aria-live="polite">—</div>
+    <div class="teach-tool-pop__actions">
+      <button type="button" class="teach-tool-pop__btn teach-tool-pop__btn--pri teach-tool-pop__btn--dice" onclick="teachPickRun()">抽取一位</button>
+    </div>
+  </div>
+  <div class="teach-tool-pop teach-tool-pop--ai" id="teachToolPopAi" role="dialog" aria-modal="true" aria-label="课堂 AI 助手" hidden>
+    <div class="teach-tool-pop__glow teach-tool-pop__glow--ai" aria-hidden="true"></div>
+    <div class="teach-tool-pop__head teach-tool-pop__head--ai">
+      <span class="teach-tool-pop__head-txt"><span class="teach-tool-pop__kicker">Spark</span>课堂 AI 助手</span>
+      <button type="button" class="teach-tool-pop__x" onclick="teachToolToggle('ai')" aria-label="关闭">×</button>
+    </div>
+    <div class="teach-ai-messages" id="teachAiMessages"></div>
+    <div class="teach-ai-input-row">
+      <input type="text" class="teach-ai-input" id="teachAiInput" placeholder="可问概念解释、讲题提示…" onkeydown="if(event.key==='Enter')teachAiSend()">
+      <button type="button" class="teach-ai-send" onclick="teachAiSend()">发送</button>
+    </div>
+  </div>
+  <nav class="teach-tool-float" id="teachToolFloat" aria-label="教学工具" data-tool-expanded="false" role="navigation">
+    <button type="button" class="teach-tool-float__toggle" id="teachToolFloatToggle" onclick="teachToolFloatToggle()"
+      title="展开教学工具（画笔、计时、抽问、AI）" aria-expanded="false" aria-controls="teachToolFloatList">
+      <span class="teach-tool-float__toggle-halo" aria-hidden="true"></span>
+      <span class="teach-tool-float__toggle-inner">
+        <svg class="teach-tool-float__toggle-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        <span class="teach-tool-float__toggle-txt" id="teachToolFloatToggleLabel">教学工具</span>
+        <svg class="teach-tool-float__toggle-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </span>
+    </button>
+    <div class="teach-tool-float__list" id="teachToolFloatList" role="group" aria-label="教学工具" aria-hidden="true">
+    <button type="button" class="teach-tool-fab teach-tool-fab--pen" data-act="pen" onclick="teachToolToggle('pen')" title="在课件上圈画标注" aria-pressed="false" id="teachFabPen">
+      <span class="teach-tool-fab__glow" aria-hidden="true"></span>
+      <span class="teach-tool-fab__inner">
+        <svg class="teach-tool-fab__ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <span class="teach-tool-fab__txt">画笔</span>
+      </span>
+    </button>
+    <button type="button" class="teach-tool-fab teach-tool-fab--timer" data-act="timer" onclick="teachToolToggle('timer')" title="课堂限时倒数" id="teachFabTimer">
+      <span class="teach-tool-fab__glow" aria-hidden="true"></span>
+      <span class="teach-tool-fab__inner">
+        <svg class="teach-tool-fab__ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span class="teach-tool-fab__txt">倒计时</span>
+      </span>
+    </button>
+    <button type="button" class="teach-tool-fab teach-tool-fab--pick" data-act="pick" onclick="teachToolToggle('pick')" title="从名单中随机点人" id="teachFabPick">
+      <span class="teach-tool-fab__glow" aria-hidden="true"></span>
+      <span class="teach-tool-fab__inner">
+        <svg class="teach-tool-fab__ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 4v4M12 4v2M16 4v4"/><path d="M9.5 12h5M9.5 15.5h3.5"/></svg>
+        <span class="teach-tool-fab__txt">抽问</span>
+      </span>
+    </button>
+    <button type="button" class="teach-tool-fab teach-tool-fab--ai" data-act="ai" onclick="teachToolToggle('ai')" title="课堂问题速答（演示版）" id="teachFabAi">
+      <span class="teach-tool-fab__glow" aria-hidden="true"></span>
+      <span class="teach-tool-fab__inner">
+        <svg class="teach-tool-fab__ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.6 3.2 3.5.4-2.6 2.5.7 3.5L12 10.7 8.8 12.6l.7-3.5-2.6-2.5 3.5-.4L12 3z"/><path d="M4 20c2.5-1.2 4.6-1.2 6 0 1.2-1.1 2.1-1.1 2.5 0 .7-1.1 1.2-1.1 1.5 0 .6-.8 1.1-.6 1.2 0"/></svg>
+        <span class="teach-tool-fab__txt">AI 助手</span>
+      </span>
+    </button>
+    </div>
+  </nav>
+  <div class="teach-pen-bar" id="teachPenBar" hidden>
+    <span class="teach-pen-bar__glow" aria-hidden="true"></span>
+    <span class="teach-pen-bar__lab">画笔</span>
+    <button type="button" class="teach-pen-bar__btn" onclick="teachPenClear()">清屏</button>
+    <button type="button" class="teach-pen-bar__btn teach-pen-bar__btn--done" onclick="teachToolToggle('pen')">完成</button>
+  </div>
+</div>
+
+<!-- 视听模式全屏：视频 / 博客（音频）双 Tab，章节目录 + 进度 -->
+<div class="av-mode-page" id="avModePage" aria-hidden="true">
+  <header class="av-mode__head">
+    <button type="button" class="av-mode__back" onclick="closeAvMode()" title="退出视听模式" aria-label="退出视听模式">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>返回</span>
+    </button>
+    <div class="av-mode__brand">
+      <div class="av-mode__kicker"><span class="av-mode__kicker-dot"></span>视听模式</div>
+      <h1 class="av-mode__title" id="avModeBookLine">教材</h1>
+    </div>
+    <div class="av-mode__tabs" role="tablist" aria-label="视听内容类型">
+      <button type="button" class="av-mode__tab is-active" id="avTabVideo" role="tab" aria-selected="true" data-av-tab="video" onclick="setAvModeTab('video')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        视频模式
+      </button>
+      <button type="button" class="av-mode__tab" id="avTabBlog" role="tab" aria-selected="false" data-av-tab="blog" onclick="setAvModeTab('blog')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-6h3v4zM3 19a2 2 0 0 0 2 2h1v-6H3v4z"/></svg>
+        博客模式
+      </button>
+    </div>
+  </header>
+  <div class="av-mode__body">
+    <aside class="av-mode__side" aria-label="目录与进度">
+      <div class="av-mode__stats" id="avModeStats"></div>
+      <div class="av-mode__navscroll">
+        <nav id="avModeNav"></nav>
+      </div>
+    </aside>
+    <main class="av-mode__main" id="avModeMain" tabindex="-1"></main>
+  </div>
+</div>
+
+<!-- 任务模式全屏：左侧项目导航 + 中间时间线任务 -->
+<div class="task-mode-page" id="taskModePage" aria-hidden="true">
+  <header class="task-mode__head">
+    <button type="button" class="task-mode__back" onclick="closeTaskMode()" title="退出任务模式" aria-label="退出任务模式">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>返回</span>
+    </button>
+    <div class="task-mode__brand">
+      <div class="task-mode__kicker"><span class="task-mode__kicker-dot"></span>任务阅读模式</div>
+      <h1 class="task-mode__title" id="taskModeBookLine">教材</h1>
+    </div>
+  </header>
+  <div class="task-mode__body">
+    <div class="task-mode__summary">
+      <div class="task-mode__summary-card task-mode__summary-card--current">
+        <div class="task-mode__summary-title">当前任务</div>
+        <div class="task-mode__summary-main" id="taskModeCurrentTask">—</div>
+        <button type="button" class="task-mode__summary-btn" onclick="taskStartCurrent()">继续学习</button>
+      </div>
+      <div class="task-mode__summary-card task-mode__summary-card--progress">
+        <div class="task-mode__summary-progress" id="taskModeProgressStats">
+          <span>已完成：0</span>
+          <span>总任务：0</span>
+        </div>
+      </div>
+    </div>
+    <div class="task-mode__layout">
+      <aside class="task-mode__projects" aria-label="项目导航">
+        <div class="task-mode__projects-scroll" id="taskModeProjects"></div>
+      </aside>
+      <main class="task-mode__timeline-wrap" aria-label="任务时间线">
+        <div class="task-mode__timeline" id="taskModeTimeline"></div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- 题库首页：试卷任务、我的题库、配套题库、错题集 -->
+<div class="question-bank-page" id="questionBankPage" aria-hidden="true">
+  <header class="question-bank__head">
+    <button type="button" class="question-bank__back" onclick="closeQuestionBankMode()" title="返回我的书架" aria-label="返回我的书架">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>返回</span>
+    </button>
+    <div class="question-bank__brand">
+      <div class="question-bank__kicker"><span class="question-bank__kicker-dot"></span>题库</div>
+      <h1 class="question-bank__title" id="questionBankBookLine">教材</h1>
+    </div>
+  </header>
+  <main class="question-bank__body" id="questionBankBody"></main>
+  <div class="qb-panel-host" id="questionBankPanel" aria-hidden="true"></div>
+  <div class="qb-paper-editor" id="questionBankPaperEditor" aria-hidden="true"></div>
+  <div class="qb-publish-modal" id="questionBankPublishModal" aria-hidden="true"></div>
+  <div class="qb-ai-modal" id="questionBankAiModal" aria-hidden="true">
+    <div class="qb-ai-modal__bg" onclick="closeQuestionBankAiModal()"></div>
+    <section class="qb-ai-modal__panel" role="dialog" aria-modal="true" aria-labelledby="qbAiTitle">
+      <header class="qb-ai-modal__head">
+        <div>
+          <h2 id="qbAiTitle">AI 生成习题集</h2>
+          <p>按要求生成题目草稿，生成后可继续编辑并发布为试卷任务。</p>
+        </div>
+        <button type="button" class="qb-ai-close" onclick="closeQuestionBankAiModal()" aria-label="关闭">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </header>
+      <div class="qb-ai-modal__body">
+        <section class="qb-ai-card">
+          <h3>基础信息</h3>
+          <label class="qb-ai-field">
+            <span>习题集名称</span>
+            <input type="text" id="qbAiSetName" placeholder="习题集">
+          </label>
+          <label class="qb-ai-field">
+            <span>出题要求</span>
+            <textarea id="qbAiRequirement" maxlength="1000" rows="4" placeholder="请输入出题要求" oninput="updateQuestionBankAiReqCount()"></textarea>
+            <em id="qbAiReqCount">0/1000</em>
+          </label>
+          <div class="qb-ai-field">
+            <span>参考资料</span>
+            <button type="button" class="qb-ai-upload">
+              <strong>点击或拖拽上传文件</strong>
+              <small>支持 Word、PDF、PPT、Excel、TXT，最多 10 个文件</small>
+            </button>
+          </div>
+          <label class="qb-ai-check">
+            <input type="checkbox">
+            <span>参考题库资料（本地题库、教材配套题库）</span>
+          </label>
+          <label class="qb-ai-field qb-ai-field--short">
+            <span>参考章节</span>
+            <select id="qbAiChapter">
+              <option>请选择</option>
+            </select>
+          </label>
+        </section>
+        <section class="qb-ai-card">
+          <h3>题型与数量配置</h3>
+          <div class="qb-ai-type-grid">
+            <label class="qb-ai-count"><span>选择题</span><button type="button" onclick="stepQuestionBankAiCount('qbAiChoice',-1)">-</button><input id="qbAiChoice" value="1" inputmode="numeric"><button type="button" onclick="stepQuestionBankAiCount('qbAiChoice',1)">+</button></label>
+            <label class="qb-ai-count"><span>填空题</span><button type="button" onclick="stepQuestionBankAiCount('qbAiFill',-1)">-</button><input id="qbAiFill" value="1" inputmode="numeric"><button type="button" onclick="stepQuestionBankAiCount('qbAiFill',1)">+</button></label>
+            <label class="qb-ai-count"><span>判断题</span><button type="button" onclick="stepQuestionBankAiCount('qbAiJudge',-1)">-</button><input id="qbAiJudge" value="1" inputmode="numeric"><button type="button" onclick="stepQuestionBankAiCount('qbAiJudge',1)">+</button></label>
+            <label class="qb-ai-count"><span>简答题</span><button type="button" onclick="stepQuestionBankAiCount('qbAiShort',-1)">-</button><input id="qbAiShort" value="1" inputmode="numeric"><button type="button" onclick="stepQuestionBankAiCount('qbAiShort',1)">+</button></label>
+          </div>
+          <div class="qb-ai-difficulty">
+            <label class="qb-ai-field qb-ai-field--short">
+              <span>难度</span>
+              <select>
+                <option>简单</option>
+                <option>中等</option>
+                <option>困难</option>
+              </select>
+            </label>
+            <p>将以此难度为基准，并形成一定的难度梯度。</p>
+          </div>
+        </section>
+      </div>
+      <footer class="qb-ai-modal__foot">
+        <button type="button" class="qb-ai-secondary" onclick="closeQuestionBankAiModal()">取消</button>
+        <button type="button" class="qb-ai-primary" onclick="generateQuestionBankAiSet()">立即生成</button>
+      </footer>
+    </section>
+  </div>
+</div>
+
+<!-- 资源库全屏：学校资源库 + 教材配套资源 -->
+<div class="resource-lib-page" id="resourceLibPage" aria-hidden="true">
+  <header class="resource-lib__head">
+    <button type="button" class="resource-lib__back" onclick="closeResourceLibrary()" title="返回我的书架" aria-label="返回我的书架">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>返回</span>
+    </button>
+    <div class="resource-lib__brand">
+      <div class="resource-lib__kicker"><span class="resource-lib__kicker-dot"></span>资源库</div>
+      <h1 class="resource-lib__title" id="resourceLibBookLine">教材</h1>
+    </div>
+    <div class="resource-lib__actions"></div>
+  </header>
+  <main class="resource-lib__body">
+    <aside class="resource-lib__side" aria-label="资源库类型与文件夹">
+      <div class="resource-lib__tabs" id="resourceLibTabs"></div>
+      <div class="resource-lib__folders" id="resourceLibFolders"></div>
+    </aside>
+    <section class="resource-lib__main" aria-label="资源列表">
+      <div class="resource-lib__toolbar">
+        <div>
+          <h2 id="resourceLibSectionTitle">资源文件</h2>
+          <p id="resourceLibSectionMeta">—</p>
+        </div>
+        <div class="resource-lib__tools">
+          <div class="resource-lib__list-actions" id="resourceLibListActions"></div>
+          <div class="resource-lib-view" id="resourceLibViewSwitch" role="group" aria-label="资源展示视图"></div>
+          <div class="resource-lib__search">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <input type="search" id="resourceLibSearch" placeholder="搜索资源名称、格式…" oninput="renderResourceLibraryFiles()">
+          </div>
+        </div>
+      </div>
+      <div class="resource-lib__grid" id="resourceLibGrid"></div>
+    </section>
+  </main>
+  <div class="resource-folder-modal" id="resourceFolderModal" aria-hidden="true">
+    <div class="resource-folder-modal__bg" onclick="closeResourceFolderModal()"></div>
+    <section class="resource-folder-modal__panel" role="dialog" aria-modal="true" aria-labelledby="resourceFolderModalTitle">
+      <header class="resource-folder-modal__head">
+        <div>
+          <h2 id="resourceFolderModalTitle">创建文件夹</h2>
+          <p>用于整理学校资源库中的课件、实训素材、案例资料等文件。</p>
+        </div>
+        <button type="button" class="resource-folder-modal__close" onclick="closeResourceFolderModal()" aria-label="关闭">×</button>
+      </header>
+      <label class="resource-folder-modal__field">
+        <span>文件夹标题</span>
+        <input type="text" id="resourceFolderNameInput" maxlength="24" placeholder="请输入文件夹标题">
+      </label>
+      <p class="resource-folder-modal__err" id="resourceFolderModalErr" role="alert"></p>
+      <footer class="resource-folder-modal__foot">
+        <button type="button" class="resource-folder-modal__secondary" onclick="closeResourceFolderModal()">取消</button>
+        <button type="button" class="resource-folder-modal__primary" onclick="confirmCreateResourceFolder()">确定</button>
+      </footer>
+    </section>
+  </div>
+</div>
+
+<!-- Book Picker for Class -->
+<div class="book-picker-overlay" id="bookPickerOverlay">
+  <div class="book-picker-bg" onclick="closeBookPicker()"></div>
+  <div class="book-picker-box">
+    <button class="book-picker-close" onclick="closeBookPicker()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="bp-title">添加教材到组群</div>
+    <div class="bp-desc">从「我的教材」中选择要添加到该组群的教材</div>
+    <div class="bp-list" id="bpList"></div>
+  </div>
+</div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

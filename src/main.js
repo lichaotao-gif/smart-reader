@@ -6459,6 +6459,10 @@ function questionBankEditActionHtml(kind, label, onclick) {
     score: '<svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/><circle cx="18" cy="18" r="3"/></svg>',
     preview: '<svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
     add: '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+<<<<<<< HEAD
+=======
+    ai: '<svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/><circle cx="12" cy="12" r="3.5"/></svg>',
+>>>>>>> 5ee6ac7 (first commit)
     next: '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>',
   };
   return `<button type="button" class="qb-edit-action qb-edit-action--${kind}" onclick="${onclick}"><span class="qb-edit-action-ic">${icons[kind] || icons.add}</span>${label}</button>`;
@@ -6502,9 +6506,16 @@ function openQuestionBankPaperEditor(paperId = 'project') {
       <div class="qb-edit-topbar">
         ${questionBankEditActionHtml('back', '返回', 'closeQuestionBankPaperEditor()')}
         <div class="qb-edit-actions">
+<<<<<<< HEAD
           ${questionBankEditActionHtml('preview', '预览试卷', 'previewQuestionBankPaperFromEditor()')}
           ${questionBankEditActionHtml('word', '导出为 Word', 'exportQuestionBankPaperWord()')}
           ${questionBankEditActionHtml('score', '批量设置分数', 'batchSetQuestionBankScores()')}
+=======
+          ${questionBankEditActionHtml('ai', 'AI 出题', 'openQuestionBankAiModal()')}
+          ${questionBankEditActionHtml('word', '导出为 Word', 'exportQuestionBankPaperWord()')}
+          ${questionBankEditActionHtml('score', '批量设置分数', 'batchSetQuestionBankScores()')}
+          ${questionBankEditActionHtml('preview', '预览试卷', 'previewQuestionBankPaperFromEditor()')}
+>>>>>>> 5ee6ac7 (first commit)
         </div>
       </div>
       <div class="qb-edit-title-wrap">
