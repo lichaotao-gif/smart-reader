@@ -21,11 +21,7 @@
 
   /** 与阅读端 src/main.js 一致的封面 pastel 色板与科目映射 */
   var READER_PAL = [
-<<<<<<< HEAD
-    ['#4a8ec8', '#7ab4de'],
-=======
     ['#2563eb', '#60a5fa'],
->>>>>>> 5ee6ac7 (first commit)
     ['#4a8ec8', '#7ab4de'],
     ['#d48548', '#e8a870'],
     ['#8a60b8', '#aa88d0'],

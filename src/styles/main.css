@@ -6144,10 +6144,7 @@ body{
 .qb-edit-action-ic{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
 .qb-edit-action-ic svg{width:16px;height:16px;display:block;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .qb-edit-action--back{background:rgba(255,255,255,0.72);color:var(--deep);border:1px solid rgba(183,199,235,0.55)}
-<<<<<<< HEAD
-=======
 .qb-edit-action--ai{background:linear-gradient(135deg,#eff6ff,#dbeafe);color:#1d4ed8;border:1px solid #93c5fd;box-shadow:0 6px 16px rgba(37,99,235,0.14)}
->>>>>>> 5ee6ac7 (first commit)
 .qb-edit-action--draft{background:#10b981;color:#fff;box-shadow:0 6px 16px rgba(16,185,129,0.2)}
 .qb-edit-action--preview{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
 .qb-edit-action--word{background:#16a34a;color:#fff;box-shadow:0 6px 16px rgba(22,163,74,0.2)}

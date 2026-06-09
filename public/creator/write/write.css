@@ -78,22 +78,13 @@
   overflow:hidden;
   background:linear-gradient(
     125deg,
-<<<<<<< HEAD
-    #597ef7 0%,
-    #0891b2 14%,
-=======
     #2563eb 0%,
     #1d4ed8 14%,
->>>>>>> 5ee6ac7 (first commit)
     #2563eb 32%,
     #7c3aed 50%,
     #db2777 68%,
     #0ea5e9 84%,
-<<<<<<< HEAD
-    #2f54eb 100%
-=======
     #60a5fa 100%
->>>>>>> 5ee6ac7 (first commit)
   );
   background-size:250% 250%;
   animation:crWriteAiBgFlow 10s ease infinite;
@@ -524,11 +515,7 @@
   color:var(--deep);
   outline:none;
 }
-<<<<<<< HEAD
-.cr-write-editor:focus{border-color:rgba(109,196,160,0.45);box-shadow:0 4px 28px rgba(47,84,235,0.12)}
-=======
 .cr-write-digital-page:focus-within{border-color:rgba(109,196,160,0.45);box-shadow:0 4px 28px rgba(37,99,235,0.12)}
->>>>>>> 5ee6ac7 (first commit)
 .cr-write-editor:empty::before{
   content:attr(data-placeholder);
   color:var(--stone);
@@ -1035,11 +1022,7 @@
   width:6px;
   height:6px;
   border-radius:50%;
-<<<<<<< HEAD
-  background:#597ef7;
-=======
   background:#3b82f6;
->>>>>>> 5ee6ac7 (first commit)
 }
 .cr-write-version-open{
   flex-shrink:0;

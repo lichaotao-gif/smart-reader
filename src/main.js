@@ -27,18 +27,18 @@ const BOOK_READ_MODES = [
 ];
 
 const HOME_RECOMMENDED_BOOKS = [
-  { t: '运动营养学', en: 'SPORTS NUTRITION', editor: '赵建国', publisher: '四川电教馆电子音像出版社', theme: 'sports' },
-  { t: '中华优秀传统文化', en: 'TRADITIONAL CULTURE', editor: '刘文静', publisher: '四川电教馆电子音像出版社', theme: 'culture' },
-  { t: '新能源汽车概论', en: 'NEW ENERGY VEHICLE', editor: '李娟强', publisher: '四川电教馆电子音像出版社', theme: 'vehicle' },
-  { t: '数据算法与结构', en: 'DATA STRUCTURE', editor: '姚晓明', publisher: '四川电教馆电子', theme: 'data' },
-  { t: '新时代下的媒体资源', en: 'MEDIA RESOURCE', editor: '王晓晴', publisher: '四川电教馆电子音像出版社', theme: 'media' },
-  { t: '智能家居', en: 'SMART HOME', editor: '陈思远', publisher: '四川电教馆电子音像出版社', theme: 'home' },
-  { t: '半导体物理学', en: 'SEMICONDUCTOR PHYSICS', editor: '李国强', publisher: '四川电教馆电子音像出版社', theme: 'chip' },
-  { t: '人工智能导论', en: 'ARTIFICIAL INTELLIGENCE', editor: '周明', publisher: '四川电教馆电子音像出版社', theme: 'ai' },
-  { t: '数字化设计与3D打印', en: 'DIGITAL DESIGN & 3D PRINTING', editor: '陈明', publisher: '四川电教馆电子音像出版社', theme: 'print' },
-  { t: '田野书香', en: 'FIELD READING', editor: '余小梅', publisher: '四川电教馆电子音像出版社', theme: 'field' },
-  { t: '摄像技术', en: 'CAMERA TECHNOLOGY', editor: '李霖', publisher: '四川电教馆电子音像出版社', theme: 'camera' },
-  { t: '首饰组织', en: 'JEWELRY DESIGN', editor: '吴理珍', publisher: '四川电教馆电子音像出版社', theme: 'jewel' },
+  { t: '运动营养学', en: 'SPORTS NUTRITION', editor: '赵建国', publisher: '缤果数字教材出版社', theme: 'sports' },
+  { t: '中华优秀传统文化', en: 'TRADITIONAL CULTURE', editor: '刘文静', publisher: '缤果数字教材出版社', theme: 'culture' },
+  { t: '新能源汽车概论', en: 'NEW ENERGY VEHICLE', editor: '李娟强', publisher: '缤果数字教材出版社', theme: 'vehicle' },
+  { t: '数据算法与结构', en: 'DATA STRUCTURE', editor: '姚晓明', publisher: '缤果数字教材出版社', theme: 'data' },
+  { t: '新时代下的媒体资源', en: 'MEDIA RESOURCE', editor: '王晓晴', publisher: '缤果数字教材出版社', theme: 'media' },
+  { t: '智能家居', en: 'SMART HOME', editor: '陈思远', publisher: '缤果数字教材出版社', theme: 'home' },
+  { t: '半导体物理学', en: 'SEMICONDUCTOR PHYSICS', editor: '李国强', publisher: '缤果数字教材出版社', theme: 'chip' },
+  { t: '人工智能导论', en: 'ARTIFICIAL INTELLIGENCE', editor: '周明', publisher: '缤果数字教材出版社', theme: 'ai' },
+  { t: '数字化设计与3D打印', en: 'DIGITAL DESIGN & 3D PRINTING', editor: '陈明', publisher: '缤果数字教材出版社', theme: 'print' },
+  { t: '田野书香', en: 'FIELD READING', editor: '余小梅', publisher: '缤果数字教材出版社', theme: 'field' },
+  { t: '摄像技术', en: 'CAMERA TECHNOLOGY', editor: '李霖', publisher: '缤果数字教材出版社', theme: 'camera' },
+  { t: '首饰组织', en: 'JEWELRY DESIGN', editor: '吴理珍', publisher: '缤果数字教材出版社', theme: 'jewel' },
 ];
 
 function resolveLibReadModes(b) {
@@ -112,7 +112,7 @@ function detailLearningModesSectionHtml(modeEntries) {
 }
 
 const books=[
-  {t:'运动营养学',s:'实践篇',g:'中职 二年级',p:'四川电教馆电子音像出版社',tp:'o',sub:'运动营养',cat:'体育健康',paperDigital:true,editor:'赵建国',readModeKeys:['read','av','task']},
+  {t:'运动营养学',s:'实践篇',g:'中职 二年级',p:'缤果数字教材出版社',tp:'o',sub:'运动营养',cat:'体育健康',paperDigital:true,editor:'赵建国',readModeKeys:['read','av','task']},
   {t:'计算机应用基础',s:'上册',g:'中职 一年级',p:'高等教育出版社',tp:'o',sub:'计算机基础',cat:'计算机基础',paperDigital:true,editor:'张炜 等',readModeKeys:['read','av','task','kg']},
   {t:'计算机应用基础',s:'下册',g:'中职 一年级',p:'高等教育出版社',tp:'o',sub:'计算机基础',cat:'计算机基础',editor:'张炜 等',readModeKeys:['read','av','task']},
   {t:'C语言程序设计',s:'上册',g:'中职 一年级',p:'高等教育出版社',tp:'o',sub:'程序设计',cat:'程序与开发',readModeKeys:['read','task']},
@@ -6459,10 +6459,7 @@ function questionBankEditActionHtml(kind, label, onclick) {
     score: '<svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/><circle cx="18" cy="18" r="3"/></svg>',
     preview: '<svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
     add: '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
-<<<<<<< HEAD
-=======
     ai: '<svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/><circle cx="12" cy="12" r="3.5"/></svg>',
->>>>>>> 5ee6ac7 (first commit)
     next: '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>',
   };
   return `<button type="button" class="qb-edit-action qb-edit-action--${kind}" onclick="${onclick}"><span class="qb-edit-action-ic">${icons[kind] || icons.add}</span>${label}</button>`;
@@ -6506,16 +6503,10 @@ function openQuestionBankPaperEditor(paperId = 'project') {
       <div class="qb-edit-topbar">
         ${questionBankEditActionHtml('back', '返回', 'closeQuestionBankPaperEditor()')}
         <div class="qb-edit-actions">
-<<<<<<< HEAD
-          ${questionBankEditActionHtml('preview', '预览试卷', 'previewQuestionBankPaperFromEditor()')}
-          ${questionBankEditActionHtml('word', '导出为 Word', 'exportQuestionBankPaperWord()')}
-          ${questionBankEditActionHtml('score', '批量设置分数', 'batchSetQuestionBankScores()')}
-=======
           ${questionBankEditActionHtml('ai', 'AI 出题', 'openQuestionBankAiModal()')}
           ${questionBankEditActionHtml('word', '导出为 Word', 'exportQuestionBankPaperWord()')}
           ${questionBankEditActionHtml('score', '批量设置分数', 'batchSetQuestionBankScores()')}
           ${questionBankEditActionHtml('preview', '预览试卷', 'previewQuestionBankPaperFromEditor()')}
->>>>>>> 5ee6ac7 (first commit)
         </div>
       </div>
       <div class="qb-edit-title-wrap">
