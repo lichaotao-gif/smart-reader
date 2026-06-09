@@ -4,6 +4,9 @@
 .cr-write-shell{
   display:flex;
   flex-direction:column;
+  flex:1 1 auto;
+  width:100%;
+  min-width:0;
   height:100vh;
   overflow:hidden;
   background:var(--snow);
@@ -250,10 +253,11 @@
   display:flex;
   flex:1;
   min-height:0;
+  min-width:0;
 }
 .cr-write-toc{
-  width:min(280px,32vw);
-  flex-shrink:0;
+  width:280px;
+  flex:0 0 280px;
   display:flex;
   flex-direction:column;
   border-right:1px solid var(--cloud);
@@ -496,11 +500,13 @@
 .cr-write-editor-pad{
   flex:1;
   min-height:0;
+  min-width:0;
   padding:14px 16px 24px;
   overflow:auto;
 }
 .cr-write-digital-page{
-  max-width:820px;
+  width:min(920px,100%);
+  max-width:920px;
   margin:0 auto;
   background:var(--white);
   border-radius:12px;
@@ -595,16 +601,17 @@
   display:flex;
   flex-direction:row;
   align-items:stretch;
-  flex-shrink:0;
+  flex:0 0 300px;
   border-left:1px solid var(--cloud);
   background:var(--white);
-  width:min(300px,30vw);
-  max-width:min(300px,30vw);
+  width:300px;
+  max-width:300px;
   min-width:40px;
   overflow:hidden;
   transition:width 0.22s ease,max-width 0.22s ease,min-width 0.22s ease;
 }
 .cr-write-rail.is-collapsed{
+  flex-basis:40px;
   width:40px;
   max-width:40px;
   min-width:40px;
@@ -2716,20 +2723,20 @@
 .cr-ai-exam-mask{
   position:absolute;
   inset:0;
-  background:rgba(15,23,42,0.38);
-  backdrop-filter:blur(4px);
+  background:rgba(15,23,42,0.32);
+  backdrop-filter:blur(3px);
 }
 .cr-ai-exam-card{
   position:relative;
   z-index:1;
-  width:min(1180px,calc(100vw - 40px));
-  max-height:min(92vh,860px);
+  width:min(1040px,calc(100vw - 40px));
+  max-height:min(88vh,760px);
   display:flex;
   flex-direction:column;
   overflow:hidden;
   border:1px solid rgba(226,232,240,0.95);
-  border-radius:16px;
-  background:#f3f4f6;
+  border-radius:14px;
+  background:#ffffff;
   box-shadow:0 24px 70px rgba(15,23,42,0.24);
 }
 .cr-ai-exam-head{
@@ -2737,55 +2744,66 @@
   align-items:center;
   justify-content:space-between;
   gap:16px;
-  padding:18px 20px 10px;
-  background:#f3f4f6;
+  padding:16px 18px;
+  border-bottom:1px solid var(--cloud);
+  background:linear-gradient(135deg,#eff6ff,#ffffff);
 }
 .cr-ai-exam-head h2{
   margin:0;
-  color:#0ea5e9;
-  font-size:24px;
+  color:#1d4ed8;
+  font-size:20px;
   font-weight:900;
 }
 .cr-ai-exam-close{
-  width:34px;
-  height:34px;
+  width:32px;
+  height:32px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  border:1px solid #bfdbfe;
-  border-radius:8px;
-  background:#fff;
-  color:#2563eb;
+  border:1px solid #dbeafe;
+  border-radius:9px;
+  background:#ffffff;
+  color:#475569;
   cursor:pointer;
-  transform:rotate(90deg);
+  font-size:22px;
+  line-height:1;
+  font-weight:500;
 }
 .cr-ai-exam-close:hover{
   background:#eff6ff;
+  border-color:#93c5fd;
+  color:#1d4ed8;
 }
 .cr-ai-exam-body{
   flex:1;
   min-height:0;
   overflow:auto;
-  padding:14px 20px 18px;
+  display:grid;
+  grid-template-columns:minmax(0,1.18fr) minmax(340px,0.82fr);
+  gap:14px;
+  padding:16px;
+  background:#f8fafc;
 }
 .cr-ai-exam-section{
-  padding:26px;
-  border-radius:14px;
+  min-height:0;
+  padding:18px;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
   background:#fff;
 }
 .cr-ai-exam-section + .cr-ai-exam-section{
-  margin-top:12px;
+  margin-top:0;
 }
 .cr-ai-exam-section h3{
-  margin:0 0 16px;
+  margin:0 0 14px;
   color:#0f172a;
-  font-size:18px;
+  font-size:16px;
   font-weight:900;
 }
 .cr-ai-exam-section-desc{
-  margin:-8px 0 16px;
+  margin:-8px 0 14px;
   color:#64748b;
-  font-size:14px;
+  font-size:13px;
   line-height:1.6;
 }
 .cr-ai-exam-grid{
@@ -2804,11 +2822,11 @@
   margin-top:0;
 }
 .cr-ai-exam-field + .cr-ai-exam-field{
-  margin-top:16px;
+  margin-top:12px;
 }
 .cr-ai-exam-field span{
-  color:#5b6472;
-  font-size:17px;
+  color:#475569;
+  font-size:13px;
   font-weight:800;
 }
 .cr-ai-exam-field input,
@@ -2816,22 +2834,22 @@
 .cr-ai-exam-field textarea{
   width:100%;
   border:1px solid var(--mist);
-  border-radius:6px;
+  border-radius:9px;
   background:#fff;
   color:#1f2937;
   font-family:inherit;
-  font-size:16px;
+  font-size:14px;
   line-height:1.55;
 }
 .cr-ai-exam-field input,
 .cr-ai-exam-field select{
-  min-height:46px;
-  padding:9px 13px;
+  min-height:40px;
+  padding:8px 11px;
 }
 .cr-ai-exam-field textarea{
-  min-height:94px;
+  min-height:104px;
   resize:vertical;
-  padding:12px 14px 28px;
+  padding:10px 12px 26px;
 }
 .cr-ai-exam-field input:focus,
 .cr-ai-exam-field select:focus,
@@ -2842,39 +2860,40 @@
 }
 .cr-ai-exam-field--prompt em{
   position:absolute;
-  right:14px;
-  bottom:8px;
+  right:12px;
+  bottom:7px;
   color:#8b949e;
   font-style:normal;
-  font-size:13px;
+  font-size:12px;
 }
 .cr-ai-exam-ref-title{
   display:flex;
   align-items:center;
   flex-wrap:wrap;
-  gap:8px;
-  margin:18px 0 10px;
+  gap:7px;
+  margin:14px 0 8px;
 }
 .cr-ai-exam-ref-title span{
-  color:#5b6472;
-  font-size:17px;
+  color:#475569;
+  font-size:13px;
   font-weight:800;
 }
 .cr-ai-exam-ref-title strong{
   color:#6b7280;
-  font-size:14px;
+  font-size:12px;
   font-weight:800;
 }
 .cr-ai-exam-dropzone{
-  min-height:152px;
+  min-height:96px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:12px;
-  border:1px dashed #cbd5e1;
+  gap:8px;
+  padding:14px;
+  border:1px dashed #bfdbfe;
   border-radius:10px;
-  background:#fff;
+  background:#f8fbff;
   color:#111827;
   text-align:center;
   cursor:pointer;
@@ -2884,19 +2903,19 @@
   background:#f8fbff;
 }
 .cr-ai-exam-dropzone strong{
-  color:#111827;
-  font-size:17px;
+  color:#1e3a8a;
+  font-size:14px;
   font-weight:800;
 }
 .cr-ai-exam-dropzone small{
   margin:0;
   color:#6b7280;
-  font-size:13px;
+  font-size:12px;
 }
 .cr-ai-type-grid{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:18px 34px;
+  grid-template-columns:1fr;
+  gap:10px;
 }
 .cr-ai-count-field{
   display:flex;
@@ -2906,27 +2925,27 @@
 }
 .cr-ai-count-field span{
   color:#4b5563;
-  font-size:17px;
+  font-size:14px;
   font-weight:900;
   white-space:nowrap;
 }
 .cr-ai-count-stepper{
-  width:136px;
+  width:126px;
   display:grid;
-  grid-template-columns:44px 48px 44px;
+  grid-template-columns:40px 46px 40px;
   border:1px solid #d5dbe5;
-  border-radius:6px;
+  border-radius:9px;
   overflow:hidden;
   background:#fff;
 }
 .cr-ai-count-stepper button,
 .cr-ai-count-stepper input{
-  height:42px;
+  height:38px;
   border:0;
   background:#fff;
   color:#5b6472;
   font:inherit;
-  font-size:16px;
+  font-size:15px;
   text-align:center;
 }
 .cr-ai-count-stepper button{
@@ -2948,23 +2967,23 @@
 }
 .cr-ai-difficulty-row{
   display:flex;
-  align-items:center;
+  align-items:flex-end;
   gap:14px;
-  margin-top:20px;
+  margin-top:14px;
 }
 .cr-ai-exam-field--difficulty{
-  width:126px;
-  flex-direction:row;
-  align-items:center;
-  gap:14px;
+  width:148px;
+  flex-direction:column;
+  align-items:stretch;
+  gap:8px;
 }
 .cr-ai-exam-field--difficulty span{
   white-space:nowrap;
 }
 .cr-ai-difficulty-row p{
-  margin:28px 0 0;
+  margin:0 0 8px;
   color:#4b5563;
-  font-size:15px;
+  font-size:12.5px;
   font-weight:800;
 }
 .cr-ai-exam-upload-input{
@@ -2977,20 +2996,21 @@
 .cr-ai-exam-foot{
   display:flex;
   align-items:center;
-  justify-content:center;
-  gap:28px;
-  padding:18px 20px 20px;
-  background:#f3f4f6;
+  justify-content:flex-end;
+  gap:10px;
+  padding:14px 18px;
+  border-top:1px solid var(--cloud);
+  background:#ffffff;
 }
 .cr-ai-exam-foot .cr-exam-btn{
-  min-width:128px;
-  height:48px;
-  border-radius:6px;
-  font-size:17px;
+  min-width:104px;
+  height:40px;
+  border-radius:9px;
+  font-size:14px;
 }
 .cr-ai-generate-btn{
-  min-width:150px;
-  background:linear-gradient(135deg,#7c3aed,#0ea5e9);
+  min-width:124px;
+  background:#2563eb;
 }
 .cr-ai-generate-btn .cr-w-svg{
   width:18px;
@@ -3005,8 +3025,8 @@
     grid-column:1 / -1;
     min-height:220px;
   }
-  .cr-write-rail:not(.is-collapsed){width:260px;max-width:260px}
-  .cr-write-toc{width:240px}
+  .cr-write-rail:not(.is-collapsed){flex-basis:260px;width:260px;max-width:260px}
+  .cr-write-toc{flex:0 0 240px;width:240px}
 }
 @media (max-width:900px){
   .cr-exam-head{
@@ -3027,6 +3047,9 @@
     min-height:260px;
   }
   .cr-ai-exam-grid{
+    grid-template-columns:1fr;
+  }
+  .cr-ai-exam-body{
     grid-template-columns:1fr;
   }
   .cr-ai-type-grid{
