@@ -600,6 +600,10 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
           <span class="reader-tool-rail-lab">笔记</span>
         </button>
+        <button type="button" class="reader-tool-rail-btn" onclick="readerToggleDiscussion()" title="讨论">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4 8.5 8.5 0 1 1 1.9-5.4z"/><path d="M8 10h.01M12 10h.01M16 10h.01" stroke-linecap="round"/></svg>
+          <span class="reader-tool-rail-lab">讨论</span>
+        </button>
       </aside>
     </div>
   </div>
@@ -613,6 +617,57 @@
       <input type="text" class="reader-ai-input" id="readerAiInput" placeholder="提问本课知识点、生词…" onkeydown="if(event.key==='Enter')readerSendAi()">
       <button type="button" class="reader-ai-send" onclick="readerSendAi()">发送</button>
     </div>
+  </aside>
+  <aside class="reader-drawer reader-discussion-drawer" id="readerDiscussionDrawer" aria-hidden="true">
+    <div class="reader-drawer-head">
+      <span>讨论</span>
+      <button type="button" class="reader-drawer-close" onclick="readerToggleDiscussion()" aria-label="关闭">×</button>
+    </div>
+    <section class="reader-discussion" aria-labelledby="readerDiscussionTitle">
+      <div class="reader-discussion-head">
+        <div>
+          <h2 class="reader-discussion-title" id="readerDiscussionTitle">讨论</h2>
+        </div>
+        <button type="button" class="reader-discussion-members-btn" id="readerDiscussionMembersBtn" onclick="readerToggleDiscussionMembers()" aria-expanded="false">36 位成员</button>
+      </div>
+      <div class="reader-discussion-members" id="readerDiscussionMembers" hidden>
+        <div class="reader-discussion-members-head"><strong>成员</strong><span>共 36 人</span></div>
+        <div class="reader-discussion-members-list" id="readerDiscussionMembersList"></div>
+      </div>
+      <p class="reader-discussion-hint">围绕本节内容交流；输入 <strong>@</strong> 可提及成员。</p>
+      <div class="reader-discussion-list" id="readerDiscussionList" aria-live="polite">
+        <article class="reader-discussion-item">
+          <div class="reader-discussion-avatar reader-discussion-avatar--student" aria-hidden="true">李</div>
+          <div class="reader-discussion-content"><div class="reader-discussion-meta"><strong>李明</strong></div><p><button type="button" class="reader-mention" onclick="readerMention('陈老师')">@陈老师</button>，几何尺寸信息和拓扑结构信息的核心区别是什么？</p></div>
+        </article>
+        <article class="reader-discussion-item reader-discussion-item--teacher">
+          <div class="reader-discussion-avatar reader-discussion-avatar--teacher" aria-hidden="true">陈</div>
+          <div class="reader-discussion-content"><div class="reader-discussion-meta"><strong>陈老师</strong></div><p>几何管“大小长短位置”，拓扑管“谁跟谁连、有没有洞”；几何看重数值度量，拓扑只看重连通逻辑。</p></div>
+        </article>
+        <article class="reader-discussion-item">
+          <div class="reader-discussion-avatar reader-discussion-avatar--student" aria-hidden="true">张</div>
+          <div class="reader-discussion-content"><div class="reader-discussion-meta"><strong>张伟</strong></div><p>如何直观理解几何信息和拓扑信息？</p></div>
+        </article>
+        <article class="reader-discussion-item reader-discussion-item--teacher">
+          <div class="reader-discussion-avatar reader-discussion-avatar--teacher" aria-hidden="true">陈</div>
+          <div class="reader-discussion-content"><div class="reader-discussion-meta"><strong>陈老师</strong></div><p>几何：纸上画的长宽、坐标、大小，有精确数字；拓扑：橡皮模型，随便拉弯不变，只要不剪不粘，连通、孔洞关系不变。</p></div>
+        </article>
+        <article class="reader-discussion-item">
+          <div class="reader-discussion-avatar reader-discussion-avatar--student" aria-hidden="true">张</div>
+          <div class="reader-discussion-content"><div class="reader-discussion-meta"><strong>张伟</strong></div><p>谢谢老师</p></div>
+        </article>
+      </div>
+      <div class="reader-discussion-compose">
+        <div class="reader-mention-picker" id="readerMentionPicker" hidden role="listbox" aria-label="选择要提及的成员">
+          <button type="button" role="option" onclick="readerPickMention('陈老师')"><span>陈老师</span><em>教师</em></button>
+          <button type="button" role="option" onclick="readerPickMention('李明')"><span>李明</span><em>学生</em></button>
+          <button type="button" role="option" onclick="readerPickMention('张伟')"><span>张伟</span><em>学生</em></button>
+        </div>
+        <label class="sr-only" for="readerDiscussionInput">发表讨论</label>
+        <textarea id="readerDiscussionInput" class="reader-discussion-input" rows="2" placeholder="围绕本节内容发表讨论，输入 @ 提及成员…" oninput="readerOnDiscussionInput()"></textarea>
+        <button type="button" class="reader-discussion-send" onclick="readerSendDiscussion()">发布讨论</button>
+      </div>
+    </section>
   </aside>
   <aside class="reader-drawer reader-notes-drawer" id="readerNotesDrawer" aria-hidden="true">
     <div class="reader-drawer-head">

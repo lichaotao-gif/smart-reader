@@ -3723,6 +3723,7 @@ function readerCloseICase() {
 
 let readerContext = { bookIdx: null, source: null, b: null, currentCid: null };
 const readerNotesStore = [];
+const readerDiscussionMembers = ['陈老师 · 教师', '李明', '张伟', '王芳', '刘洋', '赵悦', '孙楠', '周宁', '吴迪', '郑琳', '何涛', '高静', '马超', '朱琳', '胡伟', '林薇', '梁晨', '宋雨', '唐杰', '冯雪', '于洋', '董欣', '萧然', '谢萌', '潘宇', '程璐', '罗杰', '韩梅', '曹阳', '许诺', '邓宇', '彭慧', '蒋涛', '蔡敏', '叶凡', '杜欣'];
 
 function firstReaderCid(nodes) {
   for (const n of nodes) {
@@ -5769,6 +5770,40 @@ function questionBankLibraryItems(kind) {
   ];
 }
 
+function questionBankSupportCatalog() {
+  return [
+    { module: '第1章 智能技术与社会', lesson: '1.1 人工智能能做什么？', directory: '1.1.1 导读与关键概念', papers: [{ name: '基础概念自测', status: '未答题', paperId: 'unit1' }, { name: '核心概念进阶练习', status: '已答题', paperId: 'final' }] },
+    { module: '第1章 智能技术与社会', lesson: '1.1 人工智能能做什么？', directory: '1.1.2 案例与拓展阅读', papers: [{ name: '案例分析练习', status: '已答题', paperId: 'project' }] },
+    { module: '第1章 智能技术与社会', lesson: '1.1 人工智能能做什么？', directory: '1.1.3 实训与互动', papers: [] },
+    { module: '第1章 智能技术与社会', lesson: '1.2 数据、模型与风险', directory: '1.2.1 综合练习', papers: [{ name: '数据与模型自测', status: '未答题', paperId: 'unit1' }] },
+    { module: '第2章 项目式学习', lesson: '2.1 从分类到简单神经网络', directory: '2.1.1 拓展阅读与练习', papers: [{ name: '拓展阅读练习（一）', status: '未答题', paperId: 'project' }, { name: '拓展阅读练习（二）', status: '已答题', paperId: 'final' }] },
+  ];
+}
+
+function questionBankSupportCatalogHtml() {
+  const chapters = new Map();
+  questionBankSupportCatalog().forEach((item) => {
+    if (!chapters.has(item.module)) chapters.set(item.module, { module: item.module, lessons: new Map() });
+    const chapter = chapters.get(item.module);
+    if (!chapter.lessons.has(item.lesson)) chapter.lessons.set(item.lesson, []);
+    chapter.lessons.get(item.lesson).push(item);
+  });
+  return [...chapters.values()].map((chapter) => `<section class="qb-support-outline-group">
+    <div class="qb-support-outline-row qb-support-outline-row--chapter"><strong>${escAttr(chapter.module)}</strong></div>
+    ${[...chapter.lessons.entries()].map(([lesson, items]) => `<div class="qb-support-outline-block">
+      <div class="qb-support-outline-row qb-support-outline-row--lesson"><strong>${escAttr(lesson)}</strong></div>
+      ${items.map((item) => `
+      <div class="qb-support-outline-row qb-support-outline-row--directory"><strong>${escAttr(item.directory)}</strong></div>
+      ${item.papers.length ? item.papers.map((paper, index) => `<div class="qb-support-paper-row">
+        <div class="qb-support-paper-name"><span>${index + 1}</span>${escAttr(paper.name)}</div>
+        <span class="qb-support-status qb-support-status--${paper.status === '已答题' ? 'done' : 'todo'}">${escAttr(paper.status)}</span>
+        <button type="button" class="qb-support-start" onclick="openQuestionBankPaperPanel('answer','${paper.paperId}')">开始答题</button>
+      </div>`).join('') : `<div class="qb-support-paper-row qb-support-paper-row--empty"><div class="qb-support-paper-name">本小节暂无配套题</div><span class="qb-support-status qb-support-status--empty">暂无题目</span><button type="button" class="qb-support-start" disabled>开始答题</button></div>`}
+      `).join('')}
+    </div>`).join('')}
+  </section>`).join('');
+}
+
 function openQuestionBankLibraryList(kind = 'mine') {
   const host = document.getElementById('questionBankPanel');
   if (!host) return;
@@ -5776,6 +5811,23 @@ function openQuestionBankLibraryList(kind = 'mine') {
   const book = questionBankContext.book || myB[0];
   const title = isSupport ? '配套题库列表' : '我的题库列表';
   const desc = isSupport ? `来自《${book.t}》的章节测试题和综合练习。` : '管理我创建、导入和收藏沉淀的题库。';
+  if (isSupport) {
+    host.innerHTML = `<div class="qb-panel-page">
+      <header class="qb-panel-head">
+        <button type="button" class="qb-panel-back" onclick="closeQuestionBankPaperPanel()">返回</button>
+        <div><h2>配套题库</h2><p>${escAttr(desc)}</p></div>
+      </header>
+      <main class="qb-panel-body">
+        <section class="qb-support-catalog" aria-label="按教材目录查看配套题库">
+          <div class="qb-support-catalog-head"><span>教材目录</span><span>答题状态</span><span>操作</span></div>
+          ${questionBankSupportCatalogHtml()}
+        </section>
+      </main>
+    </div>`;
+    host.classList.add('open');
+    host.setAttribute('aria-hidden', 'false');
+    return;
+  }
   const rows = questionBankLibraryItems(kind);
   host.innerHTML = `<div class="qb-panel-page">
     <header class="qb-panel-head">
@@ -6221,7 +6273,7 @@ function renderQuestionBankHome() {
       </section>
       <div class="qb-section-grid">
         ${questionBankSectionCard('mine', '我的题库', isAdmin ? '沉淀个人创建、导入和收藏的题目。' : '查看已收藏题目和个人练习记录。', isAdmin ? '8 套题 · 46 题' : '3 套题 · 12 题', '进入')}
-        ${questionBankSectionCard('support', '配套题库', '书中自带测试题与章节练习，可直接组卷。', '12 套题 · 82 题', '选题')}
+        ${questionBankSectionCard('support', '配套题库', '书中自带测试题与章节练习。', '12 套题 · 82 题', '查看')}
         ${questionBankSectionCard('wrong', '错题集', isAdmin ? '按组群查看高频错题与薄弱知识点。' : '自动汇总我的错题，支持重做。', isAdmin ? '18 个高频错点' : '7 道待巩固', '查看')}
       </div>
     </div>`;
@@ -6851,7 +6903,7 @@ function closeReader() {
   readerCloseQuizModal();
   const ov = document.getElementById('readerOverlay');
   if (ov) {
-    ov.classList.remove('open', 'ai-open', 'notes-open', 'toc-collapsed');
+    ov.classList.remove('open', 'ai-open', 'notes-open', 'discussion-open', 'toc-collapsed');
     ov.setAttribute('aria-hidden', 'true');
   }
   document.body.style.overflow = '';
@@ -7416,7 +7468,7 @@ function readerToggleAi() {
   const ov = document.getElementById('readerOverlay');
   if (!ov) return;
   ov.classList.toggle('ai-open');
-  ov.classList.remove('notes-open');
+  ov.classList.remove('notes-open', 'discussion-open');
   if (ov.classList.contains('ai-open') && !document.getElementById('readerAiMessages')?.dataset.inited) {
     const box = document.getElementById('readerAiMessages');
     if (box) {
@@ -7446,7 +7498,16 @@ function readerToggleNotes() {
   const ov = document.getElementById('readerOverlay');
   if (!ov) return;
   ov.classList.toggle('notes-open');
-  ov.classList.remove('ai-open');
+  ov.classList.remove('ai-open', 'discussion-open');
+}
+
+function readerToggleDiscussion() {
+  readerCloseToolSlots();
+  readerHideSelectionToolbar(false);
+  const ov = document.getElementById('readerOverlay');
+  if (!ov) return;
+  ov.classList.toggle('discussion-open');
+  ov.classList.remove('ai-open', 'notes-open');
 }
 
 function readerSaveNote() {
@@ -7460,6 +7521,68 @@ function readerSaveNote() {
   if (ta) ta.value = '';
   renderReaderNotesList();
   showProfileToast('笔记已保存（演示）');
+}
+
+function readerMention(name) {
+  const input = document.getElementById('readerDiscussionInput');
+  if (!input) return;
+  const mention = `@${name} `;
+  input.value = input.value.includes(mention) ? input.value : `${input.value}${input.value ? ' ' : ''}${mention}`;
+  input.focus();
+}
+
+function readerOnDiscussionInput() {
+  const input = document.getElementById('readerDiscussionInput');
+  const picker = document.getElementById('readerMentionPicker');
+  if (!input || !picker) return;
+  const before = input.value.slice(0, input.selectionStart);
+  const at = before.lastIndexOf('@');
+  picker.hidden = at < 0 || /\s/.test(before.slice(at + 1));
+}
+
+function readerPickMention(name) {
+  const input = document.getElementById('readerDiscussionInput');
+  if (!input) return;
+  const cursor = input.selectionStart;
+  const before = input.value.slice(0, cursor);
+  const after = input.value.slice(cursor);
+  const at = before.lastIndexOf('@');
+  input.value = at >= 0 ? `${before.slice(0, at)}@${name} ${after}` : `${before}@${name} ${after}`;
+  document.getElementById('readerMentionPicker')?.setAttribute('hidden', '');
+  input.focus();
+}
+
+function readerToggleDiscussionMembers() {
+  const panel = document.getElementById('readerDiscussionMembers');
+  const button = document.getElementById('readerDiscussionMembersBtn');
+  if (!panel || !button) return;
+  const show = panel.hasAttribute('hidden');
+  const list = document.getElementById('readerDiscussionMembersList');
+  if (show && list && !list.children.length) {
+    list.innerHTML = readerDiscussionMembers.map((name) => `<span class="${name.includes('教师') ? 'is-teacher' : ''}">${escAttr(name)}</span>`).join('');
+  }
+  panel.toggleAttribute('hidden', !show);
+  button.setAttribute('aria-expanded', String(show));
+}
+
+function readerSendDiscussion() {
+  const input = document.getElementById('readerDiscussionInput');
+  const text = input?.value.trim() || '';
+  if (!text) {
+    showProfileToast('请先输入讨论内容');
+    return;
+  }
+  const list = document.getElementById('readerDiscussionList');
+  if (!list) return;
+  const safeText = escAttr(text).replace(/@(陈老师|张伟|李明)/g, '<span class="reader-mention">@$1</span>');
+  list.insertAdjacentHTML(
+    'beforeend',
+    `<article class="reader-discussion-item"><div class="reader-discussion-avatar reader-discussion-avatar--student" aria-hidden="true">李</div><div class="reader-discussion-content"><div class="reader-discussion-meta"><strong>李明远</strong><time>刚刚</time></div><p>${safeText}</p></div></article>`
+  );
+  input.value = '';
+  document.getElementById('readerMentionPicker')?.setAttribute('hidden', '');
+  list.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  showProfileToast('讨论已发布（演示）');
 }
 
 function renderReaderNotesList() {
@@ -7589,7 +7712,7 @@ Object.assign(window, {
   questionBankDragStart, questionBankDragOver, questionBankDrop, questionBankDragEnd, openQuestionEditModal, closeQuestionEditModal, saveQuestionEditModal,
   openQuestionBankPublishModal, closeQuestionBankPublishModal, submitQuestionBankPublish,
   teachToggleBookPanel, teachToolFloatToggle, teachToolToggle, teachCountdownStart, teachCountdownStop, teachPenClear, teachPickRun, teachAiSend,
-  readerToggleAi, readerSendAi, readerToggleNotes, readerSaveNote, readerToggleSearch, readerOnSearchInput,
+  readerToggleAi, readerSendAi, readerToggleNotes, readerToggleDiscussion, readerSaveNote, readerMention, readerOnDiscussionInput, readerPickMention, readerToggleDiscussionMembers, readerSendDiscussion, readerToggleSearch, readerOnSearchInput,
   readerSelectionActionAi, readerSelectionActionHighlight, readerSelectionActionNote, readerSelectionActionCopy,
   readerToggleModePanel, readerToggleDisplayPanel, readerClosePopovers, readerCloseToolSlots, readerApplyFontSize, readerSetBg, readerToggleTocCollapse,
   renderSettings, handleSettingsAvatar, openPhoneModal, closePhoneModal, sendPhoneChangeCode, confirmPhoneChange,
