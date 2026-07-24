@@ -620,21 +620,17 @@
   </aside>
   <aside class="reader-drawer reader-discussion-drawer" id="readerDiscussionDrawer" aria-hidden="true">
     <div class="reader-drawer-head">
-      <span>讨论</span>
+      <div class="reader-drawer-title-row"><span>讨论</span><button type="button" class="reader-discussion-members-btn" id="readerDiscussionMembersBtn" onclick="readerToggleDiscussionMembers()" aria-expanded="false">36 位成员</button></div>
       <button type="button" class="reader-drawer-close" onclick="readerToggleDiscussion()" aria-label="关闭">×</button>
     </div>
-    <section class="reader-discussion" aria-labelledby="readerDiscussionTitle">
+    <section class="reader-discussion" aria-label="讨论内容">
       <div class="reader-discussion-head">
-        <div>
-          <h2 class="reader-discussion-title" id="readerDiscussionTitle">讨论</h2>
-        </div>
-        <button type="button" class="reader-discussion-members-btn" id="readerDiscussionMembersBtn" onclick="readerToggleDiscussionMembers()" aria-expanded="false">36 位成员</button>
       </div>
       <div class="reader-discussion-members" id="readerDiscussionMembers" hidden>
         <div class="reader-discussion-members-head"><strong>成员</strong><span>共 36 人</span></div>
         <div class="reader-discussion-members-list" id="readerDiscussionMembersList"></div>
       </div>
-      <p class="reader-discussion-hint">围绕本节内容交流；输入 <strong>@</strong> 可提及成员。</p>
+      <p class="reader-discussion-hint">本书内容交流；输入 <strong>@</strong> 可提及成员。</p>
       <div class="reader-discussion-list" id="readerDiscussionList" aria-live="polite">
         <article class="reader-discussion-item">
           <div class="reader-discussion-avatar reader-discussion-avatar--student" aria-hidden="true">李</div>
@@ -664,7 +660,7 @@
           <button type="button" role="option" onclick="readerPickMention('张伟')"><span>张伟</span><em>学生</em></button>
         </div>
         <label class="sr-only" for="readerDiscussionInput">发表讨论</label>
-        <textarea id="readerDiscussionInput" class="reader-discussion-input" rows="2" placeholder="围绕本节内容发表讨论，输入 @ 提及成员…" oninput="readerOnDiscussionInput()"></textarea>
+        <textarea id="readerDiscussionInput" class="reader-discussion-input" rows="2" placeholder="围绕本书内容发表讨论，输入 @ 提及成员…" oninput="readerOnDiscussionInput()"></textarea>
         <button type="button" class="reader-discussion-send" onclick="readerSendDiscussion()">发布讨论</button>
       </div>
     </section>
