@@ -3611,6 +3611,13 @@ body{
   transition:var(--transition);font-family:inherit;padding:6px 4px;
 }
 .reader-tool-rail-btn:hover{background:var(--mint);color:var(--mint-deep);border-color:var(--mint-mid)}
+.reader-tool-rail-btn--discussion{position:relative}
+.reader-tool-unread-dot{
+  display:none;position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;
+  background:#e5484d;border:2px solid var(--snow);box-sizing:content-box;
+}
+.reader-tool-rail-btn--discussion.has-unread .reader-tool-unread-dot{display:block}
+.reader-tool-rail-btn--discussion:focus-visible{outline:2px solid var(--mint-deep);outline-offset:2px}
 .reader-tool-rail-icon{font-size:15px;font-weight:700;letter-spacing:-0.5px;color:var(--deep)}
 .reader-tool-rail-lab{
   font-size:10.5px;line-height:1.1;font-weight:600;letter-spacing:0.02em;

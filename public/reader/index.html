@@ -600,8 +600,9 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
           <span class="reader-tool-rail-lab">笔记</span>
         </button>
-        <button type="button" class="reader-tool-rail-btn" onclick="readerToggleDiscussion()" title="讨论">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4 8.5 8.5 0 1 1 1.9-5.4z"/><path d="M8 10h.01M12 10h.01M16 10h.01" stroke-linecap="round"/></svg>
+        <button type="button" class="reader-tool-rail-btn reader-tool-rail-btn--discussion has-unread" id="readerDiscussionBtn" onclick="readerToggleDiscussion()" title="讨论（有新消息）" aria-label="讨论，有新消息">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.8 19.5a5.5 5.5 0 0 1 10.4 0"/><path d="M16.5 5.5a2.5 2.5 0 0 1 0 5"/><path d="M17.2 14.2a4.7 4.7 0 0 1 3 3.3"/></svg>
+          <span class="reader-tool-unread-dot" aria-hidden="true"></span>
           <span class="reader-tool-rail-lab">讨论</span>
         </button>
       </aside>

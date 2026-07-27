@@ -7501,13 +7501,26 @@ function readerToggleNotes() {
   ov.classList.remove('ai-open', 'discussion-open');
 }
 
+let readerDiscussionHasUnread = true;
+
+function readerSetDiscussionUnread(hasUnread) {
+  readerDiscussionHasUnread = Boolean(hasUnread);
+  const button = document.getElementById('readerDiscussionBtn');
+  if (!button) return;
+  button.classList.toggle('has-unread', readerDiscussionHasUnread);
+  button.setAttribute('title', readerDiscussionHasUnread ? '讨论（有新消息）' : '讨论');
+  button.setAttribute('aria-label', readerDiscussionHasUnread ? '讨论，有新消息' : '讨论');
+}
+
 function readerToggleDiscussion() {
   readerCloseToolSlots();
   readerHideSelectionToolbar(false);
   const ov = document.getElementById('readerOverlay');
   if (!ov) return;
+  const isOpening = !ov.classList.contains('discussion-open');
   ov.classList.toggle('discussion-open');
   ov.classList.remove('ai-open', 'notes-open');
+  if (isOpening && readerDiscussionHasUnread) readerSetDiscussionUnread(false);
 }
 
 function readerSaveNote() {
